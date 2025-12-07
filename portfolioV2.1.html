@@ -34,6 +34,7 @@
     <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
     /*==============================================================================================================
@@ -121,9 +122,6 @@
             z-index: 0;
             will-change: transform;
             transition: opacity var(--theme-transition);
-            /* Fix pour mobile */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
         }
 
         .signature {
@@ -906,68 +904,13 @@
     ==============================================================================================================*/
 
         @media (max-width: 768px) {
-            /* Hero beaucoup plus grand sur mobile */
-            .hero h1 { 
-                font-size: 36px; 
-                line-height: 1.2;
-            }
-            .hero p { 
-                font-size: 18px; 
-                padding: 0 20px;
-            }
-            .hero-image { 
-                max-width: 280px; 
-                margin-bottom: 24px; 
-            }
-            .hero-content {
-                padding: 0 16px;
-            }
-            
-            /* Fix background sur mobile */
-            #bgCanvas {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-            }
-            
-            /* Sections */
-            .section-header h2 { font-size: 32px; }
-            .section-header p { font-size: 16px; }
+            .hero h1 { font-size: 48px; }
+            .hero p { font-size: 20px; }
+            .hero-image { max-width: 100%; margin-bottom: 32px; }
+            .section-header h2 { font-size: 40px; }
             .project-grid { grid-template-columns: 1fr; }
-            .projects { padding: 60px 16px 80px; }
-            
-            /* Modal */
-            .modal-contact { 
-                padding: 32px 20px; 
-                margin: 16px;
-                max-height: 90vh;
-            }
-            
-            /* Nav */
-            .nav-content { padding: 0 16px; }
-            .nav-right { gap: 8px; }
-            .nav-right a { 
-                padding: 8px 12px; 
-                font-size: 13px;
-            }
-            .nav-right a svg { display: none; }
-            .logo { font-size: 14px; }
-            .logo svg { width: 18px; height: 18px; }
-            
-            /* Scroll indicator */
-            .scroll-indicator { bottom: 24px; }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 28px; }
-            .hero p { font-size: 16px; }
-            .hero-image { max-width: 220px; }
-            .section-header h2 { font-size: 28px; }
-            .project-card { padding: 24px; }
-            .project-card h3 { font-size: 18px; }
+            .modal-contact { padding: 32px 24px; }
+            .nav-right { gap: 12px; }
         }
     </style>
 </head>
@@ -1039,16 +982,14 @@
             <button class="modal-close" onclick="closeContactModal()">×</button>
             <h2>Me contacter</h2>
             <p>Envoyez-moi un message, je vous répondrai rapidement.</p>
-            <div class="success-message" id="successMessage">Message envoyé avec succès !</div>
+            <div class="success-message" id="successMessage">✓ Message envoyé avec succès !</div>
             <form id="contactForm" onsubmit="handleSubmit(event)">
-                <input type="hidden" name="access_key" value="b6edb842-33c1-46d8-bc89-5557946b6ae8">
-                <input type="hidden" name="subject" value="Nouveau message - Portfolio">
                 <div class="form-group">
-                    <label for="name">Votre nom</label>
+                    <label for="name">Nom</label>
                     <input type="text" id="name" name="name" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Votre email</label>
+                    <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
@@ -1173,14 +1114,20 @@
         }
     ];
 
-    // Particles Config - moins sur mobile
-    const isMobile = window.innerWidth <= 768;
+    // Particles Config
     const PARTICLES_CONFIG = {
-        count: isMobile ? 35 : 80,
-        maxDistance: isMobile ? 180 : 250,
-        pointerRadius: isMobile ? 80 : 120,
-        speed: isMobile ? 0.4 : 0.6,
+        count: 80,
+        maxDistance: 250,
+        pointerRadius: 120,
+        speed: 0.6,
         parallaxFactor: 0.2
+    };
+
+    // EmailJS Config
+    const EMAILJS_CONFIG = {
+        publicKey: 'XdB-kOPkp8FMzPN5x',
+        serviceId: 'service_po5af8p',
+        templateId: 'template_8uvf0cc'
     };
 
 
@@ -1247,14 +1194,8 @@
      * Handler pour l'événement scroll
      */
     function onScroll() {
-        lastScrollY = window.scrollY || window.pageYOffset;
-        
-        // Désactiver le parallax sur mobile pour éviter les bugs
-        if (window.innerWidth > 768) {
-            parallaxOffset = lastScrollY * PARTICLES_CONFIG.parallaxFactor;
-        } else {
-            parallaxOffset = 0;
-        }
+        lastScrollY = window.scrollY;
+        parallaxOffset = lastScrollY * PARTICLES_CONFIG.parallaxFactor;
         
         if (!scrollTicking) {
             requestAnimationFrame(updateHeroOnScroll);
@@ -1323,12 +1264,8 @@
         }
 
         resize() {
-            // Sur mobile, utiliser une hauteur fixe pour éviter les bugs avec la barre d'adresse
-            const isMobileDevice = window.innerWidth <= 768;
             this.width = this.canvas.width = window.innerWidth;
-            this.height = this.canvas.height = isMobileDevice 
-                ? Math.max(window.innerHeight, document.documentElement.clientHeight, window.screen.height)
-                : window.innerHeight;
+            this.height = this.canvas.height = window.innerHeight;
         }
 
         createParticles() {
@@ -1538,44 +1475,20 @@
         DOM.contactForm.reset();
     }
 
-
-/*==================================================================================================================
-    14. JS - CONTACT FORM (Web3Forms)
-==================================================================================================================*/
-
     function handleSubmit(e) {
         e.preventDefault();
-        const form = e.target;
-        const submitBtn = document.getElementById('submitBtn');
-        const successMessage = document.getElementById('successMessage');
-        
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Envoi en cours...';
+        DOM.submitBtn.disabled = true;
 
-        fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(Object.fromEntries(new FormData(form)))
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                successMessage.classList.add('show');
-                form.reset();
-                submitBtn.textContent = 'Envoyer';
-                submitBtn.disabled = false;
+        emailjs.sendForm(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, e.target)
+            .then(() => {
+                DOM.successMessage.classList.add('show');
+                DOM.submitBtn.disabled = false;
                 setTimeout(closeContactModal, 2000);
-            } else {
-                throw new Error('Erreur');
-            }
-        })
-        .catch(() => {
-            alert('Erreur lors de l\'envoi. Veuillez réessayer.');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Envoyer';
-        });
+            })
+            .catch(() => {
+                alert('Une erreur est survenue. Veuillez réessayer.');
+                DOM.submitBtn.disabled = false;
+            });
     }
 
 
@@ -1585,6 +1498,7 @@
 
     function init() {
         initTheme();
+        emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
         initFilters();
         renderProjects();
         animateParticles();
