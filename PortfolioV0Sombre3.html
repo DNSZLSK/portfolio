@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONPORTFOLIO</title>
+
+    <!-- ============================================================================================================
+
+        Structure du fichier :
+        1. CSS - Variables & Reset
+        2. CSS - Navigation
+        3. CSS - Hero Section
+        4. CSS - Projects Section
+        5. CSS - Modal Contact
+        6. CSS - Project Viewer
+        7. CSS - Responsive
+        8. HTML - Structure
+        9. JS - Configuration & Variables
+        10. JS - Hero & Scroll Effects
+        11. JS - Particles System
+        12. JS - Projects Management
+        13. JS - Contact Form
+        14. JS - Initialization
+        
+    ============================================================================================================ -->
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <style>
+    /*==============================================================================================================
+        1. CSS - VARIABLES & RESET
+    ==============================================================================================================*/
+    
+        :root {
+            /* Colors */
+            --bg-primary: #000000;
+            --bg-secondary: rgba(28, 28, 30, 0.4);
+            --bg-card: rgba(20, 20, 22, 0.85);
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0a84ff;
+            --accent-hover: #409cff;
+            
+            /* Borders & Shadows */
+            --border: rgba(255, 255, 255, 0.15);
+            --shadow: rgba(0, 0, 0, 0.5);
+            --glow-blue: rgba(0, 122, 255, 0.5);
+            --glow-purple: rgba(175, 82, 222, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+
+    /*==============================================================================================================
+        2. CSS - CANVAS & SIGNATURE
+    ==============================================================================================================*/
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            will-change: transform;
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 9px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 2;
+        }
+
+
+    /*==============================================================================================================
+        3. CSS - NAVIGATION
+    ==============================================================================================================*/
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 48px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 9999;
+        }
+
+        nav .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        nav a:hover { opacity: 1; }
+
+        nav a svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        nav .logo {
+            font-weight: 600;
+            font-size: 14px;
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        nav .logo:hover { color: var(--accent); }
+        nav .logo svg { width: 18px; height: 18px; }
+
+
+    /*==============================================================================================================
+        4. CSS - HERO SECTION
+    ==============================================================================================================*/
+
+        .hero {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 48px 24px 60px;
+            z-index: 1;
+            pointer-events: none;
+            will-change: opacity, visibility;
+        }
+
+        .hero-content {
+            pointer-events: auto;
+            will-change: opacity;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 56px;
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 80px rgba(0, 122, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero-image:hover {
+            transform: scale(1.01);
+            box-shadow: 
+                0 12px 48px rgba(0, 0, 0, 0.5),
+                0 0 100px rgba(0, 122, 255, 0.15);
+        }
+
+        .hero h1 {
+            font-size: 80px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.5;
+            animation: bounce 2s infinite;
+            pointer-events: auto;
+            will-change: opacity;
+        }
+
+        .scroll-indicator span {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            width: 20px;
+            height: 32px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 12px;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            width: 4px;
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 2px;
+            position: absolute;
+            bottom: 56px;
+            animation: scrollDown 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        @keyframes scrollDown {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(12px); }
+        }
+
+        .hero-spacer {
+            height: 100vh;
+            pointer-events: none;
+        }
+
+
+    /*==============================================================================================================
+        5. CSS - PROJECTS SECTION
+    ==============================================================================================================*/
+
+        .projects {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 32px 150px;
+            min-height: 100vh;
+        }
+
+        .section-header {
+            margin-bottom: 56px;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(10, 132, 255, 0.4);
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        /* Project Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+        }
+
+        /* Project Card */
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(40px);
+            will-change: transform;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px var(--glow-blue),
+                0 0 80px var(--glow-purple),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .project-card-content {
+            padding: 36px 32px;
+        }
+
+        /* Project Icon */
+        .project-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-icon.python { background-image: url('https://imgur.com/ipvwsyW.png'); }
+        .project-icon.java { background-image: url('https://imgur.com/hLXLyFn.png'); }
+        .project-icon.html { background-image: url('https://imgur.com/M0dib5e.png'); }
+        .project-icon.other { background: linear-gradient(135deg, #61dafb 0%, #2196F3 100%); }
+
+        .project-card h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Tags */
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .tag {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 22px;
+        }
+
+        .empty-state h3 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+
+    /*==============================================================================================================
+        6. CSS - MODAL CONTACT
+    ==============================================================================================================*/
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-contact {
+            background: linear-gradient(135deg, rgba(40, 40, 45, 0.95) 0%, rgba(30, 30, 35, 0.95) 100%);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 480px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 122, 255, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-contact h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .modal-contact > p {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0a84ff 0%, #5856D6 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(10, 132, 255, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(10, 132, 255, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            padding: 16px;
+            background: rgba(52, 199, 89, 0.15);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            border-radius: 14px;
+            color: #34c759;
+            margin-bottom: 24px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+
+    /*==============================================================================================================
+        7. CSS - PROJECT VIEWER
+    ==============================================================================================================*/
+
+        .project-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .project-viewer.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .viewer-header {
+            height: 56px;
+            background: rgba(30, 30, 35, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            justify-content: space-between;
+            backdrop-filter: blur(20px);
+        }
+
+        .viewer-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .viewer-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            background: #1a1a1e;
+        }
+
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #1a1a1e;
+        }
+
+        .editor-toolbar {
+            height: 44px;
+            background: #252528;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            justify-content: space-between;
+        }
+
+        .editor-container {
+            flex: 1;
+            overflow: auto;
+            background: #1a1a1e;
+        }
+
+        .editor-container::-webkit-scrollbar { width: 8px; height: 8px; }
+        .editor-container::-webkit-scrollbar-track { background: transparent; }
+        .editor-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
+
+        .code-display {
+            font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #A9B7C6;
+            margin: 0;
+            padding: 24px;
+            white-space: pre;
+        }
+
+
+    /*==============================================================================================================
+        8. CSS - RESPONSIVE
+    ==============================================================================================================*/
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 48px; }
+            .hero p { font-size: 20px; }
+            .hero-image { max-width: 100%; margin-bottom: 32px; }
+            .section-header h2 { font-size: 40px; }
+            .project-grid { grid-template-columns: 1fr; }
+            .modal-contact { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==============================================================================================================
+    HTML - STRUCTURE
+================================================================================================================-->
+
+    <!-- Background Canvas -->
+    <canvas id="bgCanvas"></canvas>
+    <div class="signature">CREATED BY DNSZLK</div>
+
+    <!-- Hero Section (Fixed) -->
+    <div class="hero" id="hero">
+        <div class="hero-content" id="heroContent">
+            <img src="https://imgur.com/YMTbXUC.png" alt="En recherche de stage" class="hero-image">
+            <h1>Développeur Fullstack</h1>
+            <p>Actuellement en formation Concepteur Développeur d'Applications</p>
+        </div>
+        <div class="scroll-indicator" id="scrollIndicator">
+            <span>Scroll</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Navigation -->
+        <nav>
+            <div class="nav-content">
+                <a href="https://www.linkedin.com/in/kewin-poszalski" target="_blank" class="logo">
+                    <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    Kéwin POSZALSKI
+                </a>
+                <a href="#" onclick="openContactModal(event)">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    Contact
+                </a>
+            </div>
+        </nav>
+
+        <!-- Spacer -->
+        <div class="hero-spacer"></div>
+
+        <!-- Projects Section -->
+        <div class="projects" id="projets">
+            <div class="section-header">
+                <h2>Projets</h2>
+                <p>Mes réalisations durant la formation</p>
+            </div>
+            <div class="filters" id="filters"></div>
+            <div class="project-grid" id="projectGrid"></div>
+        </div>
+
+    </div>
+
+    <!-- Modal Contact -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-contact">
+            <button class="modal-close" onclick="closeContactModal()">×</button>
+            <h2>Me contacter</h2>
+            <p>Envoyez-moi un message, je vous répondrai rapidement.</p>
+            <div class="success-message" id="successMessage">✓ Message envoyé avec succès !</div>
+            <form id="contactForm" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Envoyer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project Viewer -->
+    <div class="project-viewer" id="projectViewer">
+        <div class="viewer-header">
+            <div class="viewer-title" id="viewerTitle">Projet</div>
+            <button class="close-btn" onclick="closeViewer()">×</button>
+        </div>
+        <div class="viewer-content">
+            <div class="editor-panel">
+                <div class="editor-toolbar">
+                    <span style="font-size: 12px; color: #A9B7C6;" id="langLabel">Python</span>
+                    <span style="font-size: 12px; color: #808080; margin-left: auto;" id="viewerFilename">script.py</span>
+                </div>
+                <div class="editor-container">
+                    <pre><code class="code-display" id="codeDisplay"></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+/*==================================================================================================================
+    9. JS - CONFIGURATION & VARIABLES
+==================================================================================================================*/
+
+    // DOM Elements
+    const DOM = {
+        hero: document.getElementById('hero'),
+        heroContent: document.getElementById('heroContent'),
+        scrollIndicator: document.getElementById('scrollIndicator'),
+        canvas: document.getElementById('bgCanvas'),
+        projectGrid: document.getElementById('projectGrid'),
+        filters: document.getElementById('filters'),
+        contactModal: document.getElementById('contactModal'),
+        contactForm: document.getElementById('contactForm'),
+        successMessage: document.getElementById('successMessage'),
+        submitBtn: document.getElementById('submitBtn'),
+        projectViewer: document.getElementById('projectViewer'),
+        viewerTitle: document.getElementById('viewerTitle'),
+        codeDisplay: document.getElementById('codeDisplay'),
+        langLabel: document.getElementById('langLabel'),
+        viewerFilename: document.getElementById('viewerFilename')
+    };
+
+    // Canvas Context
+    const ctx = DOM.canvas.getContext('2d');
+
+    // State
+    let lastScrollY = 0;
+    let scrollTicking = false;
+    let parallaxOffset = 0;
+    let currentFilter = 'all';
+    let currentProject = null;
+
+    // Projects Data
+    const PROJECTS_DATA = [
+        {
+            title: 'Le Juste Prix',
+            description: 'Examen Module 1 CDA (AFPA) - Jeu de devinette avec chronomètre et classement.',
+            language: 'python',
+            tags: ['Python', 'Jeu', 'JSON', 'Chronomètre'],
+            code: `print("Bienvenue au Juste Prix !")\n# Ton code ici...`
+        },
+        {
+            title: 'Simulation Océanographique',
+            description: 'Examen Module 3 CDA (AFPA) - Analyse de données de marées à partir de fichiers CSV.',
+            language: 'java',
+            tags: ['JAVA', 'Simulation', 'CSV', 'Matrix'],
+            code: `public class Simulation {\n    public static void main(String[] args) {\n        // Ton code ici...\n    }\n}`
+        },
+        {
+            title: 'Py2Java',
+            description: 'Guide de transition complet entre Python et Java - Commandes et syntaxes équivalentes.',
+            language: 'html',
+            tags: ['HTML', 'Helper', 'Education'],
+            code: `<!DOCTYPE html>\n<html>\n<head>\n    <title>Py2Java</title>\n</head>\n<body>\n    <!-- Ton code ici... -->\n</body>\n</html>`
+        },
+        {
+            title: 'Mot de Passe',
+            description: 'Vérificateur de mot de passe en Java avec validation de règles complexes.',
+            language: 'java',
+            tags: ['JAVA', 'Password', 'Validation'],
+            code: `public class PasswordChecker {\n    public static void main(String[] args) {\n        // Ton code ici...\n    }\n}`
+        },
+        {
+            title: 'Spy Hunter',
+            description: 'Script Python pour débusquer un espion dans un fichier CSV en analysant les langues et voyages.',
+            language: 'python',
+            tags: ['Python', 'CSV', 'Analyse', 'Espion'],
+            code: `import pandas as pd\n# Ton code ici...`
+        }
+    ];
+
+    // Particles Config
+    const PARTICLES_CONFIG = {
+        count: 80,
+        maxDistance: 250,
+        pointerRadius: 120,
+        speed: 0.6,
+        parallaxFactor: 0.2
+    };
+
+    // EmailJS Config
+    const EMAILJS_CONFIG = {
+        publicKey: 'XdB-kOPkp8FMzPN5x',
+        serviceId: 'service_po5af8p',
+        templateId: 'template_8uvf0cc'
+    };
+
+
+/*==================================================================================================================
+    10. JS - HERO & SCROLL EFFECTS
+==================================================================================================================*/
+
+    /**
+     * Met à jour l'opacité du hero en fonction du scroll
+     * Fade out progressif et doux
+     */
+    function updateHeroOnScroll() {
+        const heroHeight = window.innerHeight;
+        const scrollProgress = Math.min(lastScrollY / (heroHeight * 0.8), 1);
+        
+        // Courbe ease-out pour un fade plus naturel
+        const easedProgress = 1 - Math.pow(1 - scrollProgress, 2);
+        
+        DOM.heroContent.style.opacity = 1 - easedProgress;
+        DOM.scrollIndicator.style.opacity = Math.max(0, 1 - (scrollProgress * 1.5));
+        DOM.hero.style.visibility = easedProgress >= 0.99 ? 'hidden' : 'visible';
+        
+        scrollTicking = false;
+    }
+
+    /**
+     * Handler optimisé pour l'événement scroll
+     */
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        parallaxOffset = lastScrollY * PARTICLES_CONFIG.parallaxFactor;
+        
+        if (!scrollTicking) {
+            requestAnimationFrame(updateHeroOnScroll);
+            scrollTicking = true;
+        }
+    }
+
+
+/*==================================================================================================================
+    11. JS - PARTICLES SYSTEM
+==================================================================================================================*/
+
+    /**
+     * Classe représentant une particule
+     */
+    class Particle {
+        constructor(width, height) {
+            this.reset(width, height);
+        }
+
+        reset(width, height) {
+            this.r = Math.random() * 2 + 1.5;
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.baseY = this.y;
+            this.vx = (Math.random() - 0.5) * PARTICLES_CONFIG.speed;
+            this.vy = (Math.random() - 0.5) * PARTICLES_CONFIG.speed;
+            this.parallaxFactor = Math.random() * 0.2 + 0.05;
+        }
+
+        update(width, height, pointer) {
+            // Réaction au pointeur
+            const dx = pointer.x - this.x;
+            const dy = pointer.y - this.y;
+            const distSq = dx * dx + dy * dy;
+            const radiusSq = PARTICLES_CONFIG.pointerRadius * PARTICLES_CONFIG.pointerRadius;
+            
+            if (distSq < radiusSq) {
+                const dist = Math.sqrt(distSq);
+                const force = (PARTICLES_CONFIG.pointerRadius - dist) / PARTICLES_CONFIG.pointerRadius;
+                const angle = Math.atan2(dy, dx);
+                this.x -= Math.cos(angle) * force * 2.5;
+                this.y -= Math.sin(angle) * force * 2.5;
+            }
+
+            // Parallax
+            this.y = this.baseY - (parallaxOffset * this.parallaxFactor);
+            
+            // Mouvement
+            this.x += this.vx;
+            this.baseY += this.vy;
+
+            // Wrap around
+            if (this.x < -10) this.x = width + 10;
+            if (this.x > width + 10) this.x = -10;
+            if (this.baseY < -10) this.baseY = height + 10;
+            if (this.baseY > height + 10) this.baseY = -10;
+        }
+    }
+
+    /**
+     * Classe gérant le système de particules
+     */
+    class ParticleSystem {
+        constructor(canvas) {
+            this.canvas = canvas;
+            this.particles = [];
+            this.pointer = { x: -200, y: -200 };
+            this.resize();
+            this.createParticles();
+        }
+
+        resize() {
+            this.width = this.canvas.width = window.innerWidth;
+            this.height = this.canvas.height = window.innerHeight;
+        }
+
+        createParticles() {
+            this.particles = [];
+            for (let i = 0; i < PARTICLES_CONFIG.count; i++) {
+                this.particles.push(new Particle(this.width, this.height));
+            }
+        }
+
+        draw(ctx) {
+            const particles = this.particles;
+            const len = particles.length;
+            const maxDist = PARTICLES_CONFIG.maxDistance;
+            const maxDistSq = maxDist * maxDist;
+
+            // Update particles
+            for (let i = 0; i < len; i++) {
+                particles[i].update(this.width, this.height, this.pointer);
+            }
+
+            // Draw connections
+            ctx.lineWidth = 1;
+            for (let a = 0; a < len; a++) {
+                const pA = particles[a];
+                for (let b = a + 1; b < len; b++) {
+                    const pB = particles[b];
+                    const dx = pA.x - pB.x;
+                    const dy = pA.y - pB.y;
+                    const distSq = dx * dx + dy * dy;
+
+                    if (distSq < maxDistSq) {
+                        const opacity = (1 - Math.sqrt(distSq) / maxDist) * 0.7;
+                        const gradient = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
+                        gradient.addColorStop(0, `rgba(0,122,255,${opacity})`);
+                        gradient.addColorStop(0.5, `rgba(88,86,214,${opacity})`);
+                        gradient.addColorStop(1, `rgba(175,82,222,${opacity})`);
+                        
+                        ctx.strokeStyle = gradient;
+                        ctx.beginPath();
+                        ctx.moveTo(pA.x, pA.y);
+                        ctx.lineTo(pB.x, pB.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw particles
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(255,255,255,0.4)';
+            ctx.fillStyle = 'rgba(255,255,255,0.85)';
+            for (let i = 0; i < len; i++) {
+                const p = particles[i];
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    // Particle System Instance
+    const particleSystem = new ParticleSystem(DOM.canvas);
+
+    /**
+     * Boucle d'animation des particules
+     */
+    function animateParticles() {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, DOM.canvas.width, DOM.canvas.height);
+        particleSystem.draw(ctx);
+        requestAnimationFrame(animateParticles);
+    }
+
+
+/*==================================================================================================================
+    12. JS - PROJECTS MANAGEMENT
+==================================================================================================================*/
+
+    /**
+     * Génère le HTML d'une carte projet
+     */
+    function createProjectCard(project) {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.onclick = () => openProject(project);
+        
+        card.innerHTML = `
+            <div class="project-card-content">
+                <div class="project-icon ${project.language}"></div>
+                <h3>${project.title}</h3>
+                <p>${project.description}</p>
+                <div class="project-tags">
+                    ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+            </div>
+        `;
+        
+        return card;
+    }
+
+    /**
+     * Affiche les projets filtrés
+     */
+    function renderProjects() {
+        DOM.projectGrid.innerHTML = '';
+        
+        const filtered = currentFilter === 'all' 
+            ? PROJECTS_DATA 
+            : PROJECTS_DATA.filter(p => p.language === currentFilter);
+
+        if (filtered.length === 0) {
+            DOM.projectGrid.innerHTML = `
+                <div class="empty-state">
+                    <h3>Aucun projet trouvé</h3>
+                    <p>Aucun projet ne correspond à ce filtre.</p>
+                </div>
+            `;
+            return;
+        }
+
+        filtered.forEach(project => {
+            DOM.projectGrid.appendChild(createProjectCard(project));
+        });
+    }
+
+    /**
+     * Initialise les boutons de filtre
+     */
+    function initFilters() {
+        const languages = ['all', 'python', 'java', 'html', 'other'];
+        const labels = { all: 'Tous', python: 'PYTHON', java: 'JAVA', html: 'HTML', other: 'AUTRE' };
+
+        languages.forEach(lang => {
+            const btn = document.createElement('button');
+            btn.className = `filter-btn ${lang === 'all' ? 'active' : ''}`;
+            btn.textContent = labels[lang];
+            btn.onclick = () => {
+                currentFilter = lang;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderProjects();
+            };
+            DOM.filters.appendChild(btn);
+        });
+    }
+
+    /**
+     * Ouvre le viewer de projet
+     */
+    function openProject(project) {
+        currentProject = project;
+        
+        const langMap = {
+            java: { text: 'Java', file: 'Main.java' },
+            python: { text: 'Python', file: 'script.py' },
+            html: { text: 'HTML', file: 'index.html' }
+        };
+        
+        const lang = langMap[project.language] || { text: 'Autre', file: 'fichier.txt' };
+
+        DOM.viewerTitle.textContent = project.title;
+        DOM.codeDisplay.textContent = project.code;
+        DOM.langLabel.textContent = lang.text;
+        DOM.viewerFilename.textContent = lang.file;
+        
+        DOM.projectViewer.classList.add('active');
+        hljs.highlightElement(DOM.codeDisplay);
+    }
+
+    /**
+     * Ferme le viewer de projet
+     */
+    function closeViewer() {
+        DOM.projectViewer.classList.remove('active');
+        currentProject = null;
+    }
+
+
+/*==================================================================================================================
+    13. JS - CONTACT FORM
+==================================================================================================================*/
+
+    /**
+     * Ouvre la modal de contact
+     */
+    function openContactModal(e) {
+        e.preventDefault();
+        DOM.contactModal.classList.add('active');
+    }
+
+    /**
+     * Ferme la modal de contact
+     */
+    function closeContactModal() {
+        DOM.contactModal.classList.remove('active');
+        DOM.successMessage.classList.remove('show');
+        DOM.contactForm.reset();
+    }
+
+    /**
+     * Gère la soumission du formulaire
+     */
+    function handleSubmit(e) {
+        e.preventDefault();
+        DOM.submitBtn.disabled = true;
+
+        emailjs.sendForm(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, e.target)
+            .then(() => {
+                DOM.successMessage.classList.add('show');
+                DOM.submitBtn.disabled = false;
+                setTimeout(closeContactModal, 2000);
+            })
+            .catch(() => {
+                alert('Une erreur est survenue. Veuillez réessayer.');
+                DOM.submitBtn.disabled = false;
+            });
+    }
+
+
+/*==================================================================================================================
+    14. JS - INITIALIZATION & EVENT LISTENERS
+==================================================================================================================*/
+
+    /**
+     * Initialise l'application
+     */
+    function init() {
+        // EmailJS
+        emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+        
+        // Projects
+        initFilters();
+        renderProjects();
+        
+        // Start animation
+        animateParticles();
+    }
+
+    // Event Listeners
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    window.addEventListener('resize', () => {
+        clearTimeout(window.resizeTimeout);
+        window.resizeTimeout = setTimeout(() => {
+            particleSystem.resize();
+            particleSystem.createParticles();
+        }, 100);
+    }, { passive: true });
+
+    window.addEventListener('mousemove', e => {
+        particleSystem.pointer.x = e.clientX;
+        particleSystem.pointer.y = e.clientY;
+    }, { passive: true });
+
+    window.addEventListener('mouseleave', () => {
+        particleSystem.pointer.x = -200;
+        particleSystem.pointer.y = -200;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', e => {
+        particleSystem.pointer.x = e.touches[0].clientX;
+        particleSystem.pointer.y = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+        particleSystem.pointer.x = -200;
+        particleSystem.pointer.y = -200;
+    }, { passive: true });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            closeViewer();
+            closeContactModal();
+        }
+    });
+
+    DOM.contactModal.addEventListener('click', e => {
+        if (e.target === DOM.contactModal) closeContactModal();
+    });
+
+    // Start
+    document.addEventListener('DOMContentLoaded', init);
+
+</script>
+</body>
+</html>
