@@ -925,7 +925,7 @@
     ==============================================================================================================*/
 
         @media (max-width: 768px) {
-            /* Hero - bannière GRANDE sur mobile */
+            /* Hero - bannière ZOOMÉE sur mobile */
             .hero h1 { 
                 font-size: 28px; 
                 line-height: 1.2;
@@ -935,15 +935,15 @@
                 padding: 0 10px;
             }
             .hero-image { 
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 0 8px;
-                margin: 0 0 16px 0;
-                box-sizing: border-box;
+                width: 130% !important;
+                max-width: 130% !important;
+                margin: 0 -15% 16px -15%;
+                transform: scale(1);
             }
             .hero-content {
                 padding: 0;
                 width: 100%;
+                overflow: hidden;
             }
             
             /* Fix background sur mobile - IMPORTANT */
@@ -992,9 +992,9 @@
             .hero h1 { font-size: 24px; }
             .hero p { font-size: 13px; }
             .hero-image { 
-                width: 100% !important;
-                max-width: 100% !important;
-                padding: 0 4px;
+                width: 140% !important;
+                max-width: 140% !important;
+                margin: 0 -20% 16px -20%;
             }
             .section-header h2 { font-size: 24px; }
             .project-card { padding: 20px; }
