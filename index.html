@@ -119,11 +119,11 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            will-change: transform;
-            transition: opacity var(--theme-transition);
-            /* Fix pour mobile */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
+            /* Fix iOS Safari */
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .signature {
@@ -270,6 +270,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
+            height: 100svh; /* Small viewport height - fix iOS Safari */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -278,7 +279,8 @@
             padding: 48px 24px 60px;
             z-index: 1;
             pointer-events: none;
-            will-change: opacity, visibility;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
         }
 
         .hero-content {
@@ -933,12 +935,12 @@
                 padding: 0 20px;
             }
             .hero-image { 
-                max-width: 90vw;
-                width: 340px;
+                width: 95vw !important;
+                max-width: 500px !important;
                 margin-bottom: 20px; 
             }
             .hero-content {
-                padding: 0 16px;
+                padding: 0 10px;
             }
             
             /* Fix background sur mobile - IMPORTANT */
@@ -984,11 +986,11 @@
         }
 
         @media (max-width: 480px) {
-            .hero h1 { font-size: 28px; }
+            .hero h1 { font-size: 26px; }
             .hero p { font-size: 14px; }
             .hero-image { 
-                max-width: 95vw;
-                width: 320px;
+                width: 98vw !important;
+                max-width: none !important;
             }
             .section-header h2 { font-size: 24px; }
             .project-card { padding: 20px; }
@@ -1348,17 +1350,11 @@
         }
 
         resize() {
-            // Sur mobile, garder une taille fixe pour éviter les sauts avec la barre d'adresse
             const isMobileDevice = window.innerWidth <= 768;
             
             if (isMobileDevice) {
-                // Sur mobile, ne resize que si la largeur change (rotation)
-                // Pas si c'est juste la hauteur (barre d'adresse)
-                if (this.lastWidth && this.lastWidth === window.innerWidth) {
-                    return; // Ne pas resize
-                }
-                this.lastWidth = window.innerWidth;
-                this.width = this.canvas.width = window.innerWidth;
+                // Sur mobile, taille fixe basée sur l'écran, pas la fenêtre
+                this.width = this.canvas.width = window.screen.width;
                 this.height = this.canvas.height = window.screen.height;
             } else {
                 this.width = this.canvas.width = window.innerWidth;
@@ -1628,14 +1624,12 @@
     // Scroll
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Resize - éviter les recréations inutiles sur mobile
-    let lastWindowWidth = window.innerWidth;
+    // Resize - ignorer sur mobile pour éviter les sauts
     window.addEventListener('resize', () => {
-        // Sur mobile, ne resize que si la largeur change (rotation d'écran)
-        if (window.innerWidth <= 768 && window.innerWidth === lastWindowWidth) {
-            return; // Ignore les changements de hauteur (barre d'adresse)
+        // Sur mobile, ignorer complètement le resize (sauf rotation)
+        if (window.innerWidth <= 768) {
+            return;
         }
-        lastWindowWidth = window.innerWidth;
         
         clearTimeout(window.resizeTimeout);
         window.resizeTimeout = setTimeout(() => {
@@ -1643,6 +1637,14 @@
             particleSystem.createParticles();
         }, 100);
     }, { passive: true });
+    
+    // Rotation d'écran uniquement
+    window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+            particleSystem.resize();
+            particleSystem.createParticles();
+        }, 200);
+    });
 
     // Mouse
     window.addEventListener('mousemove', e => {
