@@ -1168,121 +1168,122 @@
 
         /* Mode paysage mobile */
         @media (max-height: 500px) and (orientation: landscape) {
-            /* Hero paysage */
+            /* Hero paysage - PLUS GRAND */
             .hero {
-                padding: 60px 24px 20px;
-                justify-content: flex-start;
+                padding: 50px 32px 16px;
+                justify-content: center;
             }
             .hero-image {
-                max-width: 40%;
-                max-height: 45vh;
-                margin: 0 auto 8px;
+                max-width: 55%;
+                max-height: 50vh;
+                margin: 0 auto 10px;
             }
             .hero h1 {
-                font-size: 20px;
-                margin-bottom: 4px;
+                font-size: 26px;
+                margin-bottom: 6px;
             }
             .hero p {
-                font-size: 12px;
+                font-size: 14px;
             }
             .scroll-indicator {
                 display: none;
             }
             
-            /* À propos paysage */
+            /* À propos paysage - PLUS COMPACT */
             .about {
-                padding: 40px 32px;
+                padding: 30px 48px;
                 min-height: auto;
             }
             .about-label {
-                font-size: 10px;
-                margin-bottom: 8px;
+                font-size: 9px;
+                margin-bottom: 6px;
+                letter-spacing: 1.5px;
             }
             .about h2 {
-                font-size: 22px;
-                margin-bottom: 16px;
+                font-size: 18px;
+                margin-bottom: 12px;
             }
             .about-text {
-                font-size: 13px;
-                line-height: 1.6;
-                margin-bottom: 12px;
+                font-size: 11px;
+                line-height: 1.5;
+                margin-bottom: 8px;
             }
             
             /* Réduire le fade effect en paysage */
             .fade-section {
-                transform: translateY(60px) scale(0.98);
-                filter: blur(4px);
+                transform: translateY(40px) scale(0.98);
+                filter: blur(3px);
             }
             .fade-section.fade-out {
-                transform: translateY(-50px) scale(0.98);
-                filter: blur(4px);
+                transform: translateY(-30px) scale(0.98);
+                filter: blur(3px);
             }
             
             /* Projets paysage */
             .projects {
-                padding: 30px 24px 40px;
+                padding: 24px 24px 32px;
             }
             .section-header {
-                margin-bottom: 24px;
+                margin-bottom: 16px;
             }
             .section-header h2 {
-                font-size: 24px;
-                margin-bottom: 8px;
+                font-size: 20px;
+                margin-bottom: 4px;
             }
             .section-header p {
-                font-size: 13px;
+                font-size: 11px;
             }
             .filters {
-                margin-bottom: 20px;
+                margin-bottom: 16px;
                 gap: 6px;
             }
             .filter-btn {
-                padding: 6px 14px;
-                font-size: 11px;
+                padding: 5px 12px;
+                font-size: 10px;
             }
             .project-grid {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 12px;
+                gap: 10px;
             }
             .project-card-content {
-                padding: 14px;
+                padding: 12px;
             }
             .project-icon {
-                width: 28px;
-                height: 28px;
-                margin-bottom: 10px;
+                width: 24px;
+                height: 24px;
+                margin-bottom: 8px;
             }
             .project-card h3 {
-                font-size: 14px;
-                margin-bottom: 4px;
+                font-size: 12px;
+                margin-bottom: 3px;
             }
             .project-card p {
-                font-size: 11px;
-                line-height: 1.4;
+                font-size: 10px;
+                line-height: 1.3;
             }
             
             /* Nav paysage */
             nav {
-                height: 40px;
+                height: 36px;
             }
             .logo {
-                font-size: 13px;
+                font-size: 12px;
             }
             .logo svg {
-                width: 16px;
-                height: 16px;
-            }
-            .theme-toggle {
-                width: 34px;
-                height: 34px;
-            }
-            .theme-toggle svg {
                 width: 14px;
                 height: 14px;
             }
+            .theme-toggle {
+                width: 30px;
+                height: 30px;
+            }
+            .theme-toggle svg {
+                width: 12px;
+                height: 12px;
+            }
             .nav-right a {
-                font-size: 12px;
-                padding: 6px 10px;
+                font-size: 11px;
+                padding: 5px 8px;
             }
         }
     </style>
