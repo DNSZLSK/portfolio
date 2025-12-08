@@ -1168,53 +1168,121 @@
 
         /* Mode paysage mobile */
         @media (max-height: 500px) and (orientation: landscape) {
+            /* Hero paysage */
             .hero {
-                padding: 48px 24px 20px;
+                padding: 60px 24px 20px;
+                justify-content: flex-start;
             }
             .hero-image {
-                max-width: 45%;
-                max-height: 40vh;
-                margin: 0 auto 12px;
+                max-width: 40%;
+                max-height: 45vh;
+                margin: 0 auto 8px;
             }
             .hero h1 {
-                font-size: 24px;
-                margin-bottom: 8px;
+                font-size: 20px;
+                margin-bottom: 4px;
             }
             .hero p {
-                font-size: 13px;
+                font-size: 12px;
             }
             .scroll-indicator {
                 display: none;
             }
-            /* Sections en paysage */
+            
+            /* À propos paysage */
+            .about {
+                padding: 40px 32px;
+                min-height: auto;
+            }
+            .about-label {
+                font-size: 10px;
+                margin-bottom: 8px;
+            }
+            .about h2 {
+                font-size: 22px;
+                margin-bottom: 16px;
+            }
+            .about-text {
+                font-size: 13px;
+                line-height: 1.6;
+                margin-bottom: 12px;
+            }
+            
+            /* Réduire le fade effect en paysage */
+            .fade-section {
+                transform: translateY(60px) scale(0.98);
+                filter: blur(4px);
+            }
+            .fade-section.fade-out {
+                transform: translateY(-50px) scale(0.98);
+                filter: blur(4px);
+            }
+            
+            /* Projets paysage */
+            .projects {
+                padding: 30px 24px 40px;
+            }
+            .section-header {
+                margin-bottom: 24px;
+            }
             .section-header h2 {
-                font-size: 28px;
+                font-size: 24px;
+                margin-bottom: 8px;
             }
             .section-header p {
-                font-size: 14px;
-            }
-            .projects {
-                padding: 30px 16px 40px;
-            }
-            .project-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
-            }
-            .project-card {
-                padding: 16px;
-            }
-            .project-card h3 {
-                font-size: 16px;
-            }
-            .project-card p {
                 font-size: 13px;
             }
             .filters {
-                gap: 8px;
+                margin-bottom: 20px;
+                gap: 6px;
             }
             .filter-btn {
-                padding: 8px 16px;
+                padding: 6px 14px;
+                font-size: 11px;
+            }
+            .project-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+            .project-card-content {
+                padding: 14px;
+            }
+            .project-icon {
+                width: 28px;
+                height: 28px;
+                margin-bottom: 10px;
+            }
+            .project-card h3 {
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+            .project-card p {
+                font-size: 11px;
+                line-height: 1.4;
+            }
+            
+            /* Nav paysage */
+            nav {
+                height: 40px;
+            }
+            .logo {
+                font-size: 13px;
+            }
+            .logo svg {
+                width: 16px;
+                height: 16px;
+            }
+            .theme-toggle {
+                width: 34px;
+                height: 34px;
+            }
+            .theme-toggle svg {
+                width: 14px;
+                height: 14px;
+            }
+            .nav-right a {
                 font-size: 12px;
+                padding: 6px 10px;
             }
         }
     </style>
@@ -1279,7 +1347,7 @@
             </p>
             
             <p class="about-text">
-                Beatmaker en studio, créateur de visuels, curieux de tout j'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais comme le Bootleg ou le Respublica, j'ai appris à gérer la pression, les équipes et les deadlines.
+                Beatmaker en studio, créateur de visuels, curieux de tout; j'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
             </p>
             
             <p class="about-text">
