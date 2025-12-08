@@ -998,6 +998,29 @@
             .project-card { padding: 20px; }
             .project-card h3 { font-size: 17px; }
         }
+
+        /* Mode paysage mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero {
+                padding: 48px 24px 20px;
+            }
+            .hero-image {
+                width: auto !important;
+                max-width: 50% !important;
+                max-height: 35vh;
+                margin: 0 auto 10px auto;
+            }
+            .hero h1 {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+            .hero p {
+                font-size: 14px;
+            }
+            .scroll-indicator {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body data-theme="dark">
