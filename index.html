@@ -63,7 +63,7 @@
             --line-color-3: 175, 82, 222;
             
             /* Transition */
-            --theme-transition: 1.8s ease;
+            --theme-transition: 0.4s ease;
         }
 
         [data-theme="light"] {
@@ -203,7 +203,7 @@
             font-weight: 600;
             font-size: 14px;
             opacity: 1;
-            transition: all 0.3s ease, color var(--theme-transition);
+            transition: all 0.3s ease;
         }
 
         nav .logo:hover { color: var(--accent); }
@@ -225,7 +225,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease, border-color var(--theme-transition), background var(--theme-transition);
+            transition: all 0.3s ease;
         }
 
         .theme-toggle:hover {
@@ -238,7 +238,7 @@
             height: 18px;
             stroke: var(--text-primary);
             fill: none;
-            transition: all 0.3s ease, stroke var(--theme-transition);
+            transition: all 0.3s ease;
         }
 
         /* Moon icon (visible in dark mode) */
@@ -442,7 +442,7 @@
             font-size: 14px;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.3s ease, background var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
+            transition: all 0.3s ease;
             backdrop-filter: blur(10px);
         }
 
@@ -470,7 +470,7 @@
             border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background var(--theme-transition), border-color var(--theme-transition);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background var(--theme-transition);
             border: 1px solid var(--border);
             backdrop-filter: blur(40px);
             will-change: transform;
@@ -545,7 +545,7 @@
             font-size: 12px;
             color: var(--text-secondary);
             border: 1px solid var(--border);
-            transition: all 0.3s ease, background var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
+            transition: all 0.3s ease;
         }
 
         .project-card:hover .tag {
@@ -631,7 +631,7 @@
             justify-content: center;
             font-size: 20px;
             color: var(--text-primary);
-            transition: all 0.3s ease, color var(--theme-transition), background var(--theme-transition), border-color var(--theme-transition);
+            transition: all 0.3s ease;
         }
 
         .modal-close:hover {
@@ -677,7 +677,7 @@
             color: var(--text-primary);
             font-size: 15px;
             font-family: inherit;
-            transition: all 0.3s ease, background var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
+            transition: all 0.3s ease;
             -webkit-text-fill-color: var(--text-primary);
         }
 
@@ -1012,7 +1012,7 @@
             font-size: 14px;
             color: var(--text-secondary);
             backdrop-filter: blur(20px);
-            transition: all 0.3s ease, background var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
+            transition: all 0.3s ease;
         }
 
         .highlight-tag:hover {
@@ -1296,7 +1296,7 @@
 
     <!-- Background Canvas -->
     <canvas id="bgCanvas"></canvas>
-    <div class="signature">CREATED BY DNSZLK</div>
+    <div class="signature"></div>
 
     <!-- Hero Section (Fixed) -->
     <div class="hero" id="hero">
@@ -1344,11 +1344,11 @@
             <h2>Un parcours atypique</h2>
             
             <p class="about-text">
-                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
+                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion&Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
             </p>
             
             <p class="about-text">
-                Beatmaker en studio, créateur de visuels, curieux de tout; j'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
+                Beatmaker en studio, créateur de visuels, curieux de tout. J'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
             </p>
             
             <p class="about-text">
@@ -1508,10 +1508,10 @@
         }
     ];
 
-    // Particles Config - OPTIMISÉ pour mobile
+    // Particles Config - moins sur mobile
     const isMobile = window.innerWidth <= 768;
     const PARTICLES_CONFIG = {
-        count: isMobile ? 35 : 80,  // Retour aux valeurs d'origine
+        count: isMobile ? 35 : 80,
         maxDistance: isMobile ? 180 : 250,
         pointerRadius: isMobile ? 80 : 120,
         speed: isMobile ? 0.4 : 0.6,
@@ -1524,16 +1524,27 @@
 ==================================================================================================================*/
 
     /**
+     * Récupère les couleurs du thème actuel depuis les CSS variables
+     */
+    function getThemeColors() {
+        const style = getComputedStyle(document.documentElement);
+        return {
+            bg: currentTheme === 'dark' ? '#000000' : '#f5f5f7',
+            particleColor: style.getPropertyValue('--particle-color').trim(),
+            particleGlow: style.getPropertyValue('--particle-glow').trim(),
+            lineColor1: style.getPropertyValue('--line-color-1').trim(),
+            lineColor2: style.getPropertyValue('--line-color-2').trim(),
+            lineColor3: style.getPropertyValue('--line-color-3').trim()
+        };
+    }
+
+    /**
      * Bascule entre le mode jour et nuit
      */
     function toggleTheme() {
         currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
         DOM.body.setAttribute('data-theme', currentTheme);
         localStorage.setItem('theme', currentTheme);
-        // Invalider le cache de couleurs
-        if (particleSystem) {
-            particleSystem.invalidateColorCache();
-        }
     }
 
     /**
@@ -1588,7 +1599,7 @@
 
 
 /*==================================================================================================================
-    12. JS - PARTICLES SYSTEM (OPTIMISÉ)
+    12. JS - PARTICLES SYSTEM
 ==================================================================================================================*/
 
     /**
@@ -1635,40 +1646,24 @@
     }
 
     /**
-     * Classe ParticleSystem (OPTIMISÉ)
+     * Classe ParticleSystem
      */
     class ParticleSystem {
         constructor(canvas) {
             this.canvas = canvas;
             this.particles = [];
             this.pointer = { x: -200, y: -200 };
-            this.isRunning = true;
-            this.lastFrameTime = 0;
-            this.targetFPS = 60; // Retour à 60fps pour la fluidité
-            this.frameInterval = 1000 / this.targetFPS;
-            this.cachedColors = null;
-            this.colorCacheTime = 0;
-            
-            // Transition de couleurs
-            this.currentColors = null;
-            this.targetColors = null;
-            this.colorTransitionProgress = 1;
-            this.colorTransitionDuration = 1800; // 1.8 seconde - synchronisé avec le CSS
-            this.colorTransitionStart = 0;
-            
             this.resize();
             this.createParticles();
         }
 
         resize() {
             const isMobileDevice = window.innerWidth <= 768;
-            const isLandscape = window.innerWidth > window.innerHeight;
             
             if (isMobileDevice) {
-                // Sur mobile, utiliser des dimensions fixes pour éviter les problèmes de zoom
-                const maxDim = Math.max(window.screen.width, window.screen.height);
-                this.width = this.canvas.width = maxDim;
-                this.height = this.canvas.height = maxDim;
+                // Sur mobile, taille fixe basée sur l'écran, pas la fenêtre
+                this.width = this.canvas.width = window.screen.width;
+                this.height = this.canvas.height = window.screen.height;
             } else {
                 this.width = this.canvas.width = window.innerWidth;
                 this.height = this.canvas.height = window.innerHeight;
@@ -1682,111 +1677,8 @@
             }
         }
 
-        // Récupère les couleurs brutes du thème
-        getRawColors() {
-            const style = getComputedStyle(document.documentElement);
-            return {
-                bg: currentTheme === 'dark' ? [0, 0, 0] : [245, 245, 247],
-                particleColor: this.parseRgba(style.getPropertyValue('--particle-color').trim()),
-                particleGlow: style.getPropertyValue('--particle-glow').trim(),
-                lineColor1: style.getPropertyValue('--line-color-1').trim(),
-                lineColor2: style.getPropertyValue('--line-color-2').trim(),
-                lineColor3: style.getPropertyValue('--line-color-3').trim()
-            };
-        }
-
-        // Parse une couleur rgba en tableau [r, g, b, a]
-        parseRgba(color) {
-            const match = color.match(/[\d.]+/g);
-            if (match) {
-                return match.map(Number);
-            }
-            return [255, 255, 255, 1];
-        }
-
-        // Interpole entre deux valeurs
-        lerp(start, end, progress) {
-            return start + (end - start) * progress;
-        }
-
-        // Interpole entre deux couleurs RGB
-        lerpColor(color1, color2, progress) {
-            return [
-                Math.round(this.lerp(color1[0], color2[0], progress)),
-                Math.round(this.lerp(color1[1], color2[1], progress)),
-                Math.round(this.lerp(color1[2], color2[2], progress))
-            ];
-        }
-
-        // Ease out pour une transition plus naturelle
-        easeOutCubic(t) {
-            return 1 - Math.pow(1 - t, 3);
-        }
-
-        // Déclenche une transition de couleurs
-        transitionColors() {
-            if (!this.currentColors) {
-                this.currentColors = this.getRawColors();
-                this.targetColors = this.currentColors;
-                return;
-            }
-            
-            this.targetColors = this.getRawColors();
-            this.colorTransitionProgress = 0;
-            this.colorTransitionStart = performance.now();
-        }
-
-        // Récupère les couleurs actuelles (avec interpolation si transition en cours)
-        getColors() {
-            if (!this.currentColors) {
-                this.currentColors = this.getRawColors();
-                this.targetColors = this.currentColors;
-            }
-
-            // Si transition en cours
-            if (this.colorTransitionProgress < 1) {
-                const elapsed = performance.now() - this.colorTransitionStart;
-                this.colorTransitionProgress = Math.min(elapsed / this.colorTransitionDuration, 1);
-                const easedProgress = this.easeOutCubic(this.colorTransitionProgress);
-
-                const bg = this.lerpColor(this.currentColors.bg, this.targetColors.bg, easedProgress);
-                
-                // Si transition terminée, mettre à jour currentColors
-                if (this.colorTransitionProgress >= 1) {
-                    this.currentColors = this.targetColors;
-                }
-
-                return {
-                    bg: `rgb(${bg[0]},${bg[1]},${bg[2]})`,
-                    particleColor: this.targetColors.particleColor.length === 4 
-                        ? `rgba(${this.targetColors.particleColor.join(',')})` 
-                        : `rgba(${this.targetColors.particleColor.join(',')},1)`,
-                    particleGlow: this.targetColors.particleGlow,
-                    lineColor1: this.targetColors.lineColor1,
-                    lineColor2: this.targetColors.lineColor2,
-                    lineColor3: this.targetColors.lineColor3
-                };
-            }
-
-            return {
-                bg: `rgb(${this.currentColors.bg[0]},${this.currentColors.bg[1]},${this.currentColors.bg[2]})`,
-                particleColor: this.currentColors.particleColor.length === 4 
-                    ? `rgba(${this.currentColors.particleColor.join(',')})` 
-                    : `rgba(${this.currentColors.particleColor.join(',')},1)`,
-                particleGlow: this.currentColors.particleGlow,
-                lineColor1: this.currentColors.lineColor1,
-                lineColor2: this.currentColors.lineColor2,
-                lineColor3: this.currentColors.lineColor3
-            };
-        }
-
-        // Invalider le cache et déclencher transition
-        invalidateColorCache() {
-            this.transitionColors();
-        }
-
         draw(ctx) {
-            const colors = this.getColors();
+            const colors = getThemeColors();
             const particles = this.particles;
             const len = particles.length;
             const maxDist = PARTICLES_CONFIG.maxDistance;
@@ -1797,7 +1689,7 @@
                 particles[i].update(this.width, this.height, this.pointer);
             }
 
-            // Draw connections - optimisé avec moins de gradients sur mobile
+            // Draw connections
             ctx.lineWidth = 1;
             for (let a = 0; a < len; a++) {
                 const pA = particles[a];
@@ -1809,18 +1701,12 @@
 
                     if (distSq < maxDistSq) {
                         const opacity = (1 - Math.sqrt(distSq) / maxDist) * 0.7;
+                        const gradient = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
+                        gradient.addColorStop(0, `rgba(${colors.lineColor1},${opacity})`);
+                        gradient.addColorStop(0.5, `rgba(${colors.lineColor2},${opacity})`);
+                        gradient.addColorStop(1, `rgba(${colors.lineColor3},${opacity})`);
                         
-                        // Sur mobile, utiliser une couleur simple au lieu d'un gradient
-                        if (isMobile) {
-                            ctx.strokeStyle = `rgba(${colors.lineColor1},${opacity})`;
-                        } else {
-                            const gradient = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
-                            gradient.addColorStop(0, `rgba(${colors.lineColor1},${opacity})`);
-                            gradient.addColorStop(0.5, `rgba(${colors.lineColor2},${opacity})`);
-                            gradient.addColorStop(1, `rgba(${colors.lineColor3},${opacity})`);
-                            ctx.strokeStyle = gradient;
-                        }
-                        
+                        ctx.strokeStyle = gradient;
                         ctx.beginPath();
                         ctx.moveTo(pA.x, pA.y);
                         ctx.lineTo(pB.x, pB.y);
@@ -1829,11 +1715,9 @@
                 }
             }
 
-            // Draw particles - désactiver le shadow sur mobile pour les perfs
-            if (!isMobile) {
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = colors.particleGlow;
-            }
+            // Draw particles
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = colors.particleGlow;
             ctx.fillStyle = colors.particleColor;
             for (let i = 0; i < len; i++) {
                 const p = particles[i];
@@ -1841,9 +1725,7 @@
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
                 ctx.fill();
             }
-            if (!isMobile) {
-                ctx.shadowBlur = 0;
-            }
+            ctx.shadowBlur = 0;
         }
     }
 
@@ -1851,35 +1733,15 @@
     const particleSystem = new ParticleSystem(DOM.canvas);
 
     /**
-     * Boucle d'animation OPTIMISÉE (throttled à 30fps, pause quand invisible)
+     * Boucle d'animation
      */
-    let animationId = null;
-    
-    function animateParticles(timestamp) {
-        if (!particleSystem.isRunning) {
-            animationId = requestAnimationFrame(animateParticles);
-            return;
-        }
-
-        // Throttle à 30fps (ou 24fps sur mobile)
-        const elapsed = timestamp - particleSystem.lastFrameTime;
-        if (elapsed < particleSystem.frameInterval) {
-            animationId = requestAnimationFrame(animateParticles);
-            return;
-        }
-        particleSystem.lastFrameTime = timestamp - (elapsed % particleSystem.frameInterval);
-
-        const colors = particleSystem.getColors();
+    function animateParticles() {
+        const colors = getThemeColors();
         ctx.fillStyle = colors.bg;
         ctx.fillRect(0, 0, DOM.canvas.width, DOM.canvas.height);
         particleSystem.draw(ctx);
-        animationId = requestAnimationFrame(animateParticles);
+        requestAnimationFrame(animateParticles);
     }
-
-    // Pause l'animation quand l'onglet est caché
-    document.addEventListener('visibilitychange', () => {
-        particleSystem.isRunning = !document.hidden;
-    });
 
 
 /*==================================================================================================================
@@ -2061,16 +1923,10 @@
 ==================================================================================================================*/
 
     function init() {
-        // Forcer le scroll en haut au chargement sur mobile
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-        window.scrollTo(0, 0);
-        
         initTheme();
         initFilters();
         renderProjects();
-        animateParticles(0);
+        animateParticles();
         initScrollAnimations();
     }
 
@@ -2129,22 +1985,12 @@
         }, 100);
     }, { passive: true });
     
-    // Rotation d'écran - gestion améliorée
-    let lastOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
-    
+    // Rotation d'écran uniquement
     window.addEventListener('orientationchange', () => {
-        // Attendre que l'orientation soit stable
         setTimeout(() => {
-            const newOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
-            if (newOrientation !== lastOrientation) {
-                lastOrientation = newOrientation;
-                // Reset le scroll en haut pour éviter le zoom bizarre
-                window.scrollTo(0, 0);
-                // Redimensionner le canvas
-                particleSystem.resize();
-                particleSystem.createParticles();
-            }
-        }, 300);
+            particleSystem.resize();
+            particleSystem.createParticles();
+        }, 200);
     });
 
     // Mouse
@@ -2184,11 +2030,6 @@
 
     // Start
     document.addEventListener('DOMContentLoaded', init);
-    
-    // Aussi au load complet pour être sûr
-    window.addEventListener('load', () => {
-        window.scrollTo(0, 0);
-    });
 
 </script>
 </body>
