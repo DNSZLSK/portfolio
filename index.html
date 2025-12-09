@@ -1296,7 +1296,7 @@
 
     <!-- Background Canvas -->
     <canvas id="bgCanvas"></canvas>
-    <div class="signature"></div>
+    <div class="signature">CREATED BY DNSZLK</div>
 
     <!-- Hero Section (Fixed) -->
     <div class="hero" id="hero">
@@ -1344,11 +1344,11 @@
             <h2>Un parcours atypique</h2>
             
             <p class="about-text">
-                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion&Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
+                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
             </p>
             
             <p class="about-text">
-                Beatmaker en studio, créateur de visuels, curieux de tout. J'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
+                Beatmaker en studio, créateur de visuels, curieux de tout; j'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
             </p>
             
             <p class="about-text">
@@ -1508,10 +1508,10 @@
         }
     ];
 
-    // Particles Config - moins sur mobile
+    // Particles Config - OPTIMISÉ pour mobile
     const isMobile = window.innerWidth <= 768;
     const PARTICLES_CONFIG = {
-        count: isMobile ? 35 : 80,
+        count: isMobile ? 35 : 80,  // Retour aux valeurs d'origine
         maxDistance: isMobile ? 180 : 250,
         pointerRadius: isMobile ? 80 : 120,
         speed: isMobile ? 0.4 : 0.6,
@@ -1524,27 +1524,16 @@
 ==================================================================================================================*/
 
     /**
-     * Récupère les couleurs du thème actuel depuis les CSS variables
-     */
-    function getThemeColors() {
-        const style = getComputedStyle(document.documentElement);
-        return {
-            bg: currentTheme === 'dark' ? '#000000' : '#f5f5f7',
-            particleColor: style.getPropertyValue('--particle-color').trim(),
-            particleGlow: style.getPropertyValue('--particle-glow').trim(),
-            lineColor1: style.getPropertyValue('--line-color-1').trim(),
-            lineColor2: style.getPropertyValue('--line-color-2').trim(),
-            lineColor3: style.getPropertyValue('--line-color-3').trim()
-        };
-    }
-
-    /**
      * Bascule entre le mode jour et nuit
      */
     function toggleTheme() {
         currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
         DOM.body.setAttribute('data-theme', currentTheme);
         localStorage.setItem('theme', currentTheme);
+        // Invalider le cache de couleurs
+        if (particleSystem) {
+            particleSystem.invalidateColorCache();
+        }
     }
 
     /**
@@ -1599,7 +1588,7 @@
 
 
 /*==================================================================================================================
-    12. JS - PARTICLES SYSTEM
+    12. JS - PARTICLES SYSTEM (OPTIMISÉ)
 ==================================================================================================================*/
 
     /**
@@ -1646,24 +1635,32 @@
     }
 
     /**
-     * Classe ParticleSystem
+     * Classe ParticleSystem (OPTIMISÉ)
      */
     class ParticleSystem {
         constructor(canvas) {
             this.canvas = canvas;
             this.particles = [];
             this.pointer = { x: -200, y: -200 };
+            this.isRunning = true;
+            this.lastFrameTime = 0;
+            this.targetFPS = 60; // Retour à 60fps pour la fluidité
+            this.frameInterval = 1000 / this.targetFPS;
+            this.cachedColors = null;
+            this.colorCacheTime = 0;
             this.resize();
             this.createParticles();
         }
 
         resize() {
             const isMobileDevice = window.innerWidth <= 768;
+            const isLandscape = window.innerWidth > window.innerHeight;
             
             if (isMobileDevice) {
-                // Sur mobile, taille fixe basée sur l'écran, pas la fenêtre
-                this.width = this.canvas.width = window.screen.width;
-                this.height = this.canvas.height = window.screen.height;
+                // Sur mobile, utiliser des dimensions fixes pour éviter les problèmes de zoom
+                const maxDim = Math.max(window.screen.width, window.screen.height);
+                this.width = this.canvas.width = maxDim;
+                this.height = this.canvas.height = maxDim;
             } else {
                 this.width = this.canvas.width = window.innerWidth;
                 this.height = this.canvas.height = window.innerHeight;
@@ -1677,8 +1674,31 @@
             }
         }
 
+        // Cache les couleurs pour éviter de recalculer à chaque frame
+        getColors() {
+            const now = Date.now();
+            if (!this.cachedColors || now - this.colorCacheTime > 500) {
+                const style = getComputedStyle(document.documentElement);
+                this.cachedColors = {
+                    bg: currentTheme === 'dark' ? '#000000' : '#f5f5f7',
+                    particleColor: style.getPropertyValue('--particle-color').trim(),
+                    particleGlow: style.getPropertyValue('--particle-glow').trim(),
+                    lineColor1: style.getPropertyValue('--line-color-1').trim(),
+                    lineColor2: style.getPropertyValue('--line-color-2').trim(),
+                    lineColor3: style.getPropertyValue('--line-color-3').trim()
+                };
+                this.colorCacheTime = now;
+            }
+            return this.cachedColors;
+        }
+
+        // Invalider le cache lors du changement de thème
+        invalidateColorCache() {
+            this.cachedColors = null;
+        }
+
         draw(ctx) {
-            const colors = getThemeColors();
+            const colors = this.getColors();
             const particles = this.particles;
             const len = particles.length;
             const maxDist = PARTICLES_CONFIG.maxDistance;
@@ -1689,7 +1709,7 @@
                 particles[i].update(this.width, this.height, this.pointer);
             }
 
-            // Draw connections
+            // Draw connections - optimisé avec moins de gradients sur mobile
             ctx.lineWidth = 1;
             for (let a = 0; a < len; a++) {
                 const pA = particles[a];
@@ -1701,12 +1721,18 @@
 
                     if (distSq < maxDistSq) {
                         const opacity = (1 - Math.sqrt(distSq) / maxDist) * 0.7;
-                        const gradient = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
-                        gradient.addColorStop(0, `rgba(${colors.lineColor1},${opacity})`);
-                        gradient.addColorStop(0.5, `rgba(${colors.lineColor2},${opacity})`);
-                        gradient.addColorStop(1, `rgba(${colors.lineColor3},${opacity})`);
                         
-                        ctx.strokeStyle = gradient;
+                        // Sur mobile, utiliser une couleur simple au lieu d'un gradient
+                        if (isMobile) {
+                            ctx.strokeStyle = `rgba(${colors.lineColor1},${opacity})`;
+                        } else {
+                            const gradient = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
+                            gradient.addColorStop(0, `rgba(${colors.lineColor1},${opacity})`);
+                            gradient.addColorStop(0.5, `rgba(${colors.lineColor2},${opacity})`);
+                            gradient.addColorStop(1, `rgba(${colors.lineColor3},${opacity})`);
+                            ctx.strokeStyle = gradient;
+                        }
+                        
                         ctx.beginPath();
                         ctx.moveTo(pA.x, pA.y);
                         ctx.lineTo(pB.x, pB.y);
@@ -1715,9 +1741,11 @@
                 }
             }
 
-            // Draw particles
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = colors.particleGlow;
+            // Draw particles - désactiver le shadow sur mobile pour les perfs
+            if (!isMobile) {
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = colors.particleGlow;
+            }
             ctx.fillStyle = colors.particleColor;
             for (let i = 0; i < len; i++) {
                 const p = particles[i];
@@ -1725,7 +1753,9 @@
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
                 ctx.fill();
             }
-            ctx.shadowBlur = 0;
+            if (!isMobile) {
+                ctx.shadowBlur = 0;
+            }
         }
     }
 
@@ -1733,15 +1763,35 @@
     const particleSystem = new ParticleSystem(DOM.canvas);
 
     /**
-     * Boucle d'animation
+     * Boucle d'animation OPTIMISÉE (throttled à 30fps, pause quand invisible)
      */
-    function animateParticles() {
-        const colors = getThemeColors();
+    let animationId = null;
+    
+    function animateParticles(timestamp) {
+        if (!particleSystem.isRunning) {
+            animationId = requestAnimationFrame(animateParticles);
+            return;
+        }
+
+        // Throttle à 30fps (ou 24fps sur mobile)
+        const elapsed = timestamp - particleSystem.lastFrameTime;
+        if (elapsed < particleSystem.frameInterval) {
+            animationId = requestAnimationFrame(animateParticles);
+            return;
+        }
+        particleSystem.lastFrameTime = timestamp - (elapsed % particleSystem.frameInterval);
+
+        const colors = particleSystem.getColors();
         ctx.fillStyle = colors.bg;
         ctx.fillRect(0, 0, DOM.canvas.width, DOM.canvas.height);
         particleSystem.draw(ctx);
-        requestAnimationFrame(animateParticles);
+        animationId = requestAnimationFrame(animateParticles);
     }
+
+    // Pause l'animation quand l'onglet est caché
+    document.addEventListener('visibilitychange', () => {
+        particleSystem.isRunning = !document.hidden;
+    });
 
 
 /*==================================================================================================================
@@ -1923,10 +1973,16 @@
 ==================================================================================================================*/
 
     function init() {
+        // Forcer le scroll en haut au chargement sur mobile
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+        
         initTheme();
         initFilters();
         renderProjects();
-        animateParticles();
+        animateParticles(0);
         initScrollAnimations();
     }
 
@@ -1985,12 +2041,22 @@
         }, 100);
     }, { passive: true });
     
-    // Rotation d'écran uniquement
+    // Rotation d'écran - gestion améliorée
+    let lastOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+    
     window.addEventListener('orientationchange', () => {
+        // Attendre que l'orientation soit stable
         setTimeout(() => {
-            particleSystem.resize();
-            particleSystem.createParticles();
-        }, 200);
+            const newOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+            if (newOrientation !== lastOrientation) {
+                lastOrientation = newOrientation;
+                // Reset le scroll en haut pour éviter le zoom bizarre
+                window.scrollTo(0, 0);
+                // Redimensionner le canvas
+                particleSystem.resize();
+                particleSystem.createParticles();
+            }
+        }, 300);
     });
 
     // Mouse
@@ -2030,6 +2096,11 @@
 
     // Start
     document.addEventListener('DOMContentLoaded', init);
+    
+    // Aussi au load complet pour être sûr
+    window.addEventListener('load', () => {
+        window.scrollTo(0, 0);
+    });
 
 </script>
 </body>
