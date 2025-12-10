@@ -15,19 +15,20 @@
         Structure du fichier :
         1. CSS - Variables & Reset
         2. CSS - Canvas & Navigation
-        3. CSS - Hero Section
-        4. CSS - Projects Section
-        5. CSS - Modal Contact
-        6. CSS - Project Viewer
-        7. CSS - Theme Toggle & Responsive
-        8. HTML - Structure
+        3. CSS - Theme Toggle
+        4. CSS - Hero Section
+        5. CSS - Projects Section
+        6. CSS - Modal Contact
+        7. CSS - Project Viewer (IDE Style)
+        7.5. CSS - À Propos
+        8. CSS - Responsive
         9. JS - Configuration & Variables
         10. JS - Theme Management
         11. JS - Hero & Scroll Effects
         12. JS - Particles System
         13. JS - Projects Management
         14. JS - Contact Form
-        15. JS - Initialization
+        15. JS - Initialization & Event Listeners
         
     ============================================================================================================ -->
 
@@ -367,18 +368,6 @@
             transition: border-color var(--theme-transition);
         }
 
-        .scroll-indicator::before {
-            content: '';
-            width: 4px;
-            height: 8px;
-            background: var(--text-secondary);
-            opacity: 0.7;
-            border-radius: 2px;
-            position: absolute;
-            bottom: 56px;
-            animation: scrollDown 2s infinite;
-            transition: background var(--theme-transition);
-        }
 
         @keyframes bounce {
             0%, 100% { transform: translateX(-50%) translateY(0); }
@@ -779,9 +768,9 @@
 
         .ide-window {
             width: 100%;
-            max-width: 900px;
-            height: 80vh;
-            max-height: 650px;
+            max-width: 1200px;
+            height: 90vh;
+            max-height: 850px;
             background: #1e1e1e;
             border-radius: 12px;
             border: 1px solid #333;
@@ -1299,7 +1288,7 @@
 
     <!-- Background Canvas -->
     <canvas id="bgCanvas"></canvas>
-    <div class="signature">CREATED BY DNSZLK</div>
+    <div class="signature"></div>
 
     <!-- Hero Section (Fixed) -->
     <div class="hero" id="hero">
@@ -1347,11 +1336,11 @@
             <h2>Un parcours atypique</h2>
             
             <p class="about-text">
-                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
+                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion&Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
             </p>
             
             <p class="about-text">
-                Beatmaker en studio, créateur de visuels, curieux de tout; j'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
+                Beatmaker en studio, créateur de visuels, curieux de tout. J'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
             </p>
             
             <p class="about-text">
@@ -1471,44 +1460,45 @@
     const PROJECTS_DATA = [
         {
             title: 'Le Juste Prix',
-            description: 'Examen Module 1 CDA (AFPA) - Jeu de devinette avec chronomètre et classement.',
+            description: 'Jeu du "Juste Prix" en Python. Un des premiers exercices de la formation CDA. ',
             language: 'python',
-            tags: ['Python', 'Jeu', 'JSON', 'Chronomètre'],
-            code: `print("Bienvenue au Juste Prix !")\n# Ton code ici...`,
-            projectUrl: null // À venir
+            tags: ['Python'],
+            code: `MONCODE`,
+            projectUrl: "https://gitlab.com/dnszlsk/python-projects/le-juste-prix.git"
         },
         {
-            title: 'Simulation Océanographique',
-            description: 'Examen Module 3 CDA (AFPA) - Analyse de données de marées à partir de fichiers CSV.',
-            language: 'java',
-            tags: ['JAVA', 'Simulation', 'CSV', 'Matrix'],
-            code: `public class Simulation {\n    public static void main(String[] args) {\n        // Ton code ici...\n    }\n}`,
-            projectUrl: null // À venir
+            title: 'Spy Hunter',
+            description: 'Script Python pour débusquer un espion dans un fichier CSV en analysant les langues et voyages.',
+            language: 'python',
+            tags: ['Python'],
+            code: `MONCODE`,
+            projectUrl: "https://gitlab.com/dnszlsk/python-projects/python-spy-hunter.git"
         },
         {
             title: 'Py2Java',
             description: 'Guide de transition complet entre Python et Java - Commandes et syntaxes équivalentes.',
             language: 'html',
-            tags: ['HTML', 'Helper', 'Education'],
-            code: `<!DOCTYPE html>\n<html lang="fr">\n<head>\n    <meta charset="UTF-8">\n    <title>Py2Java - Guide de transition</title>\n</head>\n<body>\n    <h1>Python → Java</h1>\n    <!-- Guide complet disponible en ligne -->\n</body>\n</html>`,
+            tags: ['HTML'],
+            code: `MONCODE`,
             projectUrl: 'https://dnszlsk.github.io/py2java/'
         },
         {
             title: 'Mot de Passe',
             description: 'Vérificateur de mot de passe en Java avec validation de règles complexes.',
             language: 'java',
-            tags: ['JAVA', 'Password', 'Validation'],
-            code: `public class PasswordChecker {\n    public static void main(String[] args) {\n        // Ton code ici...\n    }\n}`,
-            projectUrl: null // À venir
+            tags: ['JAVA'],
+            code: `MONCODE`,
+            projectUrl: "https://gitlab.com/dnszlsk/java-projects/java-password-validator.git"
         },
         {
-            title: 'Spy Hunter',
-            description: 'Script Python pour débusquer un espion dans un fichier CSV en analysant les langues et voyages.',
-            language: 'python',
-            tags: ['Python', 'CSV', 'Analyse', 'Espion'],
-            code: `import pandas as pd\n# Ton code ici...`,
-            projectUrl: null // À venir
+            title: 'Simulation Océanographique',
+            description: 'Examen Module 3 CDA (AFPA) - Analyse de données de marées à partir de fichiers CSV.',
+            language: 'java',
+            tags: ['JAVA'],
+            code: `MONCODE`,
+            projectUrl: "https://gitlab.com/dnszlsk/java-projects/simulation-oceanographique.git"
         }
+        
     ];
 
     // Particles Config - OPTIMISÉ pour mobile
