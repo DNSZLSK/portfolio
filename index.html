@@ -1912,7 +1912,9 @@
         DOM.projectViewer.classList.add('active');
 
         try {
-            const response = await fetch(project.codeUrl);
+            // Proxy CORS pour contourner les restrictions GitLab
+            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl);
+            const response = await fetch(proxyUrl);
             
             if (!response.ok) {
                 throw new Error(`Erreur HTTP: ${response.status}`);
