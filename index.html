@@ -15,20 +15,19 @@
         Structure du fichier :
         1. CSS - Variables & Reset
         2. CSS - Canvas & Navigation
-        3. CSS - Theme Toggle
-        4. CSS - Hero Section
-        5. CSS - Projects Section
-        6. CSS - Modal Contact
-        7. CSS - Project Viewer (IDE Style)
-        7.5. CSS - À Propos
-        8. CSS - Responsive
+        3. CSS - Hero Section
+        4. CSS - Projects Section
+        5. CSS - Modal Contact
+        6. CSS - Project Viewer
+        7. CSS - Theme Toggle & Responsive
+        8. HTML - Structure
         9. JS - Configuration & Variables
         10. JS - Theme Management
         11. JS - Hero & Scroll Effects
         12. JS - Particles System
         13. JS - Projects Management
         14. JS - Contact Form
-        15. JS - Initialization & Event Listeners
+        15. JS - Initialization
         
     ============================================================================================================ -->
 
@@ -125,6 +124,7 @@
             transform: translate3d(0, 0, 0);
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            /* Empêcher tout débordement */
             overflow: hidden;
             object-fit: cover;
         }
@@ -244,6 +244,7 @@
             transition: all 0.3s ease, stroke var(--theme-transition);
         }
 
+        /* Moon icon (visible in dark mode) */
         .theme-toggle .icon-moon {
             display: block;
         }
@@ -252,6 +253,7 @@
             display: none;
         }
 
+        /* Sun icon (visible in light mode) */
         [data-theme="light"] .theme-toggle .icon-moon {
             display: none;
         }
@@ -271,7 +273,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            height: 100svh;
+            height: 100svh; /* Small viewport height - fix iOS Safari */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -284,6 +286,7 @@
             transform: translate3d(0, 0, 0);
         }
 
+        /* Spacer qui prend la place du hero fixed */
         .hero-spacer {
             height: 100vh;
             height: 100svh;
@@ -330,6 +333,7 @@
             transition: color var(--theme-transition);
         }
 
+        /* Scroll Indicator */
         .scroll-indicator {
             position: absolute;
             bottom: 40px;
@@ -363,9 +367,27 @@
             transition: border-color var(--theme-transition);
         }
 
+        .scroll-indicator::before {
+            content: '';
+            width: 4px;
+            height: 8px;
+            background: var(--text-secondary);
+            opacity: 0.7;
+            border-radius: 2px;
+            position: absolute;
+            bottom: 56px;
+            animation: scrollDown 2s infinite;
+            transition: background var(--theme-transition);
+        }
+
         @keyframes bounce {
             0%, 100% { transform: translateX(-50%) translateY(0); }
             50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        @keyframes scrollDown {
+            0% { opacity: 0.7; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(12px); }
         }
 
         .hero-spacer {
@@ -406,6 +428,7 @@
             transition: color var(--theme-transition);
         }
 
+        /* Filters */
         .filters {
             display: flex;
             gap: 12px;
@@ -437,12 +460,14 @@
             color: var(--text-primary);
         }
 
+        /* Project Grid - Plus compact */
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 20px;
         }
 
+        /* Project Card - Plus petit */
         .project-card {
             background: var(--bg-card);
             border-radius: 20px;
@@ -466,6 +491,7 @@
             padding: 24px;
         }
 
+        /* Project Icon - Plus petit */
         .project-icon {
             width: 44px;
             height: 44px;
@@ -508,6 +534,7 @@
             transition: color var(--theme-transition);
         }
 
+        /* Tags - Masqués */
         .project-tags {
             display: none;
             gap: 8px;
@@ -528,6 +555,7 @@
             border-color: var(--border-hover);
         }
 
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 80px 22px;
@@ -628,6 +656,7 @@
             transition: color var(--theme-transition);
         }
 
+        /* Form */
         .form-group {
             margin-bottom: 24px;
         }
@@ -661,6 +690,7 @@
             -webkit-text-fill-color: var(--text-secondary);
         }
 
+        /* Fix autofill du navigateur */
         .form-group input:-webkit-autofill,
         .form-group input:-webkit-autofill:hover,
         .form-group input:-webkit-autofill:focus,
@@ -749,9 +779,9 @@
 
         .ide-window {
             width: 100%;
-            max-width: 1200px;
-            height: 90vh;
-            max-height: 850px;
+            max-width: 900px;
+            height: 80vh;
+            max-height: 650px;
             background: #1e1e1e;
             border-radius: 12px;
             border: 1px solid #333;
@@ -882,47 +912,14 @@
             gap: 16px;
         }
 
-        /* Loading spinner */
-        .ide-loading {
+        .ide-status-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #888;
-            gap: 16px;
+            gap: 6px;
         }
 
-        .ide-loading .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #333;
-            border-top-color: #007acc;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .ide-error {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #ff6b6b;
-            gap: 12px;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .ide-error svg {
-            width: 48px;
-            height: 48px;
-            stroke: currentColor;
-            fill: none;
+        .ide-status-dot {
+            display: none;
         }
 
         @media (max-width: 768px) {
@@ -936,6 +933,7 @@
         7.5. CSS - À PROPOS (Épuré)
     ==============================================================================================================*/
 
+        /* Animation fade in/out au scroll - ACCENTUÉ */
         .fade-section {
             opacity: 0;
             transform: translateY(120px) scale(0.95);
@@ -1026,6 +1024,7 @@
             transform: translateY(-2px);
         }
 
+        /* Responsive À propos */
         @media (max-width: 768px) {
             .about {
                 padding: 80px 20px;
@@ -1064,6 +1063,7 @@
     ==============================================================================================================*/
 
         @media (max-width: 768px) {
+            /* Hero mobile */
             .hero {
                 padding: 80px 16px 40px;
             }
@@ -1086,6 +1086,7 @@
                 width: 100%;
             }
             
+            /* Fix background sur mobile - IMPORTANT */
             #bgCanvas {
                 position: fixed !important;
                 top: 0 !important;
@@ -1099,19 +1100,23 @@
                 -webkit-backface-visibility: hidden;
             }
             
+            /* Sections */
             .section-header h2 { font-size: 28px; }
             .section-header p { font-size: 14px; }
             .project-grid { grid-template-columns: 1fr; gap: 16px; }
             .projects { padding: 60px 16px 80px; }
             
+            /* Project cards mobile */
             .project-card-content { padding: 20px; }
             .project-icon { width: 36px; height: 36px; margin-bottom: 12px; }
             .project-card h3 { font-size: 16px; margin-bottom: 6px; }
             .project-card p { font-size: 13px; line-height: 1.5; }
             
+            /* Filters mobile */
             .filters { gap: 8px; margin-bottom: 32px; }
             .filter-btn { padding: 8px 16px; font-size: 12px; }
             
+            /* Modal */
             .modal-contact { 
                 padding: 28px 20px; 
                 margin: 16px;
@@ -1122,6 +1127,7 @@
             .modal-contact textarea { font-size: 16px; padding: 14px 16px; }
             .modal-contact button[type="submit"] { padding: 14px 24px; font-size: 15px; }
             
+            /* Nav */
             .nav-content { padding: 0 12px; }
             .nav-right { gap: 6px; }
             .nav-right a { 
@@ -1133,11 +1139,13 @@
             .logo svg { width: 18px; height: 18px; }
             .theme-toggle { width: 40px; height: 40px; }
             
+            /* Scroll indicator */
             .scroll-indicator { bottom: 24px; }
             .scroll-indicator span { font-size: 10px; }
         }
 
         @media (max-width: 480px) {
+            /* Hero très petit écran */
             .hero h1 { font-size: 22px; }
             .hero p { font-size: 13px; }
             .hero-image {
@@ -1145,20 +1153,25 @@
                 margin: 0 4px 16px;
             }
             
+            /* Sections très petit écran */
             .section-header h2 { font-size: 24px; }
             .section-header p { font-size: 13px; }
             .projects { padding: 50px 12px 60px; }
             
+            /* Project cards très petit */
             .project-card-content { padding: 16px; }
             .project-icon { width: 32px; height: 32px; }
             .project-card h3 { font-size: 15px; }
             .project-card p { font-size: 12px; }
             
+            /* Nav très petit */
             .logo span { display: none; }
             .nav-right a span { font-size: 12px; }
         }
 
+        /* Mode paysage mobile */
         @media (max-height: 500px) and (orientation: landscape) {
+            /* Hero paysage - PLUS GRAND */
             .hero {
                 padding: 50px 32px 16px;
                 justify-content: center;
@@ -1179,6 +1192,7 @@
                 display: none;
             }
             
+            /* À propos paysage - PLUS COMPACT */
             .about {
                 padding: 30px 48px;
                 min-height: auto;
@@ -1198,6 +1212,7 @@
                 margin-bottom: 8px;
             }
             
+            /* Réduire le fade effect en paysage */
             .fade-section {
                 transform: translateY(40px) scale(0.98);
                 filter: blur(3px);
@@ -1207,6 +1222,7 @@
                 filter: blur(3px);
             }
             
+            /* Projets paysage */
             .projects {
                 padding: 24px 24px 32px;
             }
@@ -1249,6 +1265,7 @@
                 line-height: 1.3;
             }
             
+            /* Nav paysage */
             nav {
                 height: 36px;
             }
@@ -1280,9 +1297,11 @@
     HTML - STRUCTURE
 ================================================================================================================-->
 
+    <!-- Background Canvas -->
     <canvas id="bgCanvas"></canvas>
-    <div class="signature"></div>
+    <div class="signature">CREATED BY DNSZLK</div>
 
+    <!-- Hero Section (Fixed) -->
     <div class="hero" id="hero">
         <div class="hero-content" id="heroContent">
             <img src="https://imgur.com/YMTbXUC.png" alt="En recherche de stage" class="hero-image">
@@ -1294,8 +1313,10 @@
         </div>
     </div>
 
+    <!-- Main Content -->
     <div class="main-content">
 
+        <!-- Navigation -->
         <nav>
             <div class="nav-content">
                 <div class="nav-left">
@@ -1317,18 +1338,20 @@
             </div>
         </nav>
 
+        <!-- Spacer -->
         <div class="hero-spacer"></div>
 
+        <!-- Section À propos -->
         <div class="about fade-section" id="about">
             <span class="about-label">Qui suis-je</span>
             <h2>Un parcours atypique</h2>
             
             <p class="about-text">
-                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion&Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
+                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
             </p>
             
             <p class="about-text">
-                Beatmaker en studio, créateur de visuels, curieux de tout. J'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
+                Beatmaker en studio, créateur de visuels, curieux de tout; j'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
             </p>
             
             <p class="about-text">
@@ -1336,6 +1359,7 @@
             </p>
         </div>
 
+        <!-- Projects Section -->
         <div class="projects fade-section" id="projets">
             <div class="section-header">
                 <h2>Projets</h2>
@@ -1347,6 +1371,7 @@
 
     </div>
 
+    <!-- Modal Contact -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal-contact">
             <button class="modal-close" onclick="closeContactModal()">×</button>
@@ -1373,6 +1398,7 @@
         </div>
     </div>
 
+    <!-- Project Viewer (IDE Style) -->
     <div class="project-viewer" id="projectViewer">
         <div class="ide-window">
             <div class="ide-header">
@@ -1385,7 +1411,7 @@
             <div class="ide-body">
                 <div class="ide-editor">
                     <div class="ide-line-numbers" id="ideLineNumbers"></div>
-                    <div class="ide-code-container" id="ideCodeContainer">
+                    <div class="ide-code-container">
                         <pre><code class="ide-code" id="ideCode"></code></pre>
                     </div>
                 </div>
@@ -1408,6 +1434,7 @@
     9. JS - CONFIGURATION & VARIABLES
 ==================================================================================================================*/
 
+    // DOM Elements
     const DOM = {
         body: document.body,
         hero: document.getElementById('hero'),
@@ -1425,19 +1452,24 @@
         ideTitleFile: document.getElementById('ideTitleFile'),
         ideLineNumbers: document.getElementById('ideLineNumbers'),
         ideCode: document.getElementById('ideCode'),
-        ideCodeContainer: document.getElementById('ideCodeContainer'),
         ideLanguage: document.getElementById('ideLanguage'),
         themeToggle: document.getElementById('themeToggle')
     };
 
+    // Canvas Context
     const ctx = DOM.canvas.getContext('2d');
 
+    // State
     let currentTheme = 'light';
     let lastScrollY = 0;
     let scrollTicking = false;
     let parallaxOffset = 0;
     let currentFilter = 'all';
     let currentProject = null;
+
+    // Cache pour les codes préchargés
+    const codeCache = new Map();
+    let preloadStarted = false;
 
     // Projects Data - avec URLs raw GitLab
     const PROJECTS_DATA = [
@@ -1482,6 +1514,8 @@
         }
     ];
 
+    // Particles Config - OPTIMISÉ pour mobile
+    // Détection mobile basée sur l'écran, pas la fenêtre (pour gérer portrait/paysage)
     const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
         || (window.screen.width <= 768 || window.screen.height <= 768);
     const isMobile = isMobileDevice;
@@ -1499,15 +1533,22 @@
     10. JS - THEME MANAGEMENT
 ==================================================================================================================*/
 
+    /**
+     * Bascule entre le mode jour et nuit
+     */
     function toggleTheme() {
         currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
         DOM.body.setAttribute('data-theme', currentTheme);
         localStorage.setItem('theme', currentTheme);
+        // Invalider le cache de couleurs
         if (particleSystem) {
             particleSystem.invalidateColorCache();
         }
     }
 
+    /**
+     * Initialise le thème depuis le localStorage
+     */
     function initTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
@@ -1521,6 +1562,9 @@
     11. JS - HERO & SCROLL EFFECTS
 ==================================================================================================================*/
 
+    /**
+     * Met à jour l'opacité du hero en fonction du scroll
+     */
     function updateHeroOnScroll() {
         const heroHeight = window.innerHeight;
         const scrollProgress = Math.min(lastScrollY / (heroHeight * 0.8), 1);
@@ -1533,9 +1577,13 @@
         scrollTicking = false;
     }
 
+    /**
+     * Handler pour l'événement scroll
+     */
     function onScroll() {
         lastScrollY = window.scrollY || window.pageYOffset;
         
+        // Désactiver le parallax sur mobile pour éviter les bugs
         if (window.innerWidth > 768) {
             parallaxOffset = lastScrollY * PARTICLES_CONFIG.parallaxFactor;
         } else {
@@ -1553,6 +1601,9 @@
     12. JS - PARTICLES SYSTEM (OPTIMISÉ)
 ==================================================================================================================*/
 
+    /**
+     * Classe Particle
+     */
     class Particle {
         constructor(width, height) {
             this.reset(width, height);
@@ -1593,6 +1644,9 @@
         }
     }
 
+    /**
+     * Classe ParticleSystem (OPTIMISÉ)
+     */
     class ParticleSystem {
         constructor(canvas) {
             this.canvas = canvas;
@@ -1600,15 +1654,16 @@
             this.pointer = { x: -200, y: -200 };
             this.isRunning = true;
             this.lastFrameTime = 0;
-            this.targetFPS = 60;
+            this.targetFPS = 60; // Retour à 60fps pour la fluidité
             this.frameInterval = 1000 / this.targetFPS;
             this.cachedColors = null;
             this.colorCacheTime = 0;
             
+            // Transition de couleurs
             this.currentColors = null;
             this.targetColors = null;
             this.colorTransitionProgress = 1;
-            this.colorTransitionDuration = 1800;
+            this.colorTransitionDuration = 1800; // 1.8 seconde - synchronisé avec le CSS
             this.colorTransitionStart = 0;
             
             this.resize();
@@ -1616,6 +1671,7 @@
         }
 
         resize() {
+            // Utiliser visualViewport si disponible (plus précis sur mobile)
             if (window.visualViewport) {
                 this.width = this.canvas.width = Math.round(window.visualViewport.width);
                 this.height = this.canvas.height = Math.round(window.visualViewport.height);
@@ -1632,6 +1688,7 @@
             }
         }
 
+        // Récupère les couleurs brutes du thème
         getRawColors() {
             const style = getComputedStyle(document.documentElement);
             return {
@@ -1644,6 +1701,7 @@
             };
         }
 
+        // Parse une couleur rgba en tableau [r, g, b, a]
         parseRgba(color) {
             const match = color.match(/[\d.]+/g);
             if (match) {
@@ -1652,10 +1710,12 @@
             return [255, 255, 255, 1];
         }
 
+        // Interpole entre deux valeurs
         lerp(start, end, progress) {
             return start + (end - start) * progress;
         }
 
+        // Interpole entre deux couleurs RGB
         lerpColor(color1, color2, progress) {
             return [
                 Math.round(this.lerp(color1[0], color2[0], progress)),
@@ -1664,10 +1724,12 @@
             ];
         }
 
+        // Ease out pour une transition plus naturelle
         easeOutCubic(t) {
             return 1 - Math.pow(1 - t, 3);
         }
 
+        // Déclenche une transition de couleurs
         transitionColors() {
             if (!this.currentColors) {
                 this.currentColors = this.getRawColors();
@@ -1680,12 +1742,14 @@
             this.colorTransitionStart = performance.now();
         }
 
+        // Récupère les couleurs actuelles (avec interpolation si transition en cours)
         getColors() {
             if (!this.currentColors) {
                 this.currentColors = this.getRawColors();
                 this.targetColors = this.currentColors;
             }
 
+            // Si transition en cours
             if (this.colorTransitionProgress < 1) {
                 const elapsed = performance.now() - this.colorTransitionStart;
                 this.colorTransitionProgress = Math.min(elapsed / this.colorTransitionDuration, 1);
@@ -1693,6 +1757,7 @@
 
                 const bg = this.lerpColor(this.currentColors.bg, this.targetColors.bg, easedProgress);
                 
+                // Si transition terminée, mettre à jour currentColors
                 if (this.colorTransitionProgress >= 1) {
                     this.currentColors = this.targetColors;
                 }
@@ -1721,6 +1786,7 @@
             };
         }
 
+        // Invalider le cache et déclencher transition
         invalidateColorCache() {
             this.transitionColors();
         }
@@ -1732,10 +1798,12 @@
             const maxDist = PARTICLES_CONFIG.maxDistance;
             const maxDistSq = maxDist * maxDist;
 
+            // Update particles
             for (let i = 0; i < len; i++) {
                 particles[i].update(this.width, this.height, this.pointer);
             }
 
+            // Draw connections - optimisé avec moins de gradients sur mobile
             ctx.lineWidth = 1;
             for (let a = 0; a < len; a++) {
                 const pA = particles[a];
@@ -1748,6 +1816,7 @@
                     if (distSq < maxDistSq) {
                         const opacity = (1 - Math.sqrt(distSq) / maxDist) * 0.7;
                         
+                        // Sur mobile, utiliser une couleur simple au lieu d'un gradient
                         if (isMobile) {
                             ctx.strokeStyle = `rgba(${colors.lineColor1},${opacity})`;
                         } else {
@@ -1766,6 +1835,7 @@
                 }
             }
 
+            // Draw particles - désactiver le shadow sur mobile pour les perfs
             if (!isMobile) {
                 ctx.shadowBlur = 8;
                 ctx.shadowColor = colors.particleGlow;
@@ -1783,8 +1853,12 @@
         }
     }
 
+    // Instance
     const particleSystem = new ParticleSystem(DOM.canvas);
 
+    /**
+     * Boucle d'animation OPTIMISÉE (throttled à 30fps, pause quand invisible)
+     */
     let animationId = null;
     
     function animateParticles(timestamp) {
@@ -1793,6 +1867,7 @@
             return;
         }
 
+        // Throttle à 30fps (ou 24fps sur mobile)
         const elapsed = timestamp - particleSystem.lastFrameTime;
         if (elapsed < particleSystem.frameInterval) {
             animationId = requestAnimationFrame(animateParticles);
@@ -1807,6 +1882,7 @@
         animationId = requestAnimationFrame(animateParticles);
     }
 
+    // Pause l'animation quand l'onglet est caché
     document.addEventListener('visibilitychange', () => {
         particleSystem.isRunning = !document.hidden;
     });
@@ -1816,14 +1892,16 @@
     13. JS - PROJECTS MANAGEMENT
 ==================================================================================================================*/
 
+    /**
+     * Crée une carte projet
+     */
     function createProjectCard(project) {
         const card = document.createElement('div');
         card.className = 'project-card';
-        
-        // Si projectUrl existe → lien direct, sinon → viewer avec fetch
+        // Si projectUrl existe → lien direct, sinon → viewer
         if (project.projectUrl) {
             card.onclick = () => window.open(project.projectUrl, '_blank');
-        } else if (project.codeUrl) {
+        } else {
             card.onclick = () => openProject(project);
         }
         
@@ -1841,6 +1919,9 @@
         return card;
     }
 
+    /**
+     * Affiche les projets
+     */
     function renderProjects() {
         DOM.projectGrid.innerHTML = '';
         
@@ -1863,6 +1944,9 @@
         });
     }
 
+    /**
+     * Initialise les filtres
+     */
     function initFilters() {
         const languages = ['all', 'python', 'java', 'html', 'other'];
         const labels = { all: 'Tous', python: 'PYTHON', java: 'JAVA', html: 'HTML', other: 'AUTRE' };
@@ -1882,7 +1966,41 @@
     }
 
     /**
-     * Ouvre le viewer IDE et fetch le code depuis GitLab
+     * Précharge tous les codes GitLab en arrière-plan
+     */
+    async function preloadAllCodes() {
+        if (preloadStarted) return;
+        preloadStarted = true;
+        
+        const projectsWithCode = PROJECTS_DATA.filter(p => p.codeUrl);
+        
+        // Charger tous en parallèle pour plus de rapidité
+        const promises = projectsWithCode.map(async (project) => {
+            if (codeCache.has(project.codeUrl)) return;
+            
+            try {
+                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl);
+                const response = await fetch(proxyUrl);
+                
+                if (response.ok) {
+                    const code = await response.text();
+                    codeCache.set(project.codeUrl, { success: true, code });
+                    console.log(`✓ Préchargé: ${project.title}`);
+                } else {
+                    codeCache.set(project.codeUrl, { success: false, error: `HTTP ${response.status}` });
+                }
+            } catch (error) {
+                codeCache.set(project.codeUrl, { success: false, error: error.message });
+                console.warn(`✗ Échec préchargement: ${project.title}`);
+            }
+        });
+        
+        await Promise.all(promises);
+        console.log('✓ Préchargement terminé');
+    }
+
+    /**
+     * Ouvre le viewer IDE - utilise le cache si disponible (INSTANTANÉ)
      */
     async function openProject(project) {
         currentProject = project;
@@ -1895,12 +2013,25 @@
         
         const lang = langMap[project.language] || { text: 'Autre', hljs: 'plaintext' };
 
-        // Update header
         DOM.ideTitleName.textContent = project.title;
         DOM.ideTitleFile.textContent = '— ' + (project.fileName || 'code');
         DOM.ideLanguage.textContent = lang.text;
         
-        // Afficher le loader
+        DOM.projectViewer.classList.add('active');
+
+        // Vérifier le cache d'abord → INSTANTANÉ si préchargé
+        const cached = codeCache.get(project.codeUrl);
+        
+        if (cached) {
+            if (cached.success) {
+                displayCode(cached.code, lang);
+            } else {
+                displayError(cached.error);
+            }
+            return;
+        }
+        
+        // Pas en cache → afficher loader et fetch
         DOM.ideCodeContainer.innerHTML = `
             <div class="ide-loading">
                 <div class="spinner"></div>
@@ -1908,11 +2039,8 @@
             </div>
         `;
         DOM.ideLineNumbers.innerHTML = '';
-        
-        DOM.projectViewer.classList.add('active');
 
         try {
-            // Proxy CORS pour contourner les restrictions GitLab
             const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl);
             const response = await fetch(proxyUrl);
             
@@ -1921,38 +2049,53 @@
             }
             
             const code = await response.text();
-            
-            // Recréer la structure du code
-            DOM.ideCodeContainer.innerHTML = `<pre><code class="ide-code language-${lang.hljs}" id="ideCode"></code></pre>`;
-            const codeElement = document.getElementById('ideCode');
-            codeElement.textContent = code;
-            
-            // Generate line numbers
-            const lines = code.split('\n').length;
-            DOM.ideLineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => 
-                `<span>${i + 1}</span>`
-            ).join('');
-            
-            // Syntax highlighting
-            hljs.highlightElement(codeElement);
+            codeCache.set(project.codeUrl, { success: true, code });
+            displayCode(code, lang);
             
         } catch (error) {
             console.error('Erreur fetch:', error);
-            DOM.ideCodeContainer.innerHTML = `
-                <div class="ide-error">
-                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="8" x2="12" y2="12"/>
-                        <line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
-                    <span>Erreur lors du chargement du code</span>
-                    <small>Vérifiez que le repo est public</small>
-                </div>
-            `;
-            DOM.ideLineNumbers.innerHTML = '';
+            codeCache.set(project.codeUrl, { success: false, error: error.message });
+            displayError(error.message);
         }
     }
 
+    /**
+     * Affiche le code dans le viewer
+     */
+    function displayCode(code, lang) {
+        DOM.ideCodeContainer.innerHTML = `<pre><code class="ide-code language-${lang.hljs}" id="ideCode"></code></pre>`;
+        const codeElement = document.getElementById('ideCode');
+        codeElement.textContent = code;
+        
+        const lines = code.split('\n').length;
+        DOM.ideLineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => 
+            `<span>${i + 1}</span>`
+        ).join('');
+        
+        hljs.highlightElement(codeElement);
+    }
+
+    /**
+     * Affiche une erreur dans le viewer
+     */
+    function displayError(errorMsg) {
+        DOM.ideCodeContainer.innerHTML = `
+            <div class="ide-error">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <span>Erreur lors du chargement du code</span>
+                <small>${errorMsg || 'Vérifiez que le repo est public'}</small>
+            </div>
+        `;
+        DOM.ideLineNumbers.innerHTML = '';
+    }
+
+    /**
+     * Ferme le viewer
+     */
     function closeViewer() {
         DOM.projectViewer.classList.remove('active');
         currentProject = null;
@@ -1973,6 +2116,11 @@
         DOM.successMessage.classList.remove('show');
         DOM.contactForm.reset();
     }
+
+
+/*==================================================================================================================
+    14. JS - CONTACT FORM (Web3Forms)
+==================================================================================================================*/
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -2014,6 +2162,7 @@
     15. JS - INITIALIZATION & EVENT LISTENERS
 ==================================================================================================================*/
 
+    // Forcer le scroll en haut IMMÉDIATEMENT (avant tout)
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
@@ -2022,6 +2171,7 @@
     document.body.scrollTop = 0;
 
     function init() {
+        // Re-forcer le scroll en haut
         window.scrollTo(0, 0);
         
         initTheme();
@@ -2029,11 +2179,18 @@
         renderProjects();
         animateParticles(0);
         initScrollAnimations();
+        
+        // Précharger les codes GitLab en arrière-plan (après 1 seconde pour pas bloquer le rendu)
+        setTimeout(preloadAllCodes, 1000);
     }
 
+    /**
+     * Initialise les animations au scroll avec Intersection Observer
+     */
     function initScrollAnimations() {
         const sections = document.querySelectorAll('.fade-section');
         
+        // Observer pour détecter quand on entre/sort d'une section
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const rect = entry.boundingClientRect;
@@ -2043,10 +2200,12 @@
                     entry.target.classList.add('visible');
                     entry.target.classList.remove('fade-out');
                 } else {
+                    // Section au-dessus du viewport (on a scrollé après)
                     if (rect.bottom < windowHeight * 0.2) {
                         entry.target.classList.add('fade-out');
                         entry.target.classList.remove('visible');
                     }
+                    // Section en-dessous du viewport (on remonte)
                     else if (rect.top > windowHeight * 0.8) {
                         entry.target.classList.remove('visible');
                         entry.target.classList.remove('fade-out');
@@ -2063,8 +2222,10 @@
         });
     }
 
+    // Scroll
     window.addEventListener('scroll', onScroll, { passive: true });
 
+    // Resize - throttled pour éviter les appels excessifs
     let resizeTimeout;
     const handleResize = () => {
         clearTimeout(resizeTimeout);
@@ -2075,10 +2236,12 @@
     
     window.addEventListener('resize', handleResize, { passive: true });
     
+    // iOS Safari: utiliser visualViewport pour détecter les changements de zoom
     if (window.visualViewport) {
         window.visualViewport.addEventListener('resize', handleResize, { passive: true });
     }
     
+    // Rotation d'écran
     window.addEventListener('orientationchange', () => {
         setTimeout(() => {
             window.scrollTo(0, 0);
@@ -2086,6 +2249,7 @@
         }, 400);
     });
 
+    // Mouse
     window.addEventListener('mousemove', e => {
         particleSystem.pointer.x = e.clientX;
         particleSystem.pointer.y = e.clientY;
@@ -2096,6 +2260,7 @@
         particleSystem.pointer.y = -200;
     }, { passive: true });
 
+    // Touch
     window.addEventListener('touchmove', e => {
         particleSystem.pointer.x = e.touches[0].clientX;
         particleSystem.pointer.y = e.touches[0].clientY;
@@ -2106,6 +2271,7 @@
         particleSystem.pointer.y = -200;
     }, { passive: true });
 
+    // Keyboard
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
             closeViewer();
@@ -2123,6 +2289,25 @@
 
     document.addEventListener('DOMContentLoaded', init);
     
+    window.addEventListener('load', () => {
+        window.scrollTo(0, 0);
+    });
+
+</script>
+</body>
+</html>
+        }
+    });
+
+    // Modal click outside
+    DOM.contactModal.addEventListener('click', e => {
+        if (e.target === DOM.contactModal) closeContactModal();
+    });
+
+    // Start
+    document.addEventListener('DOMContentLoaded', init);
+    
+    // Backup: aussi au load complet
     window.addEventListener('load', () => {
         window.scrollTo(0, 0);
     });
