@@ -1614,10 +1614,6 @@
             this.vx = (Math.random() - 0.5) * PARTICLES_CONFIG.speed;
             this.vy = (Math.random() - 0.5) * PARTICLES_CONFIG.speed;
             this.parallaxFactor = Math.random() * 0.2 + 0.05;
-            
-            this.friction = 0.92; 
-            this.oscillation = Math.random() * 0.02;
-            this.oscillationPhase = Math.random() * Math.PI * 2;
         }
 
         update(width, height, pointer) {
@@ -1632,24 +1628,16 @@
                 const angle = Math.atan2(dy, dx);
                 this.x -= Math.cos(angle) * force * 2.5;
                 this.y -= Math.sin(angle) * force * 2.5;
-                
-                this.vx = -Math.cos(angle) * force * 1.5;
-                this.vy = -Math.sin(angle) * force * 1.5;
             }
 
             this.y = this.baseY - (parallaxOffset * this.parallaxFactor);
             this.x += this.vx;
             this.baseY += this.vy;
-            
-            this.y += Math.sin(this.oscillationPhase) * this.oscillation;
-            this.oscillationPhase += 0.05;
 
             if (this.x < -10) this.x = width + 10;
             if (this.x > width + 10) this.x = -10;
             if (this.baseY < -10) this.baseY = height + 10;
             if (this.baseY > height + 10) this.baseY = -10;
-            
-            
         }
     }
 
