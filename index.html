@@ -4,2237 +4,350 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover">
     <title>Kéwin - Portfolio</title>
-    
-    <meta property="og:title" content="Kéwin Poszalski | Portfolio Développeur">
-    <meta property="og:description" content="Découvrez mes projets de dev.">
-    <meta property="og:url" content="https://dnszlsk.github.io/portfolio/">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://i.imgur.com/YMTbXUC.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- ============================================================================================================
-    
-        PORTFOLIO - Kéwin POSZALSKI
-        Formation : Concepteur Développeur d'Applications (AFPA)
-        
-        Background interactif créé par DNSZLSK
-        
-        Structure du fichier :
-        1. CSS - Variables & Reset
-        2. CSS - Canvas & Navigation
-        3. CSS - Theme Toggle
-        4. CSS - Hero Section
-        5. CSS - Projects Section
-        6. CSS - Modal Contact
-        7. CSS - Project Viewer (IDE Style)
-        7.5. CSS - À Propos
-        8. CSS - Responsive
-        9. JS - Configuration & Variables
-        10. JS - Theme Management
-        11. JS - Hero & Scroll Effects
-        12. JS - Particles System
-        13. JS - Projects Management
-        14. JS - Contact Form
-        15. JS - Initialization & Event Listeners
-        
-    ============================================================================================================ -->
-
-    <!-- External Libraries -->
+    <!-- PORTFOLIO - Kéwin POSZALSKI | Formation CDA AFPA | Structure: 1-10 CSS, 11-17 JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-
     <style>
-    /*==============================================================================================================
-        1. CSS - VARIABLES & RESET
-    ==============================================================================================================*/
-    
-        :root {
-            /* Dark Theme (Default) */
-            --bg-primary: #000000;
-            --bg-secondary: rgba(28, 28, 30, 0.4);
-            --bg-card: rgba(20, 20, 22, 0.85);
-            --bg-nav: rgba(0, 0, 0, 0.5);
-            --text-primary: #f5f5f7;
-            --text-secondary: #a1a1a6;
-            --accent: #0a84ff;
-            --accent-hover: #409cff;
-            --border: rgba(255, 255, 255, 0.1);
-            --border-hover: rgba(255, 255, 255, 0.25);
-            --shadow: rgba(0, 0, 0, 0.5);
-            --glow: rgba(120, 120, 140, 0.15);
-            
-            /* Particles */
-            --particle-color: rgba(255, 255, 255, 0.85);
-            --particle-glow: rgba(255, 255, 255, 0.4);
-            --line-color-1: 0, 122, 255;
-            --line-color-2: 88, 86, 214;
-            --line-color-3: 175, 82, 222;
-            
-            /* Transition */
-            --theme-transition: 1.8s ease;
-        }
-
-        [data-theme="light"] {
-            /* Light Theme */
-            --bg-primary: #f5f5f7;
-            --bg-secondary: rgba(255, 255, 255, 0.7);
-            --bg-card: rgba(255, 255, 255, 0.85);
-            --bg-nav: rgba(255, 255, 255, 0.8);
-            --text-primary: #1d1d1f;
-            --text-secondary: #6e6e73;
-            --border: rgba(0, 0, 0, 0.1);
-            --border-hover: rgba(0, 0, 0, 0.2);
-            --shadow: rgba(0, 0, 0, 0.1);
-            --glow: rgba(100, 100, 120, 0.1);
-            
-            /* Particles */
-            --particle-color: rgba(80, 80, 100, 0.7);
-            --particle-glow: rgba(80, 80, 100, 0.3);
-            --line-color-1: 0, 90, 200;
-            --line-color-2: 70, 60, 180;
-            --line-color-3: 140, 60, 180;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            -webkit-font-smoothing: antialiased;
-            line-height: 1.5;
-            overflow-x: hidden;
-            transition: background var(--theme-transition), color var(--theme-transition);
-        }
-
-
-    /*==============================================================================================================
-        2. CSS - CANVAS & NAVIGATION
-    ==============================================================================================================*/
-
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw !important;
-            height: 100vh !important;
-            height: 100dvh !important;
-            z-index: 0;
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            overflow: hidden;
-            object-fit: cover;
-        }
-
-        .signature {
-            position: fixed;
-            bottom: 15px;
-            right: 20px;
-            color: var(--text-secondary);
-            opacity: 0.3;
-            font-size: 9px;
-            font-weight: 300;
-            letter-spacing: 2px;
-            pointer-events: none;
-            z-index: 100;
-            transition: color var(--theme-transition);
-        }
-
-        .main-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 48px;
-            background: var(--bg-nav);
-            backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid var(--border);
-            z-index: 9999;
-            transition: background var(--theme-transition), border-color var(--theme-transition);
-        }
-
-        nav .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 32px;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        nav .nav-left {
-            display: flex;
-            align-items: center;
-        }
-
-        nav .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        nav a {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 400;
-            opacity: 0.8;
-            transition: opacity 0.3s, color var(--theme-transition);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        nav a:hover { opacity: 1; }
-
-        nav a svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
-        nav .logo {
-            font-weight: 600;
-            font-size: 14px;
-            opacity: 1;
-            transition: all 0.3s ease, color var(--theme-transition);
-        }
-
-        nav .logo:hover { color: var(--accent); }
-        nav .logo svg { width: 18px; height: 18px; }
-
-
-    /*==============================================================================================================
-        3. CSS - THEME TOGGLE
-    ==============================================================================================================*/
-
-        .theme-toggle {
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 50%;
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease, border-color var(--theme-transition), background var(--theme-transition);
-        }
-
-        .theme-toggle:hover {
-            border-color: var(--border-hover);
-            background: var(--bg-card);
-        }
-
-        .theme-toggle svg {
-            width: 18px;
-            height: 18px;
-            stroke: var(--text-primary);
-            fill: none;
-            transition: all 0.3s ease, stroke var(--theme-transition);
-        }
-
-        .theme-toggle .icon-moon {
-            display: block;
-        }
-
-        .theme-toggle .icon-sun {
-            display: none;
-        }
-
-        [data-theme="light"] .theme-toggle .icon-moon {
-            display: none;
-        }
-
-        [data-theme="light"] .theme-toggle .icon-sun {
-            display: block;
-        }
-
-
-    /*==============================================================================================================
-        4. CSS - HERO SECTION
-    ==============================================================================================================*/
-
-        .hero {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            height: 100svh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 48px 24px 60px;
-            z-index: 1;
-            pointer-events: none;
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-        }
-
-        .hero-spacer {
-            height: 100vh;
-            height: 100svh;
-        }
-
-        .hero-content {
-            pointer-events: auto;
-            will-change: opacity;
-            max-width: 1400px;
-            width: 100%;
-        }
-
-        .hero-image {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto 48px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px var(--shadow);
-            transition: transform 0.3s ease;
-        }
-
-        .hero-image:hover {
-            transform: scale(1.01);
-        }
-
-        .hero h1 {
-            font-size: 80px;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            line-height: 1.05;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            transition: all var(--theme-transition);
-        }
-
-        .hero p {
-            font-size: 28px;
-            font-weight: 400;
-            color: var(--text-secondary);
-            line-height: 1.3;
-            transition: color var(--theme-transition);
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.5;
-            animation: bounce 2s infinite;
-            pointer-events: auto;
-            will-change: opacity;
-        }
-
-        .scroll-indicator span {
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            transition: color var(--theme-transition);
-        }
-
-        .scroll-indicator::after {
-            content: '';
-            width: 20px;
-            height: 32px;
-            border: 2px solid var(--text-secondary);
-            opacity: 0.5;
-            border-radius: 12px;
-            transition: border-color var(--theme-transition);
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(8px); }
-        }
-
-        .hero-spacer {
-            height: 100vh;
-            pointer-events: none;
-        }
-
-
-    /*==============================================================================================================
-        5. CSS - PROJECTS SECTION
-    ==============================================================================================================*/
-
-        .projects {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 100px 32px 150px;
-            min-height: 100vh;
-        }
-
-        .section-header {
-            margin-bottom: 56px;
-            text-align: center;
-        }
-
-        .section-header h2 {
-            font-size: 56px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-            transition: color var(--theme-transition);
-        }
-
-        .section-header p {
-            font-size: 20px;
-            color: var(--text-secondary);
-            transition: color var(--theme-transition);
-        }
-
-        .filters {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 48px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .filter-btn {
-            padding: 10px 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 14px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease, background var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
-            backdrop-filter: blur(10px);
-        }
-
-        .filter-btn.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .filter-btn:hover:not(.active) {
-            border-color: var(--border-hover);
-            color: var(--text-primary);
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .project-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background var(--theme-transition), border-color var(--theme-transition);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(40px);
-            will-change: transform;
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-hover);
-            box-shadow: 
-                0 12px 32px var(--shadow),
-                0 0 16px var(--glow);
-        }
-
-        .project-card-content {
-            padding: 24px;
-        }
-
-        .project-icon {
-            width: 44px;
-            height: 44px;
-            margin-bottom: 16px;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .project-icon.python {
-            background-image: url('https://imgur.com/ipvwsyW.png');
-        }
-
-        .project-icon.java {
-            background-image: url('https://imgur.com/hLXLyFn.png');
-        }
-
-        .project-icon.html {
-            background-image: url('https://imgur.com/M0dib5e.png');
-        }
-
-        .project-icon.other {
-            background: linear-gradient(135deg, #61dafb 0%, #2196F3 100%);
-            border-radius: 12px;
-        }
-
-        .project-card h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-            transition: color var(--theme-transition);
-        }
-
-        .project-card p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: 0;
-            transition: color var(--theme-transition);
-        }
-
-        .project-tags {
-            display: none;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            padding: 6px 14px;
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-            transition: all 0.3s ease, background var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
-        }
-
-        .project-card:hover .tag {
-            border-color: var(--border-hover);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 80px 22px;
-        }
-
-        .empty-state h3 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .empty-state p {
-            font-size: 17px;
-            color: var(--text-secondary);
-        }
-
-
-    /*==============================================================================================================
-        6. CSS - MODAL CONTACT
-    ==============================================================================================================*/
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(20px);
-            z-index: 10000;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-contact {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 48px;
-            max-width: 480px;
-            width: 90%;
-            border: 1px solid var(--border);
-            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            box-shadow: 0 24px 80px var(--shadow);
-            transition: background var(--theme-transition), border-color var(--theme-transition);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: var(--text-primary);
-            transition: all 0.3s ease, color var(--theme-transition), background var(--theme-transition), border-color var(--theme-transition);
-        }
-
-        .modal-close:hover {
-            transform: rotate(90deg);
-        }
-
-        .modal-contact h2 {
-            font-size: 28px;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-primary);
-            transition: color var(--theme-transition);
-        }
-
-        .modal-contact > p {
-            color: var(--text-secondary);
-            margin-bottom: 32px;
-            font-size: 15px;
-            transition: color var(--theme-transition);
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: color var(--theme-transition);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 14px 18px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            color: var(--text-primary);
-            font-size: 15px;
-            font-family: inherit;
-            transition: all 0.3s ease, background var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
-            -webkit-text-fill-color: var(--text-primary);
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: var(--text-secondary);
-            -webkit-text-fill-color: var(--text-secondary);
-        }
-
-        .form-group input:-webkit-autofill,
-        .form-group input:-webkit-autofill:hover,
-        .form-group input:-webkit-autofill:focus,
-        .form-group textarea:-webkit-autofill {
-            -webkit-text-fill-color: var(--text-primary);
-            -webkit-box-shadow: 0 0 0px 1000px var(--bg-primary) inset;
-            transition: background-color 5000s ease-in-out 0s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .success-message {
-            display: none;
-            padding: 16px;
-            background: rgba(52, 199, 89, 0.15);
-            border: 1px solid rgba(52, 199, 89, 0.3);
-            border-radius: 14px;
-            color: #34c759;
-            margin-bottom: 24px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .success-message.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-
-    /*==============================================================================================================
-        7. CSS - PROJECT VIEWER (IDE Style)
-    ==============================================================================================================*/
-
-        .project-viewer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(20px);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-        }
-
-        .project-viewer.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .ide-window {
-            width: 100%;
-            max-width: 1200px;
-            height: 90vh;
-            max-height: 850px;
-            background: #1e1e1e;
-            border-radius: 12px;
-            border: 1px solid #333;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .ide-header {
-            height: 40px;
-            background: #323233;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-        }
-
-        .ide-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .ide-title-name {
-            font-size: 13px;
-            font-weight: 500;
-            color: #ccc;
-        }
-
-        .ide-title-file {
-            font-size: 12px;
-            color: #888;
-            font-family: 'SF Mono', Monaco, monospace;
-        }
-
-        .ide-close {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #ccc;
-            transition: all 0.3s ease;
-        }
-
-        .ide-close:hover {
-            color: #fff;
-            transform: rotate(90deg);
-        }
-
-        .ide-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .ide-gitlab-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            color: #ccc;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .ide-gitlab-btn:hover {
-            background: #fc6d26;
-            border-color: #fc6d26;
-            color: #fff;
-        }
-
-        .ide-body {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-            background: #1e1e1e;
-        }
-
-        .ide-editor {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-        }
-
-        .ide-line-numbers {
-            width: 50px;
-            padding: 16px 0;
-            background: #1e1e1e;
-            border-right: 1px solid #333;
-            font-family: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            color: #555;
-            text-align: right;
-            user-select: none;
-            overflow: hidden;
-        }
-
-        .ide-line-numbers span {
-            display: block;
-            padding-right: 12px;
-        }
-
-        .ide-code-container {
-            flex: 1;
-            overflow: auto;
-            padding: 16px;
-            background: #1e1e1e;
-        }
-
-        .ide-code-container::-webkit-scrollbar { width: 10px; height: 10px; }
-        .ide-code-container::-webkit-scrollbar-track { background: #1e1e1e; }
-        .ide-code-container::-webkit-scrollbar-thumb { background: #444; border-radius: 5px; }
-        .ide-code-container::-webkit-scrollbar-thumb:hover { background: #555; }
-
-        .ide-code {
-            font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            margin: 0;
-            white-space: pre;
-            background: transparent !important;
-        }
-
-        .ide-statusbar {
-            height: 24px;
-            background: #007acc;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 12px;
-            font-size: 11px;
-            color: #fff;
-            font-family: 'SF Mono', Monaco, monospace;
-        }
-
-        .ide-statusbar-left,
-        .ide-statusbar-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        /* Loading spinner */
-        .ide-loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #888;
-            gap: 16px;
-        }
-
-        .ide-loading .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #333;
-            border-top-color: #007acc;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .ide-error {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #ff6b6b;
-            gap: 12px;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .ide-error svg {
-            width: 48px;
-            height: 48px;
-            stroke: currentColor;
-            fill: none;
-        }
-
-        @media (max-width: 768px) {
-            .project-viewer { padding: 16px; }
-            .ide-window { height: 90vh; max-height: none; border-radius: 8px; }
-            .ide-line-numbers { width: 40px; }
-        }
-
-
-    /*==============================================================================================================
-        7.5. CSS - À PROPOS (Épuré)
-    ==============================================================================================================*/
-
-        .fade-section {
-            opacity: 0;
-            transform: translateY(120px) scale(0.95);
-            filter: blur(8px);
-            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
-                        transform 1s cubic-bezier(0.4, 0, 0.2, 1),
-                        filter 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .fade-section.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
-        }
-
-        .fade-section.fade-out {
-            opacity: 0;
-            transform: translateY(-100px) scale(0.95);
-            filter: blur(8px);
-        }
-
-        .about {
-            padding: 100px 24px;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .about-label {
-            display: inline-block;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 16px;
-        }
-
-        .about h2 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .about-text {
-            font-size: 18px;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-            text-align: left;
-        }
-
-        .about-text strong {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .about-highlights {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 48px;
-        }
-
-        .highlight-tag {
-            padding: 12px 24px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            font-size: 14px;
-            color: var(--text-secondary);
-            backdrop-filter: blur(20px);
-            transition: all 0.3s ease, background var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
-        }
-
-        .highlight-tag:hover {
-            border-color: var(--border-hover);
-            color: var(--text-primary);
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 768px) {
-            .about {
-                padding: 80px 20px;
-                min-height: auto;
-            }
-            .about-label {
-                font-size: 11px;
-                letter-spacing: 1.5px;
-            }
-            .about h2 {
-                font-size: 28px;
-                margin-bottom: 28px;
-            }
-            .about-text {
-                font-size: 15px;
-                line-height: 1.7;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .about {
-                padding: 60px 16px;
-            }
-            .about h2 {
-                font-size: 24px;
-                margin-bottom: 24px;
-            }
-            .about-text {
-                font-size: 14px;
-            }
-        }
-
-
-    /*==============================================================================================================
-        8. CSS - RESPONSIVE
-    ==============================================================================================================*/
-
-        @media (max-width: 768px) {
-            .hero {
-                padding: 80px 16px 40px;
-            }
-            .hero h1 { 
-                font-size: 26px; 
-                line-height: 1.2;
-            }
-            .hero p { 
-                font-size: 14px; 
-                padding: 0 10px;
-            }
-            .hero-image {
-                width: calc(100% - 16px);
-                max-width: none;
-                margin: 0 8px 20px;
-                border-radius: 12px;
-            }
-            .hero-content {
-                padding: 0;
-                width: 100%;
-            }
-            
-            #bgCanvas {
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100vw !important;
-                height: 100vh !important;
-                height: 100dvh !important;
-                pointer-events: none;
-                transform: none !important;
-                backface-visibility: hidden;
-                -webkit-backface-visibility: hidden;
-            }
-            
-            .section-header h2 { font-size: 28px; }
-            .section-header p { font-size: 14px; }
-            .project-grid { grid-template-columns: 1fr; gap: 16px; }
-            .projects { padding: 60px 16px 80px; }
-            
-            .project-card-content { padding: 20px; }
-            .project-icon { width: 36px; height: 36px; margin-bottom: 12px; }
-            .project-card h3 { font-size: 16px; margin-bottom: 6px; }
-            .project-card p { font-size: 13px; line-height: 1.5; }
-            
-            .filters { gap: 8px; margin-bottom: 32px; }
-            .filter-btn { padding: 8px 16px; font-size: 12px; }
-            
-            .modal-contact { 
-                padding: 28px 20px; 
-                margin: 16px;
-                max-height: 90vh;
-            }
-            .modal-contact h2 { font-size: 24px; }
-            .modal-contact input,
-            .modal-contact textarea { font-size: 16px; padding: 14px 16px; }
-            .modal-contact button[type="submit"] { padding: 14px 24px; font-size: 15px; }
-            
-            .nav-content { padding: 0 12px; }
-            .nav-right { gap: 6px; }
-            .nav-right a { 
-                padding: 8px 12px; 
-                font-size: 13px;
-            }
-            .nav-right a svg { display: none; }
-            .logo { font-size: 14px; gap: 8px; }
-            .logo svg { width: 18px; height: 18px; }
-            .theme-toggle { width: 40px; height: 40px; }
-            
-            .scroll-indicator { bottom: 24px; }
-            .scroll-indicator span { font-size: 10px; }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 22px; }
-            .hero p { font-size: 13px; }
-            .hero-image {
-                width: calc(100% - 8px);
-                margin: 0 4px 16px;
-            }
-            
-            .section-header h2 { font-size: 24px; }
-            .section-header p { font-size: 13px; }
-            .projects { padding: 50px 12px 60px; }
-            
-            .project-card-content { padding: 16px; }
-            .project-icon { width: 32px; height: 32px; }
-            .project-card h3 { font-size: 15px; }
-            .project-card p { font-size: 12px; }
-            
-            .logo span { display: none; }
-            .nav-right a span { font-size: 12px; }
-        }
-
-        @media (max-height: 500px) and (orientation: landscape) {
-            .hero {
-                padding: 50px 32px 16px;
-                justify-content: center;
-            }
-            .hero-image {
-                max-width: 55%;
-                max-height: 50vh;
-                margin: 0 auto 10px;
-            }
-            .hero h1 {
-                font-size: 26px;
-                margin-bottom: 6px;
-            }
-            .hero p {
-                font-size: 14px;
-            }
-            .scroll-indicator {
-                display: none;
-            }
-            
-            .about {
-                padding: 30px 48px;
-                min-height: auto;
-            }
-            .about-label {
-                font-size: 9px;
-                margin-bottom: 6px;
-                letter-spacing: 1.5px;
-            }
-            .about h2 {
-                font-size: 18px;
-                margin-bottom: 12px;
-            }
-            .about-text {
-                font-size: 11px;
-                line-height: 1.5;
-                margin-bottom: 8px;
-            }
-            
-            .fade-section {
-                transform: translateY(40px) scale(0.98);
-                filter: blur(3px);
-            }
-            .fade-section.fade-out {
-                transform: translateY(-30px) scale(0.98);
-                filter: blur(3px);
-            }
-            
-            .projects {
-                padding: 24px 24px 32px;
-            }
-            .section-header {
-                margin-bottom: 16px;
-            }
-            .section-header h2 {
-                font-size: 20px;
-                margin-bottom: 4px;
-            }
-            .section-header p {
-                font-size: 11px;
-            }
-            .filters {
-                margin-bottom: 16px;
-                gap: 6px;
-            }
-            .filter-btn {
-                padding: 5px 12px;
-                font-size: 10px;
-            }
-            .project-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-            }
-            .project-card-content {
-                padding: 12px;
-            }
-            .project-icon {
-                width: 24px;
-                height: 24px;
-                margin-bottom: 8px;
-            }
-            .project-card h3 {
-                font-size: 12px;
-                margin-bottom: 3px;
-            }
-            .project-card p {
-                font-size: 10px;
-                line-height: 1.3;
-            }
-            
-            nav {
-                height: 36px;
-            }
-            .logo {
-                font-size: 12px;
-            }
-            .logo svg {
-                width: 14px;
-                height: 14px;
-            }
-            .theme-toggle {
-                width: 30px;
-                height: 30px;
-            }
-            .theme-toggle svg {
-                width: 12px;
-                height: 12px;
-            }
-            .nav-right a {
-                font-size: 11px;
-                padding: 5px 8px;
-            }
-        }
+/*== 1. VARIABLES ==*/
+:root { --bg-primary:#000;--bg-secondary:rgba(28,28,30,0.4);--bg-card:rgba(20,20,22,0.85);--bg-nav:rgba(0,0,0,0.5);--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--accent:#0a84ff;--border:rgba(255,255,255,0.1);--border-hover:rgba(255,255,255,0.25);--shadow:rgba(0,0,0,0.5);--glow:rgba(120,120,140,0.15);--particle-color:rgba(255,255,255,0.85);--particle-glow:rgba(255,255,255,0.4);--line-color-1:0,122,255;--line-color-2:88,86,214;--line-color-3:175,82,222;--theme-transition:1.8s ease; }
+[data-theme="light"] { --bg-primary:#f5f5f7;--bg-secondary:rgba(255,255,255,0.7);--bg-card:rgba(255,255,255,0.85);--bg-nav:rgba(255,255,255,0.8);--text-primary:#1d1d1f;--text-secondary:#6e6e73;--border:rgba(0,0,0,0.1);--border-hover:rgba(0,0,0,0.2);--shadow:rgba(0,0,0,0.1);--glow:rgba(100,100,120,0.1);--particle-color:rgba(80,80,100,0.7);--particle-glow:rgba(80,80,100,0.3);--line-color-1:0,90,200;--line-color-2:70,60,180;--line-color-3:140,60,180; }
+* { margin:0;padding:0;box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;background:var(--bg-primary);color:var(--text-primary);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden;transition:background var(--theme-transition),color var(--theme-transition); }
+
+/*== 2. CANVAS & NAV ==*/
+#bgCanvas { position:fixed;top:0;left:0;width:100vw!important;height:100vh!important;height:100dvh!important;z-index:0;transform:translate3d(0,0,0);backface-visibility:hidden; }
+.main-content { position:relative;z-index:2; }
+nav { position:fixed;top:0;width:100%;height:48px;background:var(--bg-nav);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--border);z-index:9999;transition:background var(--theme-transition),border-color var(--theme-transition); }
+nav .nav-content { max-width:1200px;margin:0 auto;padding:0 32px;height:100%;display:flex;justify-content:space-between;align-items:center; }
+nav .nav-left,nav .nav-right { display:flex;align-items:center; }
+nav .nav-right { gap:20px; }
+nav a { color:var(--text-primary);text-decoration:none;font-size:13px;font-weight:400;opacity:0.8;transition:opacity 0.2s,color 0.2s;cursor:pointer;display:flex;align-items:center;gap:6px; }
+nav a:hover { opacity:1;color:var(--accent); }
+nav a svg { width:16px;height:16px;fill:currentColor; }
+nav .logo { font-weight:600;font-size:14px;opacity:1; }
+nav .logo:hover { color:var(--accent); }
+nav .logo svg { width:18px;height:18px; }
+
+/*== 3. THEME TOGGLE ==*/
+.theme-toggle { width:40px;height:40px;background:transparent;border:1px solid var(--border);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease; }
+.theme-toggle:hover { border-color:var(--border-hover);background:var(--bg-card); }
+.theme-toggle svg { width:18px;height:18px;stroke:var(--text-primary);fill:none; }
+.theme-toggle .icon-moon { display:block; }
+.theme-toggle .icon-sun { display:none; }
+[data-theme="light"] .theme-toggle .icon-moon { display:none; }
+[data-theme="light"] .theme-toggle .icon-sun { display:block; }
+
+/*== 4. HERO ==*/
+.hero { position:fixed;top:0;left:0;width:100%;height:100vh;height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:48px 24px 60px;z-index:1;pointer-events:none;transform:translate3d(0,0,0); }
+.hero-spacer { height:100vh;height:100svh;pointer-events:none; }
+.hero-content { pointer-events:auto;will-change:opacity;max-width:1400px;width:100%; }
+.hero-banner-container { position:relative;width:100%;max-width:1100px;margin:0 auto 40px; }
+.hero-image { width:100%;border-radius:20px;box-shadow:0 8px 32px var(--shadow);transition:transform 0.3s ease;display:block; }
+.hero-image:hover { transform:scale(1.01); }
+.hero h1 { font-size:72px;font-weight:700;letter-spacing:-0.03em;line-height:1.05;margin-bottom:12px;background:linear-gradient(135deg,var(--text-primary) 0%,var(--text-secondary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.hero p { font-size:24px;font-weight:400;color:var(--text-secondary);line-height:1.3; }
+.scroll-indicator { position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0.5;animation:bounce 2s infinite;pointer-events:auto; }
+.scroll-indicator span { font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-secondary); }
+.scroll-indicator::after { content:'';width:20px;height:32px;border:2px solid var(--text-secondary);opacity:0.5;border-radius:12px; }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(8px);} }
+
+/*== 5. CAROUSEL ==*/
+.tech-carousel-wrapper { position:absolute;bottom:15px;left:0;right:0;width:100%;overflow:hidden;padding:10px 0;-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%); }
+.tech-carousel { display:flex;gap:30px;width:fit-content;align-items:flex-start; }
+.tech-logo-item { display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0; }
+.tech-logo { height:44px;width:auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));transition:transform 0.3s ease; }
+.tech-logo.mastered { filter:drop-shadow(0 4px 12px rgba(10,132,255,0.3)); }
+.tech-logo.learning { filter:grayscale(100%) opacity(0.5) drop-shadow(0 2px 8px rgba(0,0,0,0.2)); }
+.tech-label { font-size:10px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:1px;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,0,0,0.9); }
+
+/*== 6. PROJECTS ==*/
+.projects { position:relative;max-width:1200px;margin:0 auto;padding:100px 32px 150px;min-height:100vh; }
+.section-header { margin-bottom:56px;text-align:center; }
+.section-header h2 { font-size:56px;font-weight:700;letter-spacing:-0.02em;margin-bottom:16px;color:var(--text-primary); }
+.section-header p { font-size:20px;color:var(--text-secondary); }
+.filters { display:flex;gap:12px;margin-bottom:48px;flex-wrap:wrap;justify-content:center; }
+.filter-btn { padding:10px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;font-size:14px;color:var(--text-secondary);cursor:pointer;transition:all 0.2s ease;backdrop-filter:blur(10px); }
+.filter-btn.active { background:var(--accent);color:white;border-color:var(--accent); }
+.filter-btn:hover:not(.active) { border-color:var(--border-hover);color:var(--text-primary); }
+.project-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px; }
+.project-card { background:var(--bg-card);border-radius:20px;overflow:hidden;cursor:pointer;transition:transform 0.3s ease,box-shadow 0.3s ease;border:1px solid var(--border);backdrop-filter:blur(40px); }
+.project-card:hover { transform:translateY(-4px);border-color:var(--border-hover);box-shadow:0 12px 32px var(--shadow),0 0 16px var(--glow); }
+.project-card-content { padding:24px; }
+.project-icon { width:44px;height:44px;margin-bottom:16px;background-size:contain;background-position:center;background-repeat:no-repeat; }
+.project-icon.python { background-image:url('https://imgur.com/ipvwsyW.png'); }
+.project-icon.java { background-image:url('https://imgur.com/hLXLyFn.png'); }
+.project-icon.html { background-image:url('https://imgur.com/M0dib5e.png'); }
+.project-card h3 { font-size:18px;font-weight:600;margin-bottom:8px;color:var(--text-primary); }
+.project-card p { font-size:14px;color:var(--text-secondary);line-height:1.5; }
+.empty-state { text-align:center;padding:80px 22px; }
+.empty-state h3 { font-size:28px;font-weight:600;margin-bottom:12px; }
+.empty-state p { font-size:17px;color:var(--text-secondary); }
+
+/*== 7. CONTACT ==*/
+.modal-overlay { display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);z-index:10000;animation:fadeIn 0.3s ease; }
+.modal-overlay.active { display:flex;align-items:center;justify-content:center; }
+.modal-contact { background:var(--bg-card);border-radius:24px;padding:48px;max-width:480px;width:90%;border:1px solid var(--border);animation:slideUp 0.4s cubic-bezier(0.4,0,0.2,1);position:relative;box-shadow:0 24px 80px var(--shadow); }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes slideUp { from{opacity:0;transform:translateY(40px) scale(0.95);} to{opacity:1;transform:translateY(0) scale(1);} }
+.modal-close { position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;background:var(--bg-secondary);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text-primary);transition:all 0.3s ease; }
+.modal-close:hover { transform:rotate(90deg); }
+.modal-contact h2 { font-size:28px;margin-bottom:8px;font-weight:600;color:var(--text-primary); }
+.modal-contact>p { color:var(--text-secondary);margin-bottom:32px;font-size:15px; }
+.form-group { margin-bottom:24px; }
+.form-group label { display:block;margin-bottom:8px;font-size:13px;font-weight:500;color:var(--text-secondary); }
+.form-group input,.form-group textarea { width:100%;padding:14px 18px;background:var(--bg-primary);border:1px solid var(--border);border-radius:14px;color:var(--text-primary);font-size:15px;font-family:inherit;transition:all 0.3s ease; }
+.form-group input:focus,.form-group textarea:focus { outline:none;border-color:var(--accent); }
+.form-group textarea { resize:vertical;min-height:120px; }
+.submit-btn { width:100%;padding:16px;background:var(--accent);color:white;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;transition:all 0.3s ease; }
+.submit-btn:hover { transform:translateY(-2px);filter:brightness(1.1); }
+.submit-btn:disabled { opacity:0.5;cursor:not-allowed;transform:none; }
+.success-message { display:none;padding:16px;background:rgba(52,199,89,0.15);border:1px solid rgba(52,199,89,0.3);border-radius:14px;color:#34c759;margin-bottom:24px;text-align:center;font-weight:500; }
+.success-message.show { display:block;animation:fadeIn 0.3s ease; }
+
+/*== 8. IDE VIEWER ==*/
+.project-viewer { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);backdrop-filter:blur(20px);z-index:10000;display:none;align-items:center;justify-content:center;padding:40px; }
+.project-viewer.active { display:flex;animation:fadeIn 0.3s ease; }
+.ide-window { width:100%;max-width:1200px;height:90vh;max-height:850px;background:#1e1e1e;border-radius:12px;border:1px solid #333;box-shadow:0 25px 80px rgba(0,0,0,0.6);display:flex;flex-direction:column;overflow:hidden;animation:slideUp 0.4s cubic-bezier(0.4,0,0.2,1); }
+.ide-header { height:40px;background:#323233;border-bottom:1px solid #333;display:flex;align-items:center;justify-content:space-between;padding:0 16px; }
+.ide-title { display:flex;align-items:center;gap:10px; }
+.ide-title-name { font-size:13px;font-weight:500;color:#ccc; }
+.ide-title-file { font-size:12px;color:#888;font-family:'SF Mono',Monaco,monospace; }
+.ide-close { width:36px;height:36px;border-radius:50%;background:#2a2a2a;border:1px solid #444;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:#ccc;transition:all 0.3s ease; }
+.ide-close:hover { color:#fff;transform:rotate(90deg); }
+.ide-actions { display:flex;align-items:center;gap:12px; }
+.ide-gitlab-btn { display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#2a2a2a;border:1px solid #444;color:#ccc;text-decoration:none;transition:all 0.3s ease; }
+.ide-gitlab-btn:hover { background:#fc6d26;border-color:#fc6d26;color:#fff; }
+.ide-body { flex:1;display:flex;overflow:hidden;background:#1e1e1e; }
+.ide-editor { flex:1;display:flex;overflow:hidden; }
+.ide-line-numbers { width:50px;padding:16px 0;background:#1e1e1e;border-right:1px solid #333;font-family:'JetBrains Mono','SF Mono',Monaco,monospace;font-size:13px;line-height:1.6;color:#555;text-align:right;user-select:none; }
+.ide-line-numbers span { display:block;padding-right:12px; }
+.ide-code-container { flex:1;overflow:auto;padding:16px;background:#1e1e1e; }
+.ide-code-container::-webkit-scrollbar { width:10px;height:10px; }
+.ide-code-container::-webkit-scrollbar-track { background:#1e1e1e; }
+.ide-code-container::-webkit-scrollbar-thumb { background:#444;border-radius:5px; }
+.ide-code { font-family:'JetBrains Mono','SF Mono',Monaco,monospace;font-size:13px;line-height:1.6;margin:0;white-space:pre;background:transparent!important; }
+.ide-statusbar { height:24px;background:#007acc;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:11px;color:#fff;font-family:'SF Mono',Monaco,monospace; }
+.ide-statusbar-left,.ide-statusbar-right { display:flex;align-items:center;gap:16px; }
+.ide-loading { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#888;gap:16px; }
+.ide-loading .spinner { width:40px;height:40px;border:3px solid #333;border-top-color:#007acc;border-radius:50%;animation:spin 1s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg);} }
+.ide-error { display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#ff6b6b;gap:12px;text-align:center;padding:20px; }
+.ide-error svg { width:48px;height:48px;stroke:currentColor;fill:none; }
+
+/*== 8.5 WEB VIEWER ==*/
+.web-viewer { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);backdrop-filter:blur(20px);z-index:10000;display:none;align-items:center;justify-content:center;padding:40px; }
+.web-viewer.active { display:flex;animation:fadeIn 0.3s ease; }
+.web-window { width:100%;max-width:1200px;height:90vh;max-height:850px;background:#1e1e1e;border-radius:12px;border:1px solid #333;box-shadow:0 25px 80px rgba(0,0,0,0.6);display:flex;flex-direction:column;overflow:hidden;animation:slideUp 0.4s cubic-bezier(0.4,0,0.2,1); }
+.web-header { height:40px;background:#323233;border-bottom:1px solid #333;display:flex;align-items:center;justify-content:space-between;padding:0 16px; }
+.web-title { display:flex;align-items:center;gap:10px; }
+.web-title-name { font-size:13px;font-weight:500;color:#ccc; }
+.web-actions { display:flex;align-items:center;gap:12px; }
+.web-external-btn { display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#2a2a2a;border:1px solid #444;color:#ccc;text-decoration:none;transition:all 0.3s ease; }
+.web-external-btn:hover { background:var(--accent);border-color:var(--accent);color:#fff; }
+.web-external-btn svg { width:18px;height:18px;fill:currentColor; }
+.web-close { width:36px;height:36px;border-radius:50%;background:#2a2a2a;border:1px solid #444;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:#ccc;transition:all 0.3s ease; }
+.web-close:hover { color:#fff;transform:rotate(90deg); }
+.web-body { flex:1;background:#fff;position:relative;overflow:hidden; }
+.web-body iframe { width:100%;height:100%;border:none; }
+.web-loading { position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1e1e1e;color:#888;gap:16px; }
+.web-loading .spinner { width:40px;height:40px;border:3px solid #333;border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite; }
+
+/*== 9. ABOUT ==*/
+.fade-section { opacity:0;transform:translateY(120px) scale(0.95);filter:blur(8px);transition:opacity 1s cubic-bezier(0.4,0,0.2,1),transform 1s cubic-bezier(0.4,0,0.2,1),filter 1s cubic-bezier(0.4,0,0.2,1); }
+.fade-section.visible { opacity:1;transform:translateY(0) scale(1);filter:blur(0); }
+.fade-section.fade-out { opacity:0;transform:translateY(-100px) scale(0.95);filter:blur(8px); }
+.about { padding:100px 24px;max-width:800px;margin:0 auto;text-align:center;min-height:100vh;display:flex;flex-direction:column;justify-content:center; }
+.about-label { display:inline-block;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px; }
+.about h2 { font-size:48px;font-weight:700;margin-bottom:40px;background:linear-gradient(135deg,var(--text-primary) 0%,var(--text-secondary) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.about-text { font-size:18px;line-height:1.8;color:var(--text-secondary);margin-bottom:24px;text-align:left; }
+.about-text strong { color:var(--text-primary);font-weight:500; }
+
+/*== 10. RESPONSIVE ==*/
+@media(max-width:768px) {
+    .hero{padding:80px 16px 40px;} .hero h1{font-size:26px;} .hero p{font-size:14px;} .hero-banner-container{max-width:none;margin:0 8px 20px;} .hero-image{border-radius:12px;}
+    .tech-carousel-wrapper{bottom:8px;} .tech-carousel{gap:20px;} .tech-logo{height:32px;} .tech-label{font-size:8px;}
+    .section-header h2{font-size:28px;} .section-header p{font-size:14px;} .project-grid{grid-template-columns:1fr;gap:16px;} .projects{padding:60px 16px 80px;}
+    .project-card-content{padding:20px;} .project-icon{width:36px;height:36px;margin-bottom:12px;} .project-card h3{font-size:16px;} .project-card p{font-size:13px;}
+    .filters{gap:8px;margin-bottom:32px;} .filter-btn{padding:8px 16px;font-size:12px;} .modal-contact{padding:28px 20px;margin:16px;}
+    .nav-content{padding:0 12px;} .nav-right{gap:6px;} .nav-right a svg{display:none;} .scroll-indicator{bottom:24px;}
+    .project-viewer{padding:16px;} .ide-window{height:90vh;max-height:none;border-radius:8px;} .ide-line-numbers{width:40px;}
+    .web-viewer{padding:16px;} .web-window{height:90vh;max-height:none;border-radius:8px;}
+    .about{padding:80px 20px;min-height:auto;} .about h2{font-size:28px;} .about-text{font-size:15px;}
+}
+@media(max-width:480px) {
+    .hero h1{font-size:22px;} .hero p{font-size:13px;} .tech-logo{height:28px;} .section-header h2{font-size:24px;} .projects{padding:50px 12px 60px;}
+    .project-card-content{padding:16px;} .project-icon{width:32px;height:32px;} .project-card h3{font-size:15px;} .project-card p{font-size:12px;}
+    .logo span{display:none;} .about h2{font-size:24px;} .about-text{font-size:14px;}
+}
+@media(max-height:500px) and (orientation:landscape) {
+    .hero{padding:50px 32px 16px;} .hero-banner-container{max-width:60%;} .hero h1{font-size:22px;} .hero p{font-size:12px;} .scroll-indicator{display:none;}
+    .tech-logo{height:22px;} .tech-label{font-size:7px;} .about{padding:30px 48px;min-height:auto;} .about h2{font-size:18px;} .about-text{font-size:11px;}
+    .projects{padding:24px 24px 32px;} .section-header{margin-bottom:16px;} .section-header h2{font-size:20px;} .project-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
+    nav{height:36px;} .theme-toggle{width:30px;height:30px;}
+}
     </style>
 </head>
 <body data-theme="light">
-
-<!-- ==============================================================================================================
-    HTML - STRUCTURE
-================================================================================================================-->
-
-    <canvas id="bgCanvas"></canvas>
-    <div class="signature"></div>
-
-    <div class="hero" id="hero">
-        <div class="hero-content" id="heroContent">
-            <img src="https://imgur.com/YMTbXUC.png" alt="En recherche de stage" class="hero-image">
-            <h1>Développeur Fullstack</h1>
-            <p>Actuellement en formation Concepteur Développeur d'Applications</p>
+<canvas id="bgCanvas"></canvas>
+<div class="hero" id="hero">
+    <div class="hero-content" id="heroContent">
+        <div class="hero-banner-container">
+            <img src="https://i.imgur.com/ooNNsR5.jpeg" alt="En recherche de stage" class="hero-image">
+            <div class="tech-carousel-wrapper">
+                <div class="tech-carousel" id="techCarousel">
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="tech-logo mastered"><span class="tech-label">Git</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="tech-logo mastered"><span class="tech-label">Python</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" class="tech-logo mastered"><span class="tech-label">Java</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" class="tech-logo mastered"><span class="tech-label">HTML5</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" class="tech-logo mastered"><span class="tech-label">CSS3</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="tech-logo mastered"><span class="tech-label">JS</span></div>
+                    <div class="tech-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/IntelliJ_IDEA_Icon.svg/1200px-IntelliJ_IDEA_Icon.svg.png" alt="IntelliJ" class="tech-logo mastered"><span class="tech-label">IntelliJ</span></div>
+                    <div class="tech-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/PyCharm_Icon.svg/1200px-PyCharm_Icon.svg.png" alt="PyCharm" class="tech-logo mastered"><span class="tech-label">PyCharm</span></div>
+                    <div class="tech-logo-item"><img src="https://upload.wikimedia.org/wikipedia/commons/7/79/Construct_3_Logo.svg" alt="Construct 3" class="tech-logo mastered"><span class="tech-label">Construct 3</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" class="tech-logo learning"><span class="tech-label">Docker</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.worldvectorlogo.com/logos/mamp-2.svg" alt="MAMP" class="tech-logo learning"><span class="tech-label">MAMP</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" alt="Angular" class="tech-logo learning"><span class="tech-label">Angular</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" class="tech-logo learning"><span class="tech-label">PostgreSQL</span></div>
+                    <div class="tech-logo-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring" class="tech-logo learning"><span class="tech-label">Spring</span></div>
+                </div>
+            </div>
         </div>
-        <div class="scroll-indicator" id="scrollIndicator">
-            <span>Scroll</span>
-        </div>
+        <h1>Développeur Fullstack</h1>
+        <p>Actuellement en formation Concepteur Développeur d'Applications</p>
     </div>
-
-    <div class="main-content">
-
-        <nav>
-            <div class="nav-content">
-                <div class="nav-left">
-                    <a href="https://www.linkedin.com/in/kewin-poszalski" target="_blank" class="logo">
-                        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        Kéwin POSZALSKI
-                    </a>
-                </div>
-                <div class="nav-right">
-                    <a href="#" onclick="openContactModal(event)">
-                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                        Contact
-                    </a>
-                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Changer de thème">
-                        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <div class="hero-spacer"></div>
-
-        <div class="about fade-section" id="about">
-            <span class="about-label">Qui suis-je</span>
-            <h2>Un parcours atypique</h2>
-            
-            <p class="about-text">
-                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion&Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
-            </p>
-            
-            <p class="about-text">
-                Beatmaker en studio, créateur de visuels, curieux de tout. J'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
-            </p>
-            
-            <p class="about-text">
-                Aujourd'hui, je code. Et c'est la suite logique : <strong>créer, résoudre, construire</strong>.
-            </p>
+    <div class="scroll-indicator" id="scrollIndicator"><span>Scroll</span></div>
+</div>
+<div class="main-content">
+    <nav><div class="nav-content">
+        <div class="nav-left"><a href="https://www.linkedin.com/in/kewin-poszalski" target="_blank" class="logo"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>Kéwin POSZALSKI</a></div>
+        <div class="nav-right">
+            <a href="#" onclick="openContactModal(event)"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Contact</a>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Changer de thème">
+                <svg class="icon-moon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
         </div>
-
-        <div class="projects fade-section" id="projets">
-            <div class="section-header">
-                <h2>Projets</h2>
-                <p>Mes réalisations durant la formation</p>
-            </div>
-            <div class="filters" id="filters"></div>
-            <div class="project-grid" id="projectGrid"></div>
-        </div>
-
+    </div></nav>
+    <div class="hero-spacer"></div>
+    <div class="about fade-section" id="about">
+        <span class="about-label">Qui suis-je</span>
+        <h2>Un parcours atypique</h2>
+        <p class="about-text"><strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion&Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> J'ai 34 ans et un parcours qui ne ressemble à aucun autre.</p>
+        <p class="about-text">Beatmaker en studio, créateur de visuels, curieux de tout. J'ai toujours eu <strong>une âme d'artiste doublée d'un esprit technique</strong>. De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.</p>
+        <p class="about-text">Aujourd'hui, je code. Et c'est la suite logique : <strong>Créer, résoudre, construire.</strong></p>
     </div>
-
-    <div class="modal-overlay" id="contactModal">
-        <div class="modal-contact">
-            <button class="modal-close" onclick="closeContactModal()">×</button>
-            <h2>Me contacter</h2>
-            <p>Envoyez-moi un message, je vous répondrai rapidement.</p>
-            <div class="success-message" id="successMessage">Message envoyé avec succès !</div>
-            <form id="contactForm" onsubmit="handleSubmit(event)">
-                <input type="hidden" name="access_key" value="b6edb842-33c1-46d8-bc89-5557946b6ae8">
-                <input type="hidden" name="subject" value="Nouveau message - Portfolio">
-                <div class="form-group">
-                    <label for="name">Votre nom</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Votre email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn" id="submitBtn">Envoyer</button>
-            </form>
-        </div>
+    <div class="projects fade-section" id="projets">
+        <div class="section-header"><h2>Projets</h2><p>Mes réalisations durant la formation</p></div>
+        <div class="filters" id="filters"></div>
+        <div class="project-grid" id="projectGrid"></div>
     </div>
-
-    <div class="project-viewer" id="projectViewer">
-        <div class="ide-window">
-            <div class="ide-header">
-                <div class="ide-title">
-                    <span class="ide-title-name" id="ideTitleName">Projet</span>
-                    <span class="ide-title-file" id="ideTitleFile">— script.py</span>
-                </div>
-                <div class="ide-actions">
-                    <a href="#" id="ideGitlabLink" class="ide-gitlab-btn" target="_blank" title="Voir sur GitLab">
-                        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.51L23 13.45a.84.84 0 0 1-.35.94z"/></svg>
-                    </a>
-                    <button class="ide-close" onclick="closeViewer()">×</button>
-                </div>
-            </div>
-            <div class="ide-body">
-                <div class="ide-editor">
-                    <div class="ide-line-numbers" id="ideLineNumbers"></div>
-                    <div class="ide-code-container" id="ideCodeContainer">
-                        <pre><code class="ide-code" id="ideCode"></code></pre>
-                    </div>
-                </div>
-            </div>
-            <div class="ide-statusbar">
-                <div class="ide-statusbar-left">
-                    <span id="ideLanguage">Python</span>
-                </div>
-                <div class="ide-statusbar-right">
-                    <span>UTF-8</span>
-                    <span>LF</span>
-                </div>
+</div>
+<div class="modal-overlay" id="contactModal">
+    <div class="modal-contact">
+        <button class="modal-close" onclick="closeContactModal()">×</button>
+        <h2>Me contacter</h2><p>Envoyez-moi un message, je vous répondrai rapidement.</p>
+        <div class="success-message" id="successMessage">Message envoyé avec succès !</div>
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+            <input type="hidden" name="access_key" value="b6edb842-33c1-46d8-bc89-5557946b6ae8">
+            <input type="hidden" name="subject" value="Nouveau message - Portfolio">
+            <div class="form-group"><label for="name">Votre nom</label><input type="text" id="name" name="name" required></div>
+            <div class="form-group"><label for="email">Votre email</label><input type="email" id="email" name="email" required></div>
+            <div class="form-group"><label for="message">Message</label><textarea id="message" name="message" required></textarea></div>
+            <button type="submit" class="submit-btn" id="submitBtn">Envoyer</button>
+        </form>
+    </div>
+</div>
+<div class="project-viewer" id="projectViewer">
+    <div class="ide-window">
+        <div class="ide-header">
+            <div class="ide-title"><span class="ide-title-name" id="ideTitleName">Projet</span><span class="ide-title-file" id="ideTitleFile">— script.py</span></div>
+            <div class="ide-actions">
+                <a href="#" id="ideGitlabLink" class="ide-gitlab-btn" target="_blank" title="Voir sur GitLab"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.51L23 13.45a.84.84 0 0 1-.35.94z"/></svg></a>
+                <button class="ide-close" onclick="closeViewer()">×</button>
             </div>
         </div>
+        <div class="ide-body"><div class="ide-editor"><div class="ide-line-numbers" id="ideLineNumbers"></div><div class="ide-code-container" id="ideCodeContainer"><pre><code class="ide-code" id="ideCode"></code></pre></div></div></div>
+        <div class="ide-statusbar"><div class="ide-statusbar-left"><span id="ideLanguage">Python</span></div><div class="ide-statusbar-right"><span>UTF-8</span><span>LF</span></div></div>
     </div>
-
-
+</div>
+<div class="web-viewer" id="webViewer">
+    <div class="web-window">
+        <div class="web-header">
+            <div class="web-title"><span class="web-title-name" id="webTitleName">Projet</span></div>
+            <div class="web-actions">
+                <a href="#" id="webExternalLink" class="web-external-btn" target="_blank" title="Ouvrir dans un nouvel onglet"><svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg></a>
+                <button class="web-close" onclick="closeWebViewer()">×</button>
+            </div>
+        </div>
+        <div class="web-body" id="webBody"><div class="web-loading" id="webLoading"><div class="spinner"></div><span>Chargement...</span></div></div>
+    </div>
+</div>
 <script>
-/*==================================================================================================================
-    9. JS - CONFIGURATION & VARIABLES
-==================================================================================================================*/
-
-    const DOM = {
-        body: document.body,
-        hero: document.getElementById('hero'),
-        heroContent: document.getElementById('heroContent'),
-        scrollIndicator: document.getElementById('scrollIndicator'),
-        canvas: document.getElementById('bgCanvas'),
-        projectGrid: document.getElementById('projectGrid'),
-        filters: document.getElementById('filters'),
-        contactModal: document.getElementById('contactModal'),
-        contactForm: document.getElementById('contactForm'),
-        successMessage: document.getElementById('successMessage'),
-        submitBtn: document.getElementById('submitBtn'),
-        projectViewer: document.getElementById('projectViewer'),
-        ideTitleName: document.getElementById('ideTitleName'),
-        ideTitleFile: document.getElementById('ideTitleFile'),
-        ideLineNumbers: document.getElementById('ideLineNumbers'),
-        ideCode: document.getElementById('ideCode'),
-        ideCodeContainer: document.getElementById('ideCodeContainer'),
-        ideLanguage: document.getElementById('ideLanguage'),
-        themeToggle: document.getElementById('themeToggle')
-    };
-
-    const ctx = DOM.canvas.getContext('2d');
-
-    let currentTheme = 'light';
-    let lastScrollY = 0;
-    let scrollTicking = false;
-    let parallaxOffset = 0;
-    let currentFilter = 'all';
-    let currentProject = null;
-
-    // Projects Data - avec URLs raw GitLab
-    const PROJECTS_DATA = [
-        {
-            title: 'Le Juste Prix',
-            description: 'Jeu du "Juste Prix" en Python. Un des premiers exercices de la formation CDA.',
-            language: 'python',
-            tags: ['Python'],
-            codeUrl: 'https://gitlab.com/dnszlsk/python-projects/le-juste-prix/-/raw/main/ECF%201%20k%C3%A9win_Le%20juste%20prix.py',
-            repoUrl: 'https://gitlab.com/dnszlsk/python-projects/le-juste-prix',
-            fileName: 'juste_prix.py'
-        },
-        {
-            title: 'Spy Hunter',
-            description: 'Script Python pour débusquer un espion dans un fichier CSV en analysant les langues et voyages.',
-            language: 'python',
-            tags: ['Python'],
-            codeUrl: 'https://gitlab.com/dnszlsk/python-projects/python-spy-hunter/-/raw/main/k%C3%A9win_D%C3%A9busquez%20l%27espion.py',
-            repoUrl: 'https://gitlab.com/dnszlsk/python-projects/python-spy-hunter',
-            fileName: 'spy_hunter.py'
-        },
-        {
-            title: 'Py2Java',
-            description: 'Guide de transition complet entre Python et Java - Commandes et syntaxes équivalentes.',
-            language: 'html',
-            tags: ['HTML'],
-            projectUrl: 'https://dnszlsk.github.io/py2java/'
-        },
-        {
-            title: 'Mot de Passe',
-            description: 'Vérificateur de mot de passe en Java avec validation de règles complexes.',
-            language: 'java',
-            tags: ['JAVA'],
-            codeUrl: 'https://gitlab.com/dnszlsk/java-projects/java-password-validator/-/raw/main/src/main/java/org/example/Main.java',
-            repoUrl: 'https://gitlab.com/dnszlsk/java-projects/java-password-validator',
-            fileName: 'Main.java'
-        },
-        {
-            title: 'Simulation Océanographique',
-            description: 'Analyse de données de marées à partir de fichiers CSV.',
-            language: 'java',
-            tags: ['JAVA'],
-            codeUrl: 'https://gitlab.com/dnszlsk/java-projects/simulation-oceanographique/-/raw/main/src/main/java/org/example/Main.java',
-            repoUrl: 'https://gitlab.com/dnszlsk/java-projects/simulation-oceanographique',
-            fileName: 'Main.java'
-        }
-    ];
-
-    // Cache pour préchargement
-    const codeCache = new Map();
-    let preloadStarted = false;
-
-    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-        || (window.screen.width <= 768 || window.screen.height <= 768);
-    const isMobile = isMobileDevice;
-    
-    const PARTICLES_CONFIG = {
-        count: isMobile ? 35 : 80,
-        maxDistance: isMobile ? 180 : 250,
-        pointerRadius: isMobile ? 80 : 120,
-        speed: isMobile ? 0.4 : 0.6,
-        parallaxFactor: 0.2
-    };
-
-
-/*==================================================================================================================
-    10. JS - THEME MANAGEMENT
-==================================================================================================================*/
-
-    function toggleTheme() {
-        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        DOM.body.setAttribute('data-theme', currentTheme);
-        localStorage.setItem('theme', currentTheme);
-        if (particleSystem) {
-            particleSystem.invalidateColorCache();
-        }
-    }
-
-    function initTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            currentTheme = savedTheme;
-            DOM.body.setAttribute('data-theme', currentTheme);
-        }
-    }
-
-
-/*==================================================================================================================
-    11. JS - HERO & SCROLL EFFECTS
-==================================================================================================================*/
-
-    function updateHeroOnScroll() {
-        const heroHeight = window.innerHeight;
-        const scrollProgress = Math.min(lastScrollY / (heroHeight * 0.8), 1);
-        const easedProgress = 1 - Math.pow(1 - scrollProgress, 2);
-        
-        DOM.heroContent.style.opacity = 1 - easedProgress;
-        DOM.scrollIndicator.style.opacity = Math.max(0, 1 - (scrollProgress * 1.5));
-        DOM.hero.style.visibility = easedProgress >= 0.99 ? 'hidden' : 'visible';
-        
-        scrollTicking = false;
-    }
-
-    function onScroll() {
-        lastScrollY = window.scrollY || window.pageYOffset;
-        
-        if (window.innerWidth > 768) {
-            parallaxOffset = lastScrollY * PARTICLES_CONFIG.parallaxFactor;
-        } else {
-            parallaxOffset = 0;
-        }
-        
-        if (!scrollTicking) {
-            requestAnimationFrame(updateHeroOnScroll);
-            scrollTicking = true;
-        }
-    }
-
-
-/*==================================================================================================================
-    12. JS - PARTICLES SYSTEM (OPTIMISÉ)
-==================================================================================================================*/
-
-    class Particle {
-        constructor(width, height) {
-            this.reset(width, height);
-        }
-
-        reset(width, height) {
-            this.r = Math.random() * 2 + 1.5;
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.baseY = this.y;
-            this.vx = (Math.random() - 0.5) * PARTICLES_CONFIG.speed;
-            this.vy = (Math.random() - 0.5) * PARTICLES_CONFIG.speed;
-            this.parallaxFactor = Math.random() * 0.2 + 0.05;
-        }
-
-        update(width, height, pointer) {
-            const dx = pointer.x - this.x;
-            const dy = pointer.y - this.y;
-            const distSq = dx * dx + dy * dy;
-            const radiusSq = PARTICLES_CONFIG.pointerRadius * PARTICLES_CONFIG.pointerRadius;
-            
-            if (distSq < radiusSq) {
-                const dist = Math.sqrt(distSq);
-                const force = (PARTICLES_CONFIG.pointerRadius - dist) / PARTICLES_CONFIG.pointerRadius;
-                const angle = Math.atan2(dy, dx);
-                this.x -= Math.cos(angle) * force * 2.5;
-                this.y -= Math.sin(angle) * force * 2.5;
-            }
-
-            this.y = this.baseY - (parallaxOffset * this.parallaxFactor);
-            this.x += this.vx;
-            this.baseY += this.vy;
-
-            if (this.x < -10) this.x = width + 10;
-            if (this.x > width + 10) this.x = -10;
-            if (this.baseY < -10) this.baseY = height + 10;
-            if (this.baseY > height + 10) this.baseY = -10;
-        }
-    }
-
-    class ParticleSystem {
-        constructor(canvas) {
-            this.canvas = canvas;
-            this.particles = [];
-            this.pointer = { x: -200, y: -200 };
-            this.isRunning = true;
-            this.lastFrameTime = 0;
-            this.targetFPS = 60;
-            this.frameInterval = 1000 / this.targetFPS;
-            this.cachedColors = null;
-            this.colorCacheTime = 0;
-            
-            this.currentColors = null;
-            this.targetColors = null;
-            this.colorTransitionProgress = 1;
-            this.colorTransitionDuration = 1800;
-            this.colorTransitionStart = 0;
-            
-            this.resize();
-            this.createParticles();
-        }
-
-        resize() {
-            if (window.visualViewport) {
-                this.width = this.canvas.width = Math.round(window.visualViewport.width);
-                this.height = this.canvas.height = Math.round(window.visualViewport.height);
-            } else {
-                this.width = this.canvas.width = window.innerWidth;
-                this.height = this.canvas.height = window.innerHeight;
-            }
-        }
-
-        createParticles() {
-            this.particles = [];
-            for (let i = 0; i < PARTICLES_CONFIG.count; i++) {
-                this.particles.push(new Particle(this.width, this.height));
-            }
-        }
-
-        getRawColors() {
-            const style = getComputedStyle(document.documentElement);
-            return {
-                bg: currentTheme === 'dark' ? [0, 0, 0] : [245, 245, 247],
-                particleColor: this.parseRgba(style.getPropertyValue('--particle-color').trim()),
-                particleGlow: style.getPropertyValue('--particle-glow').trim(),
-                lineColor1: style.getPropertyValue('--line-color-1').trim(),
-                lineColor2: style.getPropertyValue('--line-color-2').trim(),
-                lineColor3: style.getPropertyValue('--line-color-3').trim()
-            };
-        }
-
-        parseRgba(color) {
-            const match = color.match(/[\d.]+/g);
-            if (match) {
-                return match.map(Number);
-            }
-            return [255, 255, 255, 1];
-        }
-
-        lerp(start, end, progress) {
-            return start + (end - start) * progress;
-        }
-
-        lerpColor(color1, color2, progress) {
-            return [
-                Math.round(this.lerp(color1[0], color2[0], progress)),
-                Math.round(this.lerp(color1[1], color2[1], progress)),
-                Math.round(this.lerp(color1[2], color2[2], progress))
-            ];
-        }
-
-        easeOutCubic(t) {
-            return 1 - Math.pow(1 - t, 3);
-        }
-
-        transitionColors() {
-            if (!this.currentColors) {
-                this.currentColors = this.getRawColors();
-                this.targetColors = this.currentColors;
-                return;
-            }
-            
-            this.targetColors = this.getRawColors();
-            this.colorTransitionProgress = 0;
-            this.colorTransitionStart = performance.now();
-        }
-
-        getColors() {
-            if (!this.currentColors) {
-                this.currentColors = this.getRawColors();
-                this.targetColors = this.currentColors;
-            }
-
-            if (this.colorTransitionProgress < 1) {
-                const elapsed = performance.now() - this.colorTransitionStart;
-                this.colorTransitionProgress = Math.min(elapsed / this.colorTransitionDuration, 1);
-                const easedProgress = this.easeOutCubic(this.colorTransitionProgress);
-
-                const bg = this.lerpColor(this.currentColors.bg, this.targetColors.bg, easedProgress);
-                
-                if (this.colorTransitionProgress >= 1) {
-                    this.currentColors = this.targetColors;
-                }
-
-                return {
-                    bg: `rgb(${bg[0]},${bg[1]},${bg[2]})`,
-                    particleColor: this.targetColors.particleColor.length === 4 
-                        ? `rgba(${this.targetColors.particleColor.join(',')})` 
-                        : `rgba(${this.targetColors.particleColor.join(',')},1)`,
-                    particleGlow: this.targetColors.particleGlow,
-                    lineColor1: this.targetColors.lineColor1,
-                    lineColor2: this.targetColors.lineColor2,
-                    lineColor3: this.targetColors.lineColor3
-                };
-            }
-
-            return {
-                bg: `rgb(${this.currentColors.bg[0]},${this.currentColors.bg[1]},${this.currentColors.bg[2]})`,
-                particleColor: this.currentColors.particleColor.length === 4 
-                    ? `rgba(${this.currentColors.particleColor.join(',')})` 
-                    : `rgba(${this.currentColors.particleColor.join(',')},1)`,
-                particleGlow: this.currentColors.particleGlow,
-                lineColor1: this.currentColors.lineColor1,
-                lineColor2: this.currentColors.lineColor2,
-                lineColor3: this.currentColors.lineColor3
-            };
-        }
-
-        invalidateColorCache() {
-            this.transitionColors();
-        }
-
-        draw(ctx) {
-            const colors = this.getColors();
-            const particles = this.particles;
-            const len = particles.length;
-            const maxDist = PARTICLES_CONFIG.maxDistance;
-            const maxDistSq = maxDist * maxDist;
-
-            for (let i = 0; i < len; i++) {
-                particles[i].update(this.width, this.height, this.pointer);
-            }
-
-            ctx.lineWidth = 1;
-            for (let a = 0; a < len; a++) {
-                const pA = particles[a];
-                for (let b = a + 1; b < len; b++) {
-                    const pB = particles[b];
-                    const dx = pA.x - pB.x;
-                    const dy = pA.y - pB.y;
-                    const distSq = dx * dx + dy * dy;
-
-                    if (distSq < maxDistSq) {
-                        const opacity = (1 - Math.sqrt(distSq) / maxDist) * 0.7;
-                        
-                        if (isMobile) {
-                            ctx.strokeStyle = `rgba(${colors.lineColor1},${opacity})`;
-                        } else {
-                            const gradient = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
-                            gradient.addColorStop(0, `rgba(${colors.lineColor1},${opacity})`);
-                            gradient.addColorStop(0.5, `rgba(${colors.lineColor2},${opacity})`);
-                            gradient.addColorStop(1, `rgba(${colors.lineColor3},${opacity})`);
-                            ctx.strokeStyle = gradient;
-                        }
-                        
-                        ctx.beginPath();
-                        ctx.moveTo(pA.x, pA.y);
-                        ctx.lineTo(pB.x, pB.y);
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            if (!isMobile) {
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = colors.particleGlow;
-            }
-            ctx.fillStyle = colors.particleColor;
-            for (let i = 0; i < len; i++) {
-                const p = particles[i];
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            if (!isMobile) {
-                ctx.shadowBlur = 0;
-            }
-        }
-    }
-
-    const particleSystem = new ParticleSystem(DOM.canvas);
-
-    let animationId = null;
-    
-    function animateParticles(timestamp) {
-        if (!particleSystem.isRunning) {
-            animationId = requestAnimationFrame(animateParticles);
-            return;
-        }
-
-        const elapsed = timestamp - particleSystem.lastFrameTime;
-        if (elapsed < particleSystem.frameInterval) {
-            animationId = requestAnimationFrame(animateParticles);
-            return;
-        }
-        particleSystem.lastFrameTime = timestamp - (elapsed % particleSystem.frameInterval);
-
-        const colors = particleSystem.getColors();
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, DOM.canvas.width, DOM.canvas.height);
-        particleSystem.draw(ctx);
-        animationId = requestAnimationFrame(animateParticles);
-    }
-
-    document.addEventListener('visibilitychange', () => {
-        particleSystem.isRunning = !document.hidden;
-    });
-
-
-/*==================================================================================================================
-    13. JS - PROJECTS MANAGEMENT
-==================================================================================================================*/
-
-    function createProjectCard(project) {
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        
-        // Si projectUrl existe → lien direct, sinon → viewer avec fetch
-        if (project.projectUrl) {
-            card.onclick = () => window.open(project.projectUrl, '_blank');
-        } else if (project.codeUrl) {
-            card.onclick = () => openProject(project);
-        }
-        
-        card.innerHTML = `
-            <div class="project-card-content">
-                <div class="project-icon ${project.language}"></div>
-                <h3>${project.title}</h3>
-                <p>${project.description}</p>
-                <div class="project-tags">
-                    ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                </div>
-            </div>
-        `;
-        
-        return card;
-    }
-
-    function renderProjects() {
-        DOM.projectGrid.innerHTML = '';
-        
-        const filtered = currentFilter === 'all' 
-            ? PROJECTS_DATA 
-            : PROJECTS_DATA.filter(p => p.language === currentFilter);
-
-        if (filtered.length === 0) {
-            DOM.projectGrid.innerHTML = `
-                <div class="empty-state">
-                    <h3>Aucun projet trouvé</h3>
-                    <p>Aucun projet ne correspond à ce filtre.</p>
-                </div>
-            `;
-            return;
-        }
-
-        filtered.forEach(project => {
-            DOM.projectGrid.appendChild(createProjectCard(project));
-        });
-    }
-
-    function initFilters() {
-        const languages = ['all', 'python', 'java', 'html', 'other'];
-        const labels = { all: 'Tous', python: 'PYTHON', java: 'JAVA', html: 'HTML', other: 'AUTRE' };
-
-        languages.forEach(lang => {
-            const btn = document.createElement('button');
-            btn.className = `filter-btn ${lang === 'all' ? 'active' : ''}`;
-            btn.textContent = labels[lang];
-            btn.onclick = () => {
-                currentFilter = lang;
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                renderProjects();
-            };
-            DOM.filters.appendChild(btn);
-        });
-    }
-
-    /**
-     * Précharge tous les codes GitLab en arrière-plan
-     */
-    async function preloadAllCodes() {
-        if (preloadStarted) return;
-        preloadStarted = true;
-        
-        const projectsWithCode = PROJECTS_DATA.filter(p => p.codeUrl);
-        
-        const promises = projectsWithCode.map(async (project) => {
-            try {
-                const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl);
-                const response = await fetch(proxyUrl);
-                
-                if (response.ok) {
-                    const code = await response.text();
-                    codeCache.set(project.codeUrl, { success: true, code });
-                    console.log('✓ Préchargé:', project.title);
-                }
-            } catch (error) {
-                console.warn('✗ Échec préchargement:', project.title);
-            }
-        });
-        
-        await Promise.all(promises);
-        console.log('✓ Préchargement terminé');
-    }
-
-    /**
-     * Ouvre le viewer IDE et fetch le code depuis GitLab
-     */
-    async function openProject(project) {
-        currentProject = project;
-        
-        const langMap = {
-            java: { text: 'Java', hljs: 'java' },
-            python: { text: 'Python', hljs: 'python' },
-            html: { text: 'HTML', hljs: 'html' }
-        };
-        
-        const lang = langMap[project.language] || { text: 'Autre', hljs: 'plaintext' };
-
-        // Update header
-        DOM.ideTitleName.textContent = project.title;
-        DOM.ideTitleFile.textContent = '— ' + (project.fileName || 'code');
-        DOM.ideLanguage.textContent = lang.text;
-        
-        // Update GitLab link
-        const gitlabLink = document.getElementById('ideGitlabLink');
-        if (project.repoUrl) {
-            gitlabLink.href = project.repoUrl;
-            gitlabLink.style.display = 'flex';
-        } else {
-            gitlabLink.style.display = 'none';
-        }
-        
-        DOM.projectViewer.classList.add('active');
-
-        // Vérifier le cache d'abord
-        const cached = codeCache.get(project.codeUrl);
-        if (cached && cached.success) {
-            // Affichage instantané depuis le cache
-            DOM.ideCodeContainer.innerHTML = `<pre><code class="ide-code language-${lang.hljs}" id="ideCode"></code></pre>`;
-            const codeElement = document.getElementById('ideCode');
-            codeElement.textContent = cached.code;
-            
-            const lines = cached.code.split('\n').length;
-            DOM.ideLineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => 
-                `<span>${i + 1}</span>`
-            ).join('');
-            
-            hljs.highlightElement(codeElement);
-            return;
-        }
-        
-        // Afficher le loader si pas en cache
-        DOM.ideCodeContainer.innerHTML = `
-            <div class="ide-loading">
-                <div class="spinner"></div>
-                <span>Chargement du code...</span>
-            </div>
-        `;
-        DOM.ideLineNumbers.innerHTML = '';
-
-        try {
-            // Proxy CORS pour contourner les restrictions GitLab
-            const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl);
-            const response = await fetch(proxyUrl);
-            
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
-            }
-            
-            const code = await response.text();
-            
-            // Mettre en cache
-            codeCache.set(project.codeUrl, { success: true, code });
-            
-            // Recréer la structure du code
-            DOM.ideCodeContainer.innerHTML = `<pre><code class="ide-code language-${lang.hljs}" id="ideCode"></code></pre>`;
-            const codeElement = document.getElementById('ideCode');
-            codeElement.textContent = code;
-            
-            // Generate line numbers
-            const lines = code.split('\n').length;
-            DOM.ideLineNumbers.innerHTML = Array.from({ length: lines }, (_, i) => 
-                `<span>${i + 1}</span>`
-            ).join('');
-            
-            // Syntax highlighting
-            hljs.highlightElement(codeElement);
-            
-        } catch (error) {
-            console.error('Erreur fetch:', error);
-            DOM.ideCodeContainer.innerHTML = `
-                <div class="ide-error">
-                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="8" x2="12" y2="12"/>
-                        <line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
-                    <span>Erreur lors du chargement du code</span>
-                    <small>Vérifiez que le repo est public</small>
-                </div>
-            `;
-            DOM.ideLineNumbers.innerHTML = '';
-        }
-    }
-
-    function closeViewer() {
-        DOM.projectViewer.classList.remove('active');
-        currentProject = null;
-    }
-
-
-/*==================================================================================================================
-    14. JS - CONTACT FORM
-==================================================================================================================*/
-
-    function openContactModal(e) {
-        e.preventDefault();
-        DOM.contactModal.classList.add('active');
-    }
-
-    function closeContactModal() {
-        DOM.contactModal.classList.remove('active');
-        DOM.successMessage.classList.remove('show');
-        DOM.contactForm.reset();
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        const form = e.target;
-        const submitBtn = document.getElementById('submitBtn');
-        const successMessage = document.getElementById('successMessage');
-        
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Envoi en cours...';
-
-        fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(Object.fromEntries(new FormData(form)))
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                successMessage.classList.add('show');
-                form.reset();
-                submitBtn.textContent = 'Envoyer';
-                submitBtn.disabled = false;
-                setTimeout(closeContactModal, 2000);
-            } else {
-                throw new Error('Erreur');
-            }
-        })
-        .catch(() => {
-            alert('Erreur lors de l\'envoi. Veuillez réessayer.');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Envoyer';
-        });
-    }
-
-
-/*==================================================================================================================
-    15. JS - INITIALIZATION & EVENT LISTENERS
-==================================================================================================================*/
-
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-
-    function init() {
-        window.scrollTo(0, 0);
-        
-        initTheme();
-        initFilters();
-        renderProjects();
-        animateParticles(0);
-        initScrollAnimations();
-        
-        // Précharger les codes après 1 seconde
-        setTimeout(preloadAllCodes, 1000);
-    }
-
-    function initScrollAnimations() {
-        const sections = document.querySelectorAll('.fade-section');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const rect = entry.boundingClientRect;
-                const windowHeight = window.innerHeight;
-                
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    entry.target.classList.remove('fade-out');
-                } else {
-                    if (rect.bottom < windowHeight * 0.2) {
-                        entry.target.classList.add('fade-out');
-                        entry.target.classList.remove('visible');
-                    }
-                    else if (rect.top > windowHeight * 0.8) {
-                        entry.target.classList.remove('visible');
-                        entry.target.classList.remove('fade-out');
-                    }
-                }
-            });
-        }, {
-            threshold: [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7, 1],
-            rootMargin: '-5% 0px -5% 0px'
-        });
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    let resizeTimeout;
-    const handleResize = () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            particleSystem.resize();
-        }, 150);
-    };
-    
-    window.addEventListener('resize', handleResize, { passive: true });
-    
-    if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', handleResize, { passive: true });
-    }
-    
-    window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-            particleSystem.resize();
-        }, 400);
-    });
-
-    window.addEventListener('mousemove', e => {
-        particleSystem.pointer.x = e.clientX;
-        particleSystem.pointer.y = e.clientY;
-    }, { passive: true });
-
-    window.addEventListener('mouseleave', () => {
-        particleSystem.pointer.x = -200;
-        particleSystem.pointer.y = -200;
-    }, { passive: true });
-
-    window.addEventListener('touchmove', e => {
-        particleSystem.pointer.x = e.touches[0].clientX;
-        particleSystem.pointer.y = e.touches[0].clientY;
-    }, { passive: true });
-
-    window.addEventListener('touchend', () => {
-        particleSystem.pointer.x = -200;
-        particleSystem.pointer.y = -200;
-    }, { passive: true });
-
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            closeViewer();
-            closeContactModal();
-        }
-    });
-
-    DOM.contactModal.addEventListener('click', e => {
-        if (e.target === DOM.contactModal) closeContactModal();
-    });
-
-    DOM.projectViewer.addEventListener('click', e => {
-        if (e.target === DOM.projectViewer) closeViewer();
-    });
-
-    document.addEventListener('DOMContentLoaded', init);
-    
-    window.addEventListener('load', () => {
-        window.scrollTo(0, 0);
-    });
-
+/*== 11. CONFIG ==*/
+const DOM={body:document.body,hero:document.getElementById('hero'),heroContent:document.getElementById('heroContent'),scrollIndicator:document.getElementById('scrollIndicator'),canvas:document.getElementById('bgCanvas'),projectGrid:document.getElementById('projectGrid'),filters:document.getElementById('filters'),contactModal:document.getElementById('contactModal'),contactForm:document.getElementById('contactForm'),successMessage:document.getElementById('successMessage'),submitBtn:document.getElementById('submitBtn'),projectViewer:document.getElementById('projectViewer'),ideTitleName:document.getElementById('ideTitleName'),ideTitleFile:document.getElementById('ideTitleFile'),ideLineNumbers:document.getElementById('ideLineNumbers'),ideCode:document.getElementById('ideCode'),ideCodeContainer:document.getElementById('ideCodeContainer'),ideLanguage:document.getElementById('ideLanguage'),webViewer:document.getElementById('webViewer'),webTitleName:document.getElementById('webTitleName'),webExternalLink:document.getElementById('webExternalLink'),webBody:document.getElementById('webBody'),webLoading:document.getElementById('webLoading')};
+const ctx=DOM.canvas.getContext('2d');
+let currentTheme='light',lastScrollY=0,scrollTicking=false,parallaxOffset=0,currentFilter='all',currentProject=null;
+const PROJECTS_DATA=[
+    {title:'Le Juste Prix',description:'Jeu du "Juste Prix" en Python. Un des premiers exercices de la formation CDA.',language:'python',category:'python',tags:['Python'],codeUrl:'https://gitlab.com/dnszlsk/python-projects/le-juste-prix/-/raw/main/ECF%201%20k%C3%A9win_Le%20juste%20prix.py',repoUrl:'https://gitlab.com/dnszlsk/python-projects/le-juste-prix',fileName:'juste_prix.py'},
+    {title:'Spy Hunter',description:'Script Python pour débusquer un espion dans un fichier CSV en analysant les langues et voyages.',language:'python',category:'python',tags:['Python'],codeUrl:'https://gitlab.com/dnszlsk/python-projects/python-spy-hunter/-/raw/main/k%C3%A9win_D%C3%A9busquez%20l%27espion.py',repoUrl:'https://gitlab.com/dnszlsk/python-projects/python-spy-hunter',fileName:'spy_hunter.py'},
+    {title:'Mot de Passe',description:'Vérificateur de mot de passe en Java avec validation de règles complexes.',language:'java',category:'java',tags:['JAVA'],codeUrl:'https://gitlab.com/dnszlsk/java-projects/java-password-validator/-/raw/main/src/main/java/org/example/Main.java',repoUrl:'https://gitlab.com/dnszlsk/java-projects/java-password-validator',fileName:'Main.java'},
+    {title:'Simulation Océanographique',description:'Analyse de données de marées à partir de fichiers CSV.',language:'java',category:'java',tags:['JAVA'],codeUrl:'https://gitlab.com/dnszlsk/java-projects/simulation-oceanographique/-/raw/main/src/main/java/org/example/Main.java',repoUrl:'https://gitlab.com/dnszlsk/java-projects/simulation-oceanographique',fileName:'Main.java'},
+    {title:'Py2Java',description:'Guide de transition complet entre Python et Java - Commandes et syntaxes équivalentes.',language:'html',category:'html',tags:['HTML'],viewerType:'web',projectUrl:'https://dnszlsk.github.io/py2java/'}
+];
+const codeCache=new Map();
+const isMobile=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)||window.screen.width<=768;
+const PARTICLES_CONFIG={count:isMobile?35:80,maxDistance:isMobile?180:250,pointerRadius:isMobile?80:120,speed:isMobile?0.4:0.6,parallaxFactor:0.2};
+
+/*== 12. THEME ==*/
+function toggleTheme(){currentTheme=currentTheme==='dark'?'light':'dark';DOM.body.setAttribute('data-theme',currentTheme);localStorage.setItem('theme',currentTheme);if(particleSystem)particleSystem.invalidateColorCache();}
+function initTheme(){const saved=localStorage.getItem('theme');if(saved){currentTheme=saved;DOM.body.setAttribute('data-theme',currentTheme);}}
+
+/*== 13. SCROLL ==*/
+function updateHeroOnScroll(){const heroHeight=window.innerHeight;const scrollProgress=Math.min(lastScrollY/(heroHeight*0.8),1);const easedProgress=1-Math.pow(1-scrollProgress,2);DOM.heroContent.style.opacity=1-easedProgress;DOM.scrollIndicator.style.opacity=Math.max(0,1-(scrollProgress*1.5));DOM.hero.style.visibility=easedProgress>=0.99?'hidden':'visible';scrollTicking=false;}
+function onScroll(){lastScrollY=window.scrollY||window.pageYOffset;parallaxOffset=window.innerWidth>768?lastScrollY*PARTICLES_CONFIG.parallaxFactor:0;if(!scrollTicking){requestAnimationFrame(updateHeroOnScroll);scrollTicking=true;}}
+
+/*== 14. PARTICLES ==*/
+class Particle{constructor(w,h){this.reset(w,h);}reset(w,h){this.r=Math.random()*2+1.5;this.x=Math.random()*w;this.y=Math.random()*h;this.baseY=this.y;this.vx=(Math.random()-0.5)*PARTICLES_CONFIG.speed;this.vy=(Math.random()-0.5)*PARTICLES_CONFIG.speed;this.parallaxFactor=Math.random()*0.2+0.05;}update(w,h,pointer){const dx=pointer.x-this.x,dy=pointer.y-this.y,distSq=dx*dx+dy*dy,radiusSq=PARTICLES_CONFIG.pointerRadius**2;if(distSq<radiusSq){const dist=Math.sqrt(distSq),force=(PARTICLES_CONFIG.pointerRadius-dist)/PARTICLES_CONFIG.pointerRadius,angle=Math.atan2(dy,dx);this.x-=Math.cos(angle)*force*2.5;this.y-=Math.sin(angle)*force*2.5;}this.y=this.baseY-(parallaxOffset*this.parallaxFactor);this.x+=this.vx;this.baseY+=this.vy;if(this.x<-10)this.x=w+10;if(this.x>w+10)this.x=-10;if(this.baseY<-10)this.baseY=h+10;if(this.baseY>h+10)this.baseY=-10;}}
+class ParticleSystem{constructor(canvas){this.canvas=canvas;this.particles=[];this.pointer={x:-200,y:-200};this.isRunning=true;this.lastFrameTime=0;this.frameInterval=1000/60;this.currentColors=null;this.targetColors=null;this.colorTransitionProgress=1;this.colorTransitionDuration=1800;this.resize();this.createParticles();}resize(){this.width=this.canvas.width=window.visualViewport?.width||window.innerWidth;this.height=this.canvas.height=window.visualViewport?.height||window.innerHeight;}createParticles(){this.particles=[];for(let i=0;i<PARTICLES_CONFIG.count;i++)this.particles.push(new Particle(this.width,this.height));}getRawColors(){const style=getComputedStyle(document.documentElement);return{bg:currentTheme==='dark'?[0,0,0]:[245,245,247],particleColor:this.parseRgba(style.getPropertyValue('--particle-color').trim()),particleGlow:style.getPropertyValue('--particle-glow').trim(),lineColor1:style.getPropertyValue('--line-color-1').trim(),lineColor2:style.getPropertyValue('--line-color-2').trim(),lineColor3:style.getPropertyValue('--line-color-3').trim()};}parseRgba(c){const m=c.match(/[\d.]+/g);return m?m.map(Number):[255,255,255,1];}lerp(a,b,p){return a+(b-a)*p;}lerpColor(c1,c2,p){return[Math.round(this.lerp(c1[0],c2[0],p)),Math.round(this.lerp(c1[1],c2[1],p)),Math.round(this.lerp(c1[2],c2[2],p))];}easeOutCubic(t){return 1-Math.pow(1-t,3);}transitionColors(){if(!this.currentColors){this.currentColors=this.getRawColors();this.targetColors=this.currentColors;return;}this.targetColors=this.getRawColors();this.colorTransitionProgress=0;this.colorTransitionStart=performance.now();}getColors(){if(!this.currentColors){this.currentColors=this.getRawColors();this.targetColors=this.currentColors;}if(this.colorTransitionProgress<1){const elapsed=performance.now()-this.colorTransitionStart;this.colorTransitionProgress=Math.min(elapsed/this.colorTransitionDuration,1);const ep=this.easeOutCubic(this.colorTransitionProgress);const bg=this.lerpColor(this.currentColors.bg,this.targetColors.bg,ep);if(this.colorTransitionProgress>=1)this.currentColors=this.targetColors;return{bg:`rgb(${bg[0]},${bg[1]},${bg[2]})`,particleColor:`rgba(${this.targetColors.particleColor.join(',')})`,particleGlow:this.targetColors.particleGlow,lineColor1:this.targetColors.lineColor1,lineColor2:this.targetColors.lineColor2,lineColor3:this.targetColors.lineColor3};}return{bg:`rgb(${this.currentColors.bg.join(',')})`,particleColor:`rgba(${this.currentColors.particleColor.join(',')})`,particleGlow:this.currentColors.particleGlow,lineColor1:this.currentColors.lineColor1,lineColor2:this.currentColors.lineColor2,lineColor3:this.currentColors.lineColor3};}invalidateColorCache(){this.transitionColors();}draw(ctx){const colors=this.getColors(),particles=this.particles,len=particles.length,maxDist=PARTICLES_CONFIG.maxDistance,maxDistSq=maxDist*maxDist;for(let i=0;i<len;i++)particles[i].update(this.width,this.height,this.pointer);ctx.lineWidth=1;for(let a=0;a<len;a++){const pA=particles[a];for(let b=a+1;b<len;b++){const pB=particles[b];const dx=pA.x-pB.x,dy=pA.y-pB.y,distSq=dx*dx+dy*dy;if(distSq<maxDistSq){const opacity=(1-Math.sqrt(distSq)/maxDist)*0.7;if(isMobile){ctx.strokeStyle=`rgba(${colors.lineColor1},${opacity})`;}else{const g=ctx.createLinearGradient(pA.x,pA.y,pB.x,pB.y);g.addColorStop(0,`rgba(${colors.lineColor1},${opacity})`);g.addColorStop(0.5,`rgba(${colors.lineColor2},${opacity})`);g.addColorStop(1,`rgba(${colors.lineColor3},${opacity})`);ctx.strokeStyle=g;}ctx.beginPath();ctx.moveTo(pA.x,pA.y);ctx.lineTo(pB.x,pB.y);ctx.stroke();}}}if(!isMobile){ctx.shadowBlur=8;ctx.shadowColor=colors.particleGlow;}ctx.fillStyle=colors.particleColor;for(let i=0;i<len;i++){const p=particles[i];ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}if(!isMobile)ctx.shadowBlur=0;}}
+const particleSystem=new ParticleSystem(DOM.canvas);
+function animateParticles(ts){if(!particleSystem.isRunning){requestAnimationFrame(animateParticles);return;}const elapsed=ts-particleSystem.lastFrameTime;if(elapsed<particleSystem.frameInterval){requestAnimationFrame(animateParticles);return;}particleSystem.lastFrameTime=ts-(elapsed%particleSystem.frameInterval);const colors=particleSystem.getColors();ctx.fillStyle=colors.bg;ctx.fillRect(0,0,DOM.canvas.width,DOM.canvas.height);particleSystem.draw(ctx);requestAnimationFrame(animateParticles);}
+document.addEventListener('visibilitychange',()=>{particleSystem.isRunning=!document.hidden;});
+
+/*== 15. PROJECTS ==*/
+function createProjectCard(p){const card=document.createElement('div');card.className='project-card';if(p.viewerType==='web')card.onclick=()=>openWebViewer(p);else if(p.codeUrl)card.onclick=()=>openProject(p);else if(p.projectUrl)card.onclick=()=>window.open(p.projectUrl,'_blank');card.innerHTML=`<div class="project-card-content"><div class="project-icon ${p.language}"></div><h3>${p.title}</h3><p>${p.description}</p></div>`;return card;}
+function renderProjects(){DOM.projectGrid.innerHTML='';const filtered=currentFilter==='all'?PROJECTS_DATA:PROJECTS_DATA.filter(p=>p.category===currentFilter);if(filtered.length===0){DOM.projectGrid.innerHTML='<div class="empty-state"><h3>Aucun projet trouvé</h3><p>Aucun projet ne correspond à ce filtre.</p></div>';return;}filtered.forEach(p=>DOM.projectGrid.appendChild(createProjectCard(p)));}
+function initFilters(){const cats=['all','python','java','html'],labels={all:'Tous',python:'Python',java:'Java',html:'HTML'};cats.forEach(cat=>{const btn=document.createElement('button');btn.className=`filter-btn ${cat==='all'?'active':''}`;btn.textContent=labels[cat];btn.onclick=()=>{currentFilter=cat;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderProjects();};DOM.filters.appendChild(btn);});}
+async function preloadAllCodes(){const projects=PROJECTS_DATA.filter(p=>p.codeUrl);await Promise.all(projects.map(async p=>{try{const res=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(p.codeUrl));if(res.ok)codeCache.set(p.codeUrl,{success:true,code:await res.text()});}catch(e){}}));}
+async function openProject(p){currentProject=p;const langMap={java:{text:'Java',hljs:'java'},python:{text:'Python',hljs:'python'},html:{text:'HTML',hljs:'html'}};const lang=langMap[p.language]||{text:'Autre',hljs:'plaintext'};DOM.ideTitleName.textContent=p.title;DOM.ideTitleFile.textContent='— '+(p.fileName||'code');DOM.ideLanguage.textContent=lang.text;const gitlabLink=document.getElementById('ideGitlabLink');if(p.repoUrl){gitlabLink.href=p.repoUrl;gitlabLink.style.display='flex';}else gitlabLink.style.display='none';DOM.projectViewer.classList.add('active');const cached=codeCache.get(p.codeUrl);if(cached?.success){displayCode(cached.code,lang.hljs);return;}DOM.ideCodeContainer.innerHTML='<div class="ide-loading"><div class="spinner"></div><span>Chargement...</span></div>';DOM.ideLineNumbers.innerHTML='';try{const res=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(p.codeUrl));if(!res.ok)throw new Error();const code=await res.text();codeCache.set(p.codeUrl,{success:true,code});displayCode(code,lang.hljs);}catch(e){DOM.ideCodeContainer.innerHTML='<div class="ide-error"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Erreur de chargement</span></div>';}}
+function displayCode(code,lang){DOM.ideCodeContainer.innerHTML=`<pre><code class="ide-code language-${lang}" id="ideCode"></code></pre>`;const el=document.getElementById('ideCode');el.textContent=code;DOM.ideLineNumbers.innerHTML=code.split('\n').map((_,i)=>`<span>${i+1}</span>`).join('');hljs.highlightElement(el);}
+function closeViewer(){DOM.projectViewer.classList.remove('active');currentProject=null;}
+function openWebViewer(p){DOM.webTitleName.textContent=p.title;DOM.webExternalLink.href=p.projectUrl;DOM.webLoading.style.display='flex';const existingIframe=DOM.webBody.querySelector('iframe');if(existingIframe)existingIframe.remove();const iframe=document.createElement('iframe');iframe.style.opacity='0';iframe.style.transition='opacity 0.3s';iframe.src=p.projectUrl;iframe.onload=()=>{DOM.webLoading.style.display='none';iframe.style.opacity='1';};DOM.webBody.appendChild(iframe);DOM.webViewer.classList.add('active');}
+function closeWebViewer(){const iframe=DOM.webBody.querySelector('iframe');if(iframe)iframe.remove();DOM.webViewer.classList.remove('active');}
+
+/*== 16. CONTACT ==*/
+function openContactModal(e){e.preventDefault();DOM.contactModal.classList.add('active');}
+function closeContactModal(){DOM.contactModal.classList.remove('active');DOM.successMessage.classList.remove('show');DOM.contactForm.reset();}
+function handleSubmit(e){e.preventDefault();const form=e.target;DOM.submitBtn.disabled=true;DOM.submitBtn.textContent='Envoi...';fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(form)))}).then(r=>r.json()).then(d=>{if(d.success){DOM.successMessage.classList.add('show');form.reset();DOM.submitBtn.textContent='Envoyer';DOM.submitBtn.disabled=false;setTimeout(closeContactModal,2000);}else throw new Error();}).catch(()=>{alert('Erreur lors de l\'envoi.');DOM.submitBtn.disabled=false;DOM.submitBtn.textContent='Envoyer';});}
+
+/*== 17. INIT ==*/
+function initCarousel(){const carousel=document.getElementById('techCarousel');if(!carousel)return;const items=Array.from(carousel.querySelectorAll('.tech-logo-item')),count=items.length;for(let i=0;i<2;i++)items.forEach(item=>carousel.appendChild(item.cloneNode(true)));let pos=0;const speed=0.5;function getSetWidth(){const first=carousel.firstElementChild;return first?(first.offsetWidth+30)*count:0;}function animate(){pos-=speed;const setW=getSetWidth();if(setW>0&&pos<=-setW)pos+=setW;carousel.style.transform=`translateX(${pos}px)`;requestAnimationFrame(animate);}animate();}
+function initScrollAnimations(){const sections=document.querySelectorAll('.fade-section');const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{const rect=e.boundingClientRect,wh=window.innerHeight;if(e.isIntersecting){e.target.classList.add('visible');e.target.classList.remove('fade-out');}else{if(rect.bottom<wh*0.2){e.target.classList.add('fade-out');e.target.classList.remove('visible');}else if(rect.top>wh*0.8){e.target.classList.remove('visible','fade-out');}}});},{threshold:[0,0.1,0.3,0.5,1],rootMargin:'-5% 0px'});sections.forEach(s=>obs.observe(s));}
+if('scrollRestoration' in history)history.scrollRestoration='manual';window.scrollTo(0,0);
+function init(){window.scrollTo(0,0);initTheme();initFilters();renderProjects();animateParticles(0);initScrollAnimations();initCarousel();setTimeout(preloadAllCodes,1000);}
+window.addEventListener('scroll',onScroll,{passive:true});
+let resizeTimeout;window.addEventListener('resize',()=>{clearTimeout(resizeTimeout);resizeTimeout=setTimeout(()=>particleSystem.resize(),150);},{passive:true});
+window.addEventListener('orientationchange',()=>setTimeout(()=>{window.scrollTo(0,0);particleSystem.resize();},400));
+window.addEventListener('mousemove',e=>{particleSystem.pointer.x=e.clientX;particleSystem.pointer.y=e.clientY;},{passive:true});
+window.addEventListener('mouseleave',()=>{particleSystem.pointer.x=-200;particleSystem.pointer.y=-200;},{passive:true});
+window.addEventListener('touchmove',e=>{particleSystem.pointer.x=e.touches[0].clientX;particleSystem.pointer.y=e.touches[0].clientY;},{passive:true});
+window.addEventListener('touchend',()=>{particleSystem.pointer.x=-200;particleSystem.pointer.y=-200;},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeViewer();closeWebViewer();closeContactModal();}});
+DOM.contactModal.addEventListener('click',e=>{if(e.target===DOM.contactModal)closeContactModal();});
+DOM.projectViewer.addEventListener('click',e=>{if(e.target===DOM.projectViewer)closeViewer();});
+DOM.webViewer.addEventListener('click',e=>{if(e.target===DOM.webViewer)closeWebViewer();});
+document.addEventListener('DOMContentLoaded',init);
+window.addEventListener('load',()=>window.scrollTo(0,0));
 </script>
 </body>
 </html>
