@@ -108,15 +108,10 @@ nav .logo svg { width:18px;height:18px; }
     gap:30px;
     width:fit-content;
     align-items:flex-start;
-    animation: scroll-infinite 50s linear infinite;
     will-change: transform;
 }
 .tech-carousel:hover {
-    animation-play-state: paused;
-}
-@keyframes scroll-infinite {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    /* Pause gérée en JS */
 }
 .tech-logo-item { 
     display:flex;
@@ -283,7 +278,7 @@ nav .logo svg { width:18px;height:18px; }
 /*== 10. RESPONSIVE ==*/
 @media(max-width:768px) {
     .hero{padding:80px 16px 40px;} .hero h1{font-size:26px;} .hero p{font-size:14px;} .hero-banner-container{max-width:none;margin:0 8px 20px;} .hero-image{border-radius:12px;}
-    .tech-carousel-wrapper{bottom:0px;padding:3px 0;} .tech-carousel{gap:8px;animation: scroll-infinite 90s linear infinite;} .tech-logo{height:18px;} .tech-label{font-size:5px;letter-spacing:0.3px;} .tech-logo-item{min-width:40px;}
+    .tech-carousel-wrapper{bottom:0px;padding:3px 0;} .tech-carousel{gap:8px;} .tech-logo{height:16px;} .tech-label{font-size:4.5px;letter-spacing:0.3px;} .tech-logo-item{min-width:38px;}
     .section-header h2{font-size:28px;} .section-header p{font-size:14px;} .project-grid{grid-template-columns:1fr;gap:16px;} .projects{padding:60px 16px 80px;}
     .project-card-content{padding:20px;} .project-icon{width:36px;height:36px;margin-bottom:12px;} .project-card h3{font-size:16px;} .project-card p{font-size:13px;}
     .filters{gap:8px;margin-bottom:32px;} .filter-btn{padding:8px 16px;font-size:12px;} .modal-contact{padding:28px 20px;margin:16px;}
@@ -298,7 +293,7 @@ nav .logo svg { width:18px;height:18px; }
 }
 @media(max-width:480px) {
     .hero h1{font-size:22px;} .hero p{font-size:13px;}
-    .tech-carousel-wrapper{bottom:0px;padding:2px 0;} .tech-carousel{gap:7px;animation: scroll-infinite 90s linear infinite;} .tech-logo{height:18px;} .tech-label{font-size:4.5px;} .tech-logo-item{min-width:38px;}
+    .tech-carousel-wrapper{bottom:0px;padding:2px 0;} .tech-carousel{gap:7px;} .tech-logo{height:18px;} .tech-label{font-size:4.5px;} .tech-logo-item{min-width:38px;}
     .section-header h2{font-size:24px;} .projects{padding:50px 12px 60px;}
     .project-card-content{padding:16px;} .project-icon{width:32px;height:32px;} .project-card h3{font-size:15px;} .project-card p{font-size:12px;}
     .logo span{display:none;} .about h2{font-size:24px;} .about-text{font-size:14px;}
@@ -308,7 +303,7 @@ nav .logo svg { width:18px;height:18px; }
 }
 @media(max-height:500px) and (orientation:landscape) {
     .hero{padding:50px 32px 16px;} .hero-banner-container{max-width:60%;} .hero h1{font-size:22px;} .hero p{font-size:12px;} .scroll-indicator{display:none;}
-    .tech-carousel-wrapper{bottom:0px;padding:2px 0;} .tech-carousel{gap:6px;animation: scroll-infinite 90s linear infinite;} .tech-logo{height:16px;} .tech-label{font-size:4px;} .tech-logo-item{min-width:36px;}
+    .tech-carousel-wrapper{bottom:0px;padding:2px 0;} .tech-carousel{gap:6px;} .tech-logo{height:19px;} .tech-label{font-size:4.5px;} .tech-logo-item{min-width:38px;}
     .about{padding:30px 48px;min-height:auto;} .about h2{font-size:18px;} .about-text{font-size:11px;}
     .projects{padding:24px 24px 32px;} .section-header{margin-bottom:16px;} .section-header h2{font-size:20px;} .project-grid{grid-template-columns:repeat(3,1fr);gap:10px;}
     nav{height:36px;} .theme-toggle{width:30px;height:30px;}
@@ -445,6 +440,11 @@ function closeContactModal(){DOM.contactModal.classList.remove('active');DOM.suc
 function handleSubmit(e){e.preventDefault();const form=e.target;DOM.submitBtn.disabled=true;DOM.submitBtn.textContent='Envoi...';fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(form)))}).then(r=>r.json()).then(d=>{if(d.success){DOM.successMessage.classList.add('show');form.reset();DOM.submitBtn.textContent='Envoyer';DOM.submitBtn.disabled=false;setTimeout(closeContactModal,2000);}else throw new Error();}).catch(()=>{alert('Erreur lors de l\'envoi.');DOM.submitBtn.disabled=false;DOM.submitBtn.textContent='Envoyer';});}
 
 /*== 17. INIT ==*/
+let carouselAnimation = null;
+let carouselPosition = 0;
+let carouselSpeed = 0.3; // pixels par frame (ajustable)
+let isPaused = false;
+
 function initCarousel(){
     const carousel=document.getElementById('techCarousel');
     if(!carousel)return;
@@ -467,9 +467,9 @@ function initCarousel(){
         {src:'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg',alt:'Spring',label:'Spring',class:'learning'}
     ];
     
-    // Créer les items - dupliquer 3 fois pour un scroll infini fluide sur mobile
+    // Créer les items - dupliquer 2 fois seulement
     carousel.innerHTML = '';
-    for(let i=0;i<3;i++){
+    for(let i=0;i<2;i++){
         techItems.forEach(item=>{
             const div=document.createElement('div');
             div.className='tech-logo-item';
@@ -477,6 +477,37 @@ function initCarousel(){
             carousel.appendChild(div);
         });
     }
+    
+    // Calculer la largeur d'un set complet
+    setTimeout(() => {
+        const firstItem = carousel.firstElementChild;
+        if (!firstItem) return;
+        
+        const itemWidth = firstItem.offsetWidth;
+        const gap = 30; // doit matcher le CSS
+        const setWidth = (itemWidth + gap) * techItems.length;
+        
+        // Animation infinite scroll
+        function animate() {
+            if (!isPaused) {
+                carouselPosition -= carouselSpeed;
+                
+                // Reset quand on a scrollé un set complet
+                if (Math.abs(carouselPosition) >= setWidth) {
+                    carouselPosition = 0;
+                }
+                
+                carousel.style.transform = `translateX(${carouselPosition}px)`;
+            }
+            carouselAnimation = requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        // Pause au hover
+        carousel.addEventListener('mouseenter', () => isPaused = true);
+        carousel.addEventListener('mouseleave', () => isPaused = false);
+    }, 100);
 }
 
 function initScrollAnimations(){const sections=document.querySelectorAll('.fade-section');const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{const rect=e.boundingClientRect,wh=window.innerHeight;if(e.isIntersecting){e.target.classList.add('visible');e.target.classList.remove('fade-out');}else{if(rect.bottom<wh*0.2){e.target.classList.add('fade-out');e.target.classList.remove('visible');}else if(rect.top>wh*0.8){e.target.classList.remove('visible','fade-out');}}});},{threshold:[0,0.1,0.3,0.5,1],rootMargin:'-5% 0px'});sections.forEach(s=>obs.observe(s));}
