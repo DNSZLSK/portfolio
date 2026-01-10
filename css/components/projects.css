@@ -146,12 +146,12 @@
 }
 
 /* Icon variants */
-.project-card__icon--python { background-image: url('../assets/icons/python.png'); }
-.project-card__icon--java { background-image: url('../assets/icons/java.png'); }
-.project-card__icon--html { background-image: url('../assets/icons/web.png'); }
-.project-card__icon--mockito { background-image: url('../assets/icons/mockito.png'); }
-.project-card__icon--security { background-image: url('../assets/icons/muaddib.png'); }
-.project-card__icon--games { background-image: url('../assets/icons/musubi.png'); }
+.project-card__icon--python { background-image: url('../../assets/icons/python.png'); }
+.project-card__icon--java { background-image: url('../../assets/icons/java.png'); }
+.project-card__icon--html { background-image: url('../../assets/icons/web.png'); }
+.project-card__icon--mockito { background-image: url('../../assets/icons/mockito.png'); }
+.project-card__icon--security { background-image: url('../../assets/icons/muaddib.png'); }
+.project-card__icon--games { background-image: url('../../assets/icons/musubi.png'); }
 
 .project-card__title {
     font-size: var(--font-size-lg);
