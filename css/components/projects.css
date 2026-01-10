@@ -1,0 +1,186 @@
+/* =============================================================================
+   Projects Section
+   ============================================================================= */
+
+.projects {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--space-24) var(--space-8) var(--space-24);
+    min-height: 100vh;
+}
+
+/* Header */
+.projects__header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+}
+
+.projects__title {
+    font-size: clamp(1.75rem, 6vw, 3.5rem);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+}
+
+.projects__subtitle {
+    font-size: clamp(0.875rem, 2.5vw, 1.25rem);
+    color: var(--color-text-secondary);
+}
+
+/* Filters */
+.projects__filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-12);
+}
+
+.filter-btn {
+    position: relative;
+    padding: var(--space-2) var(--space-5);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-family: inherit;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: 
+        background var(--transition-normal),
+        color var(--transition-normal),
+        border-color var(--transition-normal),
+        transform var(--transition-normal),
+        box-shadow var(--transition-normal);
+}
+
+.filter-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--color-accent);
+    transform: translate(-50%, -50%);
+    transition: 
+        width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.filter-btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.filter-btn:hover:not(.filter-btn--active) {
+    border-color: var(--color-border-hover);
+    color: var(--color-text-primary);
+    transform: translateY(-2px);
+}
+
+.filter-btn--active {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(10, 132, 255, 0.3);
+}
+
+.filter-btn--active::before {
+    width: 200%;
+    height: 200%;
+}
+
+.filter-btn:active {
+    transform: translateY(0);
+}
+
+/* Grid */
+.projects__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-5);
+}
+
+/* Card */
+.project-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    cursor: pointer;
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    transition: 
+        transform var(--transition-normal),
+        border-color var(--transition-normal),
+        box-shadow var(--transition-normal);
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-lg), 0 0 24px var(--color-glow);
+}
+
+.project-card__content {
+    padding: var(--space-6);
+}
+
+.project-card__icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: var(--space-4);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Icon variants */
+.project-card__icon--python { background-image: url('../assets/icons/python.png'); }
+.project-card__icon--java { background-image: url('../assets/icons/java.png'); }
+.project-card__icon--html { background-image: url('../assets/icons/web.png'); }
+.project-card__icon--mockito { background-image: url('../assets/icons/mockito.png'); }
+.project-card__icon--security { background-image: url('../assets/icons/muaddib.png'); }
+.project-card__icon--games { background-image: url('../assets/icons/musubi.png'); }
+
+.project-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-2);
+    color: var(--color-text-primary);
+}
+
+.project-card__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-normal);
+}
+
+/* Empty State */
+.projects__empty {
+    text-align: center;
+    padding: var(--space-20) var(--space-6);
+    grid-column: 1 / -1;
+}
+
+.projects__empty-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-3);
+    color: var(--color-text-primary);
+}
+
+.projects__empty-text {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+}

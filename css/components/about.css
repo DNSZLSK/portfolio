@@ -1,0 +1,56 @@
+/* =============================================================================
+   About Section
+   ============================================================================= */
+
+.about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    max-width: var(--max-width-narrow);
+    margin: 0 auto;
+    padding: var(--space-24) var(--space-6);
+}
+
+.about__label {
+    display: inline-block;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--space-4);
+}
+
+.about__title {
+    font-size: clamp(1.75rem, 6vw, 3rem);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-10);
+    background: linear-gradient(
+        135deg,
+        var(--color-text-primary) 0%,
+        var(--color-text-secondary) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about__text {
+    font-size: clamp(0.9375rem, 2.5vw, 1.125rem);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+    text-align: left;
+}
+
+.about__text:last-child {
+    margin-bottom: 0;
+}
+
+.about__text strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+}

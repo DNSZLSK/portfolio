@@ -1,0 +1,362 @@
+/* =============================================================================
+   Responsive Styles
+   ============================================================================= */
+
+/* =============================================================================
+   Tablet & Small Desktop (max-width: 1024px)
+   ============================================================================= */
+@media (max-width: 1024px) {
+    .projects__grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+/* =============================================================================
+   Tablet (max-width: 768px)
+   ============================================================================= */
+@media (max-width: 768px) {
+    :root {
+        --nav-height: 44px;
+    }
+    
+    /* Nav */
+    .nav__content {
+        padding: 0 var(--space-4);
+    }
+    
+    .nav__actions {
+        gap: var(--space-3);
+    }
+    
+    .nav__link svg {
+        display: none;
+    }
+    
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: var(--nav-height) var(--space-4) var(--space-10);
+    }
+    
+    .hero__banner {
+        margin-bottom: var(--space-6);
+    }
+    
+    .hero__image {
+        border-radius: var(--radius-md);
+    }
+    
+    .hero__scroll {
+        bottom: var(--space-6);
+    }
+    
+    /* Carousel */
+    .carousel {
+        bottom: var(--space-1);
+        padding: var(--space-1) 0;
+    }
+    
+    .carousel__track {
+        gap: var(--space-3);
+    }
+    
+    .carousel__item {
+        min-width: 50px;
+        gap: var(--space-1);
+    }
+    
+    .carousel__logo {
+        height: 24px;
+    }
+    
+    .carousel__label {
+        font-size: 7px;
+        letter-spacing: 0.5px;
+    }
+    
+    /* About */
+    .about {
+        padding: var(--space-20) var(--space-4);
+        min-height: auto;
+    }
+    
+    /* Projects */
+    .projects {
+        padding: var(--space-16) var(--space-4) var(--space-20);
+    }
+    
+    .projects__header {
+        margin-bottom: var(--space-8);
+    }
+    
+    .projects__filters {
+        gap: var(--space-2);
+        margin-bottom: var(--space-8);
+    }
+    
+    .filter-btn {
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--font-size-xs);
+    }
+    
+    .projects__grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+    
+    .project-card__content {
+        padding: var(--space-5);
+    }
+    
+    .project-card__icon {
+        width: 36px;
+        height: 36px;
+        margin-bottom: var(--space-3);
+    }
+    
+    .project-card__title {
+        font-size: var(--font-size-base);
+    }
+    
+    .project-card__description {
+        font-size: var(--font-size-xs);
+    }
+    
+    /* Modal */
+    .modal__content {
+        padding: var(--space-8) var(--space-5);
+        width: calc(100% - var(--space-4));
+    }
+    
+    /* Viewers */
+    .viewer {
+        padding: var(--space-2);
+    }
+    
+    .ide,
+    .browser {
+        height: 95vh;
+        max-height: none;
+        border-radius: var(--radius-sm);
+    }
+    
+    .ide__header,
+    .browser__header {
+        height: 44px;
+        padding: 0 var(--space-3);
+    }
+    
+    .ide__title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    
+    .ide__file {
+        font-size: 10px;
+    }
+    
+    .ide__code {
+        padding: var(--space-3);
+        font-size: 11px;
+    }
+}
+
+/* =============================================================================
+   Mobile (max-width: 480px)
+   ============================================================================= */
+@media (max-width: 480px) {
+    /* Nav */
+    .nav__logo span {
+        display: none;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: var(--nav-height) var(--space-3) var(--space-8);
+    }
+    
+    /* Carousel */
+    .carousel__track {
+        gap: var(--space-2);
+    }
+    
+    .carousel__item {
+        min-width: 42px;
+    }
+    
+    .carousel__logo {
+        height: 20px;
+    }
+    
+    .carousel__label {
+        font-size: 6px;
+    }
+    
+    /* About */
+    .about {
+        padding: var(--space-16) var(--space-3);
+    }
+    
+    /* Projects */
+    .projects {
+        padding: var(--space-12) var(--space-3) var(--space-16);
+    }
+    
+    .filter-btn {
+        padding: var(--space-2) var(--space-3);
+        font-size: 11px;
+    }
+    
+    .project-card__content {
+        padding: var(--space-4);
+    }
+    
+    .project-card__icon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .project-card__title {
+        font-size: var(--font-size-sm);
+    }
+    
+    /* Viewers */
+    .ide,
+    .browser {
+        border-radius: 0;
+    }
+    
+    .ide__header,
+    .browser__header {
+        height: 48px;
+    }
+}
+
+/* =============================================================================
+   Landscape Mobile (max-height: 500px)
+   ============================================================================= */
+@media (max-height: 500px) and (orientation: landscape) {
+    :root {
+        --nav-height: 36px;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: var(--nav-height) var(--space-8) var(--space-4);
+    }
+    
+    .hero__banner {
+        max-width: 60%;
+        margin-bottom: var(--space-4);
+    }
+    
+    .hero__scroll {
+        display: none;
+    }
+    
+    /* Carousel */
+    .carousel {
+        bottom: 0;
+        padding: 2px 0;
+    }
+    
+    .carousel__track {
+        gap: var(--space-2);
+    }
+    
+    .carousel__logo {
+        height: 18px;
+    }
+    
+    .carousel__label {
+        font-size: 5px;
+    }
+    
+    /* About */
+    .about {
+        padding: var(--space-8) var(--space-12);
+        min-height: auto;
+    }
+    
+    /* Projects */
+    .projects {
+        padding: var(--space-6) var(--space-6) var(--space-8);
+    }
+    
+    .projects__header {
+        margin-bottom: var(--space-4);
+    }
+    
+    .projects__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-3);
+    }
+    
+    /* Theme Toggle */
+    .theme-toggle {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .theme-toggle svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* =============================================================================
+   Large Screens (min-width: 1400px)
+   ============================================================================= */
+@media (min-width: 1400px) {
+    .hero__content {
+        max-width: 1200px;
+    }
+    
+    .projects__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* =============================================================================
+   Reduced Motion
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .section--fade {
+        opacity: 1;
+        transform: none;
+        filter: none;
+    }
+}
+
+/* =============================================================================
+   High Contrast Mode
+   ============================================================================= */
+@media (prefers-contrast: high) {
+    :root {
+        --color-border: rgba(255, 255, 255, 0.3);
+        --color-border-hover: rgba(255, 255, 255, 0.5);
+    }
+    
+    [data-theme="light"] {
+        --color-border: rgba(0, 0, 0, 0.3);
+        --color-border-hover: rgba(0, 0, 0, 0.5);
+    }
+}

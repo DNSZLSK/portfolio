@@ -1,0 +1,124 @@
+/* =============================================================================
+   CSS Variables & Design Tokens
+   ============================================================================= */
+
+:root {
+    /* Colors - Dark Theme (default) */
+    --color-bg-primary: #000000;
+    --color-bg-secondary: rgba(28, 28, 30, 0.4);
+    --color-bg-card: rgba(20, 20, 22, 0.85);
+    --color-bg-nav: rgba(0, 0, 0, 0.5);
+    
+    --color-text-primary: #f5f5f7;
+    --color-text-secondary: #a1a1a6;
+    
+    --color-accent: #0a84ff;
+    --color-accent-hover: #409cff;
+    --color-success: #34c759;
+    
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-hover: rgba(255, 255, 255, 0.25);
+    
+    --color-shadow: rgba(0, 0, 0, 0.5);
+    --color-glow: rgba(120, 120, 140, 0.15);
+    
+    /* Particles */
+    --particle-color: rgba(255, 255, 255, 0.85);
+    --particle-glow: rgba(255, 255, 255, 0.4);
+    --line-color-1: 0, 122, 255;
+    --line-color-2: 88, 86, 214;
+    --line-color-3: 175, 82, 222;
+    
+    /* Typography */
+    --font-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
+    
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.5rem;    /* 24px */
+    --font-size-3xl: 2rem;      /* 32px */
+    --font-size-4xl: 3rem;      /* 48px */
+    --font-size-5xl: 4rem;      /* 64px */
+    
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    --line-height-tight: 1.1;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.8;
+    
+    /* Spacing */
+    --space-1: 0.25rem;   /* 4px */
+    --space-2: 0.5rem;    /* 8px */
+    --space-3: 0.75rem;   /* 12px */
+    --space-4: 1rem;      /* 16px */
+    --space-5: 1.25rem;   /* 20px */
+    --space-6: 1.5rem;    /* 24px */
+    --space-8: 2rem;      /* 32px */
+    --space-10: 2.5rem;   /* 40px */
+    --space-12: 3rem;     /* 48px */
+    --space-16: 4rem;     /* 64px */
+    --space-20: 5rem;     /* 80px */
+    --space-24: 6rem;     /* 96px */
+    
+    /* Layout */
+    --nav-height: 48px;
+    --max-width: 1200px;
+    --max-width-narrow: 800px;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px var(--color-shadow);
+    --shadow-md: 0 8px 32px var(--color-shadow);
+    --shadow-lg: 0 12px 48px var(--color-shadow);
+    --shadow-xl: 0 24px 80px var(--color-shadow);
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --transition-theme: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Z-Index Scale */
+    --z-canvas: 0;
+    --z-content: 1;
+    --z-hero: 1;
+    --z-main: 2;
+    --z-nav: 100;
+    --z-modal: 1000;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --color-bg-primary: #f5f5f7;
+    --color-bg-secondary: rgba(255, 255, 255, 0.7);
+    --color-bg-card: rgba(255, 255, 255, 0.85);
+    --color-bg-nav: rgba(255, 255, 255, 0.8);
+    
+    --color-text-primary: #1d1d1f;
+    --color-text-secondary: #6e6e73;
+    
+    --color-border: rgba(0, 0, 0, 0.1);
+    --color-border-hover: rgba(0, 0, 0, 0.2);
+    
+    --color-shadow: rgba(0, 0, 0, 0.1);
+    --color-glow: rgba(100, 100, 120, 0.1);
+    
+    --particle-color: rgba(80, 80, 100, 0.7);
+    --particle-glow: rgba(80, 80, 100, 0.3);
+    --line-color-1: 0, 90, 200;
+    --line-color-2: 70, 60, 180;
+    --line-color-3: 140, 60, 180;
+}
