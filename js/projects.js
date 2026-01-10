@@ -97,7 +97,7 @@ class ProjectsManager {
         
         await Promise.all(projects.map(async p => {
             try {
-                const res = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(p.codeUrl));
+                const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(p.codeUrl));
                 if (res.ok) {
                     this.codeCache.set(p.codeUrl, { success: true, code: await res.text() });
                 }
@@ -182,7 +182,7 @@ class IDEViewer {
             const timeoutId = setTimeout(() => controller.abort(), TIMING.FETCH_TIMEOUT);
             
             const res = await fetch(
-                'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl),
+                'https://corsproxy.io/?' + encodeURIComponent(project.codeUrl),
                 { signal: controller.signal }
             );
             
