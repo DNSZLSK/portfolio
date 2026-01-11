@@ -1,5 +1,5 @@
 /* =============================================================================
-   Responsive Styles
+   Responsive Styles - Optimized for all devices
    ============================================================================= */
 
 /* =============================================================================
@@ -21,11 +21,11 @@
     
     /* Nav */
     .nav__content {
-        padding: 0 var(--space-4);
+        padding: 0 var(--space-3);
     }
     
     .nav__actions {
-        gap: var(--space-3);
+        gap: var(--space-2);
     }
     
     .nav__link svg {
@@ -44,130 +44,154 @@
     
     /* Hero */
     .hero {
-        padding: var(--nav-height) var(--space-4) var(--space-10);
+        padding: 80px 16px 40px;
+    }
+    
+    .hero__title {
+        font-size: 26px;
+    }
+    
+    .hero__subtitle {
+        font-size: 14px;
     }
     
     .hero__banner {
-        margin-bottom: var(--space-6);
+        max-width: none;
+        margin: 0 auto 20px;
     }
     
     .hero__image {
-        border-radius: var(--radius-md);
+        border-radius: 12px;
     }
     
     .hero__scroll {
-        bottom: var(--space-6);
+        bottom: 24px;
     }
     
     /* Carousel */
     .carousel {
-        bottom: var(--space-1);
-        padding: var(--space-1) 0;
+        bottom: 0;
+        padding: 3px 0;
     }
     
     .carousel__track {
-        gap: var(--space-3);
+        gap: 8px;
     }
     
     .carousel__item {
-        min-width: 50px;
-        gap: var(--space-1);
+        min-width: 38px;
     }
     
     .carousel__logo {
-        height: 24px;
+        height: 16px;
     }
     
     .carousel__label {
-        font-size: 7px;
-        letter-spacing: 0.5px;
+        font-size: 4.5px;
+        letter-spacing: 0.3px;
     }
     
     /* About */
     .about {
-        padding: var(--space-20) var(--space-4);
+        padding: 80px 20px;
         min-height: auto;
+    }
+    
+    .about__title {
+        font-size: 28px;
+    }
+    
+    .about__text {
+        font-size: 15px;
     }
     
     /* Projects */
     .projects {
-        padding: var(--space-16) var(--space-4) var(--space-20);
+        padding: 60px 16px 80px;
     }
     
     .projects__header {
-        margin-bottom: var(--space-8);
+        margin-bottom: 32px;
+    }
+    
+    .projects__title {
+        font-size: 28px;
+    }
+    
+    .projects__subtitle {
+        font-size: 14px;
     }
     
     .projects__filters {
-        gap: var(--space-2);
-        margin-bottom: var(--space-8);
+        gap: 8px;
+        margin-bottom: 32px;
     }
     
     .filter-btn {
-        padding: var(--space-2) var(--space-4);
-        font-size: var(--font-size-xs);
+        padding: 8px 16px;
+        font-size: 12px;
     }
     
     .projects__grid {
         grid-template-columns: 1fr;
-        gap: var(--space-4);
+        gap: 16px;
     }
     
     .project-card__content {
-        padding: var(--space-5);
+        padding: 20px;
     }
     
     .project-card__icon {
         width: 36px;
         height: 36px;
-        margin-bottom: var(--space-3);
+        margin-bottom: 12px;
     }
     
     .project-card__title {
-        font-size: var(--font-size-base);
+        font-size: 16px;
     }
     
     .project-card__description {
-        font-size: var(--font-size-xs);
+        font-size: 13px;
     }
     
     /* Modal */
     .modal__content {
-        padding: var(--space-8) var(--space-5);
-        width: calc(100% - var(--space-4));
+        padding: 28px 20px;
+        margin: 16px;
     }
     
     /* Viewers */
     .viewer {
-        padding: var(--space-2);
+        padding: 8px;
     }
     
     .ide,
     .browser {
         height: 95vh;
         max-height: none;
-        border-radius: var(--radius-sm);
+        border-radius: 8px;
     }
     
     .ide__header,
     .browser__header {
         height: 44px;
-        padding: 0 var(--space-3);
+        padding: 0 12px;
     }
     
     .ide__title {
         flex-direction: column;
         align-items: flex-start;
-        gap: 2px;
+        gap: 4px;
     }
     
     .ide__file {
-        font-size: 10px;
+        font-size: 11px;
     }
     
     .ide__code {
-        padding: var(--space-3);
-        font-size: 11px;
+        padding: 12px;
+        font-size: 12px;
     }
 }
 
@@ -175,50 +199,62 @@
    Mobile (max-width: 480px)
    ============================================================================= */
 @media (max-width: 480px) {
+    /* Hero */
+    .hero__title {
+        font-size: 22px;
+    }
+    
+    .hero__subtitle {
+        font-size: 13px;
+    }
+    
+    /* Carousel */
+    .carousel {
+        bottom: 0;
+        padding: 2px 0;
+    }
+    
+    .carousel__track {
+        gap: 7px;
+    }
+    
+    .carousel__item {
+        min-width: 38px;
+    }
+    
+    .carousel__logo {
+        height: 18px;
+    }
+    
+    .carousel__label {
+        font-size: 4.5px;
+    }
+    
     /* Nav */
     .nav__logo span {
         display: none;
     }
     
-    /* Hero */
-    .hero {
-        padding: var(--nav-height) var(--space-3) var(--space-8);
-    }
-    
-    /* Carousel */
-    .carousel__track {
-        gap: var(--space-2);
-    }
-    
-    .carousel__item {
-        min-width: 42px;
-    }
-    
-    .carousel__logo {
-        height: 20px;
-    }
-    
-    .carousel__label {
-        font-size: 6px;
-    }
-    
     /* About */
-    .about {
-        padding: var(--space-16) var(--space-3);
+    .about__title {
+        font-size: 24px;
+    }
+    
+    .about__text {
+        font-size: 14px;
     }
     
     /* Projects */
     .projects {
-        padding: var(--space-12) var(--space-3) var(--space-16);
+        padding: 50px 12px 60px;
     }
     
-    .filter-btn {
-        padding: var(--space-2) var(--space-3);
-        font-size: 11px;
+    .projects__title {
+        font-size: 24px;
     }
     
     .project-card__content {
-        padding: var(--space-4);
+        padding: 16px;
     }
     
     .project-card__icon {
@@ -227,7 +263,16 @@
     }
     
     .project-card__title {
-        font-size: var(--font-size-sm);
+        font-size: 15px;
+    }
+    
+    .project-card__description {
+        font-size: 12px;
+    }
+    
+    .filter-btn {
+        padding: 6px 14px;
+        font-size: 11px;
     }
     
     /* Viewers */
@@ -243,75 +288,130 @@
 }
 
 /* =============================================================================
-   Landscape Mobile (max-height: 500px)
+   Landscape Mobile (max-height: 550px) - CRITICAL FOR iPHONE LANDSCAPE
    ============================================================================= */
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-height: 550px) and (orientation: landscape) {
     :root {
         --nav-height: 36px;
     }
     
-    /* Hero */
+    /* Hero - FORCE fixed values, override clamp */
     .hero {
-        padding: var(--nav-height) var(--space-8) var(--space-4);
+        padding: 50px 32px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .hero__content {
+        text-align: center;
+        width: 100%;
     }
     
     .hero__banner {
-        max-width: 60%;
-        margin-bottom: var(--space-4);
+        max-width: 55%;
+        margin: 0 auto 12px;
+    }
+    
+    .hero__title {
+        font-size: 22px !important;
+    }
+    
+    .hero__subtitle {
+        font-size: 12px !important;
     }
     
     .hero__scroll {
         display: none;
     }
     
-    /* Carousel */
+    /* Carousel - match old values exactly */
     .carousel {
         bottom: 0;
         padding: 2px 0;
     }
     
     .carousel__track {
-        gap: var(--space-2);
+        gap: 6px !important;
     }
     
     .carousel__logo {
-        height: 18px;
+        height: 19px !important;
+    }
+    
+    .carousel__item {
+        min-width: 38px;
+        gap: 4px;
     }
     
     .carousel__label {
-        font-size: 5px;
+        font-size: 4.5px !important;
+        letter-spacing: 0.3px;
     }
     
     /* About */
     .about {
-        padding: var(--space-8) var(--space-12);
+        padding: 30px 48px;
         min-height: auto;
+    }
+    
+    .about__title {
+        font-size: 18px;
+    }
+    
+    .about__text {
+        font-size: 11px;
     }
     
     /* Projects */
     .projects {
-        padding: var(--space-6) var(--space-6) var(--space-8);
+        padding: 24px 24px 32px;
     }
     
     .projects__header {
-        margin-bottom: var(--space-4);
+        margin-bottom: 16px;
+    }
+    
+    .projects__title {
+        font-size: 20px;
     }
     
     .projects__grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--space-3);
+        gap: 10px;
     }
     
-    /* Theme Toggle */
+    /* Nav */
     .theme-toggle {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
     }
     
     .theme-toggle svg {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
     }
+}
+
+/* =============================================================================
+   Accessibility - Skip Link
+   ============================================================================= */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: 10001;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
 }
 
 /* =============================================================================
@@ -343,20 +443,5 @@
         opacity: 1;
         transform: none;
         filter: none;
-    }
-}
-
-/* =============================================================================
-   High Contrast Mode
-   ============================================================================= */
-@media (prefers-contrast: high) {
-    :root {
-        --color-border: rgba(255, 255, 255, 0.3);
-        --color-border-hover: rgba(255, 255, 255, 0.5);
-    }
-    
-    [data-theme="light"] {
-        --color-border: rgba(0, 0, 0, 0.3);
-        --color-border-hover: rgba(0, 0, 0, 0.5);
     }
 }
