@@ -60,6 +60,7 @@ const TECH_STACK = [
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', label: 'HTML5', mastered: true },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', label: 'CSS3', mastered: true },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', label: 'JS', mastered: true },
+    { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg', label: 'TypeScript', mastered: true },
     { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/IntelliJ_IDEA_Icon.svg/1200px-IntelliJ_IDEA_Icon.svg.png', label: 'IntelliJ', mastered: true },
     { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/PyCharm_Icon.svg/1200px-PyCharm_Icon.svg.png', label: 'PyCharm', mastered: true },
     { src: 'https://upload.wikimedia.org/wikipedia/commons/7/79/Construct_3_Logo.svg', label: 'Construct 3', mastered: true },
@@ -72,6 +73,33 @@ const TECH_STACK = [
 
 // Projects data
 const PROJECTS_DATA = [
+    {
+        title: 'GitCoach',
+        description: 'CLI éducatif pour apprendre Git. Niveaux adaptatifs, multilingue (FR/EN/ES), 383 tests.',
+        language: 'cli',
+        category: 'cli',
+        viewerType: 'web',
+        projectUrl: 'https://www.npmjs.com/package/gitcoach-cli',
+        repoUrl: 'https://github.com/DNSZLSK/gitcoach-cli'
+    },
+    {
+        title: 'MUAD\'DIB',
+        description: 'Scanner de sécurité npm. Détecte typosquatting, malware, exfiltration. 900+ IOCs.',
+        language: 'security',
+        category: 'security',
+        viewerType: 'web',
+        projectUrl: 'https://dnszlsk.github.io/muad-dib',
+        repoUrl: 'https://github.com/DNSZLSK/muad-dib'
+    },
+    {
+        title: 'Musubi',
+        description: 'Jeu de logique rétro. Remplissez les cercles pour correspondre aux chiffres indiqués.',
+        language: 'games',
+        category: 'games',
+        viewerType: 'web',
+        projectUrl: 'https://dnszlsk.github.io/musubi/',
+        repoUrl: 'https://github.com/DNSZLSK/musubi'
+    },
     {
         title: 'Le Juste Prix',
         description: 'Jeu du "Juste Prix" en Python. Un des premiers exercices de la formation CDA.',
@@ -140,47 +168,19 @@ const PROJECTS_DATA = [
         category: 'html',
         viewerType: 'web',
         projectUrl: 'https://dnszlsk.github.io/cdaquiz/'
-    },
-    {
-        title: 'Musubi',
-        description: 'Jeu de logique rétro. Remplissez les cercles pour correspondre aux chiffres indiqués.',
-        language: 'games',
-        category: 'games',
-        viewerType: 'web',
-        projectUrl: 'https://dnszlsk.github.io/musubi/',
-        repoUrl: 'https://github.com/DNSZLSK/musubi'
-    },
-    {
-        title: 'MUAD\'DIB',
-        description: 'Scanner de sécurité npm. Détecte typosquatting, malware, exfiltration. 900+ IOCs.',
-        language: 'security',
-        category: 'security',
-        viewerType: 'web',
-        projectUrl: 'https://dnszlsk.github.io/muad-dib',
-        repoUrl: 'https://github.com/DNSZLSK/muad-dib'
-    },
-    {
-    title: 'GitCoach',
-    description: 'CLI éducatif pour apprendre Git. Niveaux adaptatifs, multilingue, affichage pédagogique.',
-    language: 'cli', 
-    category: 'cli',
-    viewerType: 'web',
-    projectUrl: 'https://www.npmjs.com/package/gitcoach-cli',
-    repoUrl: 'https://github.com/DNSZLSK/gitcoach-cli'
-}
-
+    }
 ];
 
 // Filter categories
 const FILTER_CATEGORIES = [
     { id: 'all', label: 'Tous' },
+    { id: 'cli', label: 'CLI' },
+    { id: 'security', label: 'Security' },
+    { id: 'games', label: 'Games' },
     { id: 'python', label: 'Python' },
     { id: 'java', label: 'Java' },
     { id: 'tests', label: 'Tests' },
-    { id: 'html', label: 'Web' },
-    { id: 'security', label: 'Security' },
-    { id: 'games', label: 'Games' },
-    { id: 'cli', label: 'CLI' }
+    { id: 'html', label: 'Web' }
 ];
 
 // Language mapping for syntax highlighting
