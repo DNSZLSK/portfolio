@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="termGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <!-- Terminal body -->
+  <rect x="8" y="16" width="112" height="96" rx="12" ry="12" fill="url(#termGrad)"/>
+  <!-- Terminal header bar -->
+  <rect x="8" y="16" width="112" height="24" rx="12" ry="12" fill="#1e3a8a"/>
+  <rect x="8" y="28" width="112" height="12" fill="#1e3a8a"/>
+  <!-- Window buttons -->
+  <circle cx="24" cy="28" r="5" fill="#ef4444"/>
+  <circle cx="40" cy="28" r="5" fill="#eab308"/>
+  <circle cx="56" cy="28" r="5" fill="#22c55e"/>
+  <!-- Command prompt -->
+  <text x="20" y="68" font-family="monospace" font-size="20" font-weight="bold" fill="#22c55e">$</text>
+  <text x="38" y="68" font-family="monospace" font-size="18" fill="#ffffff">gitcoach</text>
+  <!-- Cursor blink -->
+  <rect x="20" y="80" width="8" height="16" fill="#22c55e">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+</svg>

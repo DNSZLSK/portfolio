@@ -158,7 +158,17 @@ const PROJECTS_DATA = [
         viewerType: 'web',
         projectUrl: 'https://dnszlsk.github.io/muad-dib',
         repoUrl: 'https://github.com/DNSZLSK/muad-dib'
-    }
+    },
+    {
+    title: 'GitCoach',
+    description: 'CLI éducatif pour apprendre Git. Niveaux adaptatifs, multilingue, affichage pédagogique.',
+    language: 'cli', 
+    category: 'cli',
+    viewerType: 'web',
+    projectUrl: 'https://www.npmjs.com/package/gitcoach-cli',
+    repoUrl: 'https://github.com/DNSZLSK/gitcoach-cli'
+}
+
 ];
 
 // Filter categories
@@ -169,7 +179,8 @@ const FILTER_CATEGORIES = [
     { id: 'tests', label: 'Tests' },
     { id: 'html', label: 'Web' },
     { id: 'security', label: 'Security' },
-    { id: 'games', label: 'Games' }
+    { id: 'games', label: 'Games' },
+    { id: 'cli', label: 'CLI' }
 ];
 
 // Language mapping for syntax highlighting

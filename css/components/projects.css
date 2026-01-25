@@ -152,6 +152,7 @@
 .project-card__icon--mockito { background-image: url('../../assets/icons/mockito.png'); }
 .project-card__icon--security { background-image: url('../../assets/icons/muaddib.png'); }
 .project-card__icon--games { background-image: url('../../assets/icons/musubi.png'); }
+.project-card__icon--cli { background-image: url('../../assets/icons/cli.svg'); }
 
 .project-card__title {
     font-size: var(--font-size-lg);
