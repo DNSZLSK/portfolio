@@ -65,7 +65,7 @@ const TECH_STACK = [
     { src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/PyCharm_Icon.svg/1200px-PyCharm_Icon.svg.png', label: 'PyCharm', mastered: true },
     { src: 'https://upload.wikimedia.org/wikipedia/commons/7/79/Construct_3_Logo.svg', label: 'Construct 3', mastered: true },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', label: 'Docker', mastered: false },
-    { src: 'https://cdn.worldvectorlogo.com/logos/mamp-2.svg', label: 'MAMP', mastered: false },
+    { src: 'https://cdn.worldvectorlogo.com/logos/mamp-2.svg', label: 'MAMP', mastered: true },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg', label: 'Angular', mastered: false },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', label: 'PostgreSQL', mastered: false },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg', label: 'Spring', mastered: false }
