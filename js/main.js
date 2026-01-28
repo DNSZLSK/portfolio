@@ -7,6 +7,57 @@ let particleSystem;
 let carousel;
 let projectsManager;
 
+
+/* =============================================================================
+   Toast Notifications
+   ============================================================================= */
+
+const Toast = {
+    container: null,
+
+    init() {
+        this.container = document.getElementById('toastContainer');
+    },
+
+    show(message, type = 'info', duration = 4000) {
+        const toast = document.createElement('div');
+        toast.className = `toast toast--${type}`;
+        toast.innerHTML = `
+            <span class="toast__icon">${this.getIcon(type)}</span>
+            <span class="toast__message">${message}</span>
+        `;
+
+        this.container.appendChild(toast);
+
+        // Auto-remove after duration
+        setTimeout(() => {
+            toast.classList.add('is-leaving');
+            toast.addEventListener('animationend', () => toast.remove());
+        }, duration);
+    },
+
+    getIcon(type) {
+        const icons = {
+            error: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+            success: '<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+            info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+        };
+        return icons[type] || icons.info;
+    },
+
+    error(message, duration) {
+        this.show(message, 'error', duration);
+    },
+
+    success(message, duration) {
+        this.show(message, 'success', duration);
+    },
+
+    info(message, duration) {
+        this.show(message, 'info', duration);
+    }
+};
+
 /* =============================================================================
    Theme Management
    ============================================================================= */
@@ -185,7 +236,7 @@ const ContactModal = {
             }
             
         } catch (e) {
-            alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+            Toast.error('Erreur lors de l\'envoi. Veuillez réessayer.');
         } finally {
             this.submitBtn.disabled = false;
             this.submitBtn.textContent = 'Envoyer';
@@ -251,6 +302,7 @@ function init() {
     window.scrollTo(0, 0);
     
     // Initialize modules
+    Toast.init();
     ThemeManager.init();
     
     // Particle system
@@ -267,6 +319,7 @@ function init() {
     webViewer = new WebViewer();
     projectsManager = new ProjectsManager();
     window.projectsManager = projectsManager;
+    window.Toast = Toast;
     
     // Other modules
     ScrollEffects.init();
