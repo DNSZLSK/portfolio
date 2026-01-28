@@ -94,10 +94,14 @@ class ProjectsManager {
     
     async preloadCode() {
         const projects = PROJECTS_DATA.filter(p => p.codeUrl);
-        
+
         await Promise.all(projects.map(async p => {
             try {
-                const res = await fetch('https://corsproxy.io/?' + encodeURIComponent(p.codeUrl));
+                const res = await fetchWithTimeout(
+                    'https://corsproxy.io/?' + encodeURIComponent(p.codeUrl),
+                    {},
+                    TIMING.FETCH_TIMEOUT
+                );
                 if (res.ok) {
                     this.codeCache.set(p.codeUrl, { success: true, code: await res.text() });
                 }
@@ -143,13 +147,13 @@ class IDEViewer {
     async open(project) {
         // Pause particles
         if (window.particleSystem) window.particleSystem.pause();
-        
+
         // Setup header
         const lang = LANGUAGE_MAP[project.language] || { text: 'Code', hljs: 'plaintext' };
         this.name.textContent = project.title;
         this.file.textContent = '— ' + (project.fileName || 'code');
         this.language.textContent = lang.text;
-        
+
         // Repo link
         if (project.repoUrl) {
             this.repoLink.href = project.repoUrl;
@@ -157,46 +161,41 @@ class IDEViewer {
         } else {
             this.repoLink.style.display = 'none';
         }
-        
-        // Show viewer
+
+        // Show viewer and activate focus trap
         this.viewer.classList.add('is-active');
-        
+        FocusTrap.activate(this.viewer.querySelector('.ide'));
+
         // Check cache
         const cached = window.projectsManager?.getCachedCode(project.codeUrl);
         if (cached?.success) {
             this.displayCode(cached.code, lang.hljs);
             return;
         }
-        
+
         // Show loading
         this.code.parentElement.innerHTML = `
-            <div class="ide__loading">
+            <div class="ide__loading" aria-live="polite">
                 <div class="spinner"></div>
                 <span>Chargement...</span>
             </div>
         `;
-        
-        // Fetch code
+
+        // Fetch code with timeout
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), TIMING.FETCH_TIMEOUT);
-            
-            const res = await fetch(
-                'https://corsproxy.io/?' + encodeURIComponent(project.codeUrl),
-                { signal: controller.signal }
+            const res = await fetchWithTimeout(
+                'https://corsproxy.io/?' + encodeURIComponent(project.codeUrl)
             );
-            
-            clearTimeout(timeoutId);
-            
+
             if (!res.ok) throw new Error('Fetch failed');
-            
+
             const code = await res.text();
             window.projectsManager?.setCachedCode(project.codeUrl, code);
             this.displayCode(code, lang.hljs);
-            
+
         } catch (e) {
             this.code.parentElement.innerHTML = `
-                <div class="ide__error">
+                <div class="ide__error" aria-live="assertive">
                     <svg viewBox="0 0 24 24" stroke-width="2">
                         <circle cx="12" cy="12" r="10"/>
                         <line x1="12" y1="8" x2="12" y2="12"/>
@@ -217,6 +216,7 @@ class IDEViewer {
     
     close() {
         this.viewer.classList.remove('is-active');
+        FocusTrap.deactivate();
         if (window.particleSystem) window.particleSystem.resume();
     }
 }
@@ -248,11 +248,11 @@ class WebViewer {
     open(project) {
         // Pause particles
         if (window.particleSystem) window.particleSystem.pause();
-        
+
         // Setup header
         this.title.textContent = project.title;
         this.externalLink.href = project.projectUrl;
-        
+
         // Repo link
         if (project.repoUrl) {
             this.repoLink.href = project.repoUrl;
@@ -260,36 +260,38 @@ class WebViewer {
         } else {
             this.repoLink.style.display = 'none';
         }
-        
+
         // Show loading
         this.loading.style.display = 'flex';
-        
+
         // Remove existing iframe
         const existingIframe = this.body.querySelector('iframe');
         if (existingIframe) existingIframe.remove();
-        
+
         // Create iframe
         const iframe = document.createElement('iframe');
         iframe.style.opacity = '0';
         iframe.style.transition = 'opacity 0.5s ease';
         iframe.src = project.projectUrl;
-        
+
         iframe.onload = () => {
             setTimeout(() => {
                 this.loading.style.display = 'none';
                 iframe.style.opacity = '1';
             }, TIMING.IFRAME_FADE_DELAY);
         };
-        
+
         this.body.appendChild(iframe);
         this.viewer.classList.add('is-active');
+        FocusTrap.activate(this.viewer.querySelector('.browser'));
     }
-    
+
     close() {
         const iframe = this.body.querySelector('iframe');
         if (iframe) iframe.remove();
-        
+
         this.viewer.classList.remove('is-active');
+        FocusTrap.deactivate();
         if (window.particleSystem) window.particleSystem.resume();
     }
 }

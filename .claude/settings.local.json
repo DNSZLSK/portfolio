@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(cd:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)"
     ]
   }
 }

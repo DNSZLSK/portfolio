@@ -162,7 +162,13 @@
             <form class="form" id="contactForm">
                 <input type="hidden" name="access_key" value="b6edb842-33c1-46d8-bc89-5557946b6ae8">
                 <input type="hidden" name="subject" value="Nouveau message - Portfolio">
-                
+
+                <!-- Honeypot field - hidden from humans, filled by bots -->
+                <div class="form__honeypot" aria-hidden="true">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+
                 <div class="form__group">
                     <label for="name" class="form__label">Votre nom</label>
                     <input type="text" id="name" name="name" class="form__input" required>

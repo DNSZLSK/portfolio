@@ -9,6 +9,102 @@ let projectsManager;
 
 
 /* =============================================================================
+   Fetch with Timeout Utility
+   ============================================================================= */
+
+async function fetchWithTimeout(url, options = {}, timeout = TIMING.FETCH_TIMEOUT) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    try {
+        const response = await fetch(url, {
+            ...options,
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        return response;
+    } catch (error) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+            throw new Error('Request timeout');
+        }
+        throw error;
+    }
+}
+
+
+/* =============================================================================
+   Focus Trap for Modals (Accessibility)
+   ============================================================================= */
+
+const FocusTrap = {
+    activeElement: null,
+    currentModal: null,
+
+    activate(modal) {
+        this.activeElement = document.activeElement;
+        this.currentModal = modal;
+
+        const focusable = this.getFocusableElements(modal);
+        if (focusable.length > 0) {
+            focusable[0].focus();
+        }
+
+        document.addEventListener('keydown', this.handleKeyDown);
+    },
+
+    deactivate() {
+        document.removeEventListener('keydown', this.handleKeyDown);
+
+        if (this.activeElement && this.activeElement.focus) {
+            this.activeElement.focus();
+        }
+
+        this.currentModal = null;
+        this.activeElement = null;
+    },
+
+    getFocusableElements(container) {
+        const selectors = [
+            'a[href]',
+            'button:not([disabled])',
+            'input:not([disabled]):not([type="hidden"])',
+            'textarea:not([disabled])',
+            'select:not([disabled])',
+            '[tabindex]:not([tabindex="-1"])'
+        ].join(', ');
+
+        return Array.from(container.querySelectorAll(selectors))
+            .filter(el => el.offsetParent !== null); // Visible elements only
+    },
+
+    handleKeyDown: function(e) {
+        if (e.key !== 'Tab' || !FocusTrap.currentModal) return;
+
+        const focusable = FocusTrap.getFocusableElements(FocusTrap.currentModal);
+        if (focusable.length === 0) return;
+
+        const firstElement = focusable[0];
+        const lastElement = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+            // Shift + Tab: if on first element, go to last
+            if (document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement.focus();
+            }
+        } else {
+            // Tab: if on last element, go to first
+            if (document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement.focus();
+            }
+        }
+    }
+};
+
+
+/* =============================================================================
    Toast Notifications
    ============================================================================= */
 
@@ -172,61 +268,73 @@ const ContactModal = {
     form: null,
     successMessage: null,
     submitBtn: null,
-    
+    honeypot: null,
+
     init() {
         this.modal = document.getElementById('contactModal');
         this.form = document.getElementById('contactForm');
         this.successMessage = document.getElementById('successMessage');
         this.submitBtn = document.getElementById('submitBtn');
-        
+        this.honeypot = document.getElementById('website');
+
         // Open button
         document.getElementById('contactBtn').addEventListener('click', (e) => {
             e.preventDefault();
             this.open();
         });
-        
+
         // Close button
         this.modal.querySelector('.modal__close').addEventListener('click', () => this.close());
-        
+
         // Backdrop click
         this.modal.querySelector('.modal__backdrop').addEventListener('click', () => this.close());
-        
+
         // Form submit
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
     },
-    
+
     open() {
         this.modal.classList.add('is-active');
         if (particleSystem) particleSystem.pause();
+        FocusTrap.activate(this.modal.querySelector('.modal__content'));
     },
-    
+
     close() {
         this.modal.classList.remove('is-active');
         this.successMessage.classList.remove('is-visible');
         this.form.reset();
+        FocusTrap.deactivate();
         if (particleSystem) particleSystem.resume();
     },
-    
+
     async handleSubmit(e) {
         e.preventDefault();
-        
+
+        // Honeypot check - if filled, it's a bot
+        if (this.honeypot && this.honeypot.value) {
+            // Silently reject but pretend success to fool bots
+            this.successMessage.classList.add('is-visible');
+            this.form.reset();
+            setTimeout(() => this.close(), TIMING.SUCCESS_MESSAGE_DURATION);
+            return;
+        }
+
         this.submitBtn.disabled = true;
         this.submitBtn.textContent = 'Envoi...';
-        
+
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), TIMING.FETCH_TIMEOUT);
-            
-            const response = await fetch('https://api.web3forms.com/submit', {
+            const formData = Object.fromEntries(new FormData(this.form));
+            // Remove honeypot from submission
+            delete formData.website;
+
+            const response = await fetchWithTimeout('https://api.web3forms.com/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(Object.fromEntries(new FormData(this.form))),
-                signal: controller.signal
+                body: JSON.stringify(formData)
             });
-            
-            clearTimeout(timeoutId);
+
             const data = await response.json();
-            
+
             if (data.success) {
                 this.successMessage.classList.add('is-visible');
                 this.form.reset();
@@ -234,7 +342,7 @@ const ContactModal = {
             } else {
                 throw new Error('Submit failed');
             }
-            
+
         } catch (e) {
             Toast.error('Erreur lors de l\'envoi. Veuillez réessayer.');
         } finally {
