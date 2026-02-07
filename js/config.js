@@ -79,7 +79,7 @@ const PROJECTS_DATA = [
         language: 'cli',
         category: 'cli',
         viewerType: 'web',
-        projectUrl: 'https://dev.to/dnszlsk/gitcoach-the-git-mentor-that-teaches-you-while-you-work-github-copilot-cli-challenge-1708',
+        projectUrl: 'https://github.com/DNSZLSK/gitcoach-cli',
         repoUrl: 'https://github.com/DNSZLSK/gitcoach-cli'
     },
     {
