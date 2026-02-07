@@ -79,7 +79,7 @@ const PROJECTS_DATA = [
         language: 'cli',
         category: 'cli',
         viewerType: 'web',
-        projectUrl: 'https://github.com/DNSZLSK/gitcoach-cli',
+        projectUrl: 'https://dnszlsk.github.io/gitcoach-cli',
         repoUrl: 'https://github.com/DNSZLSK/gitcoach-cli'
     },
     {
