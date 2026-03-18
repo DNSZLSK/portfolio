@@ -173,6 +173,7 @@ class IDEViewer {
     }
 
     this.viewer.classList.add("is-active");
+    document.body.style.overflow = "hidden";
     FocusTrap.activate(this.viewer.querySelector(".ide"));
 
     const cached = window.projectsManager?.getCachedCode(project.codeUrl);
@@ -217,6 +218,7 @@ class IDEViewer {
 
   close() {
     this.viewer.classList.remove("is-active");
+    document.body.style.overflow = "";
     FocusTrap.deactivate();
     if (window.particleSystem) window.particleSystem.resume();
   }
@@ -277,6 +279,7 @@ class WebViewer {
 
     this.body.appendChild(iframe);
     this.viewer.classList.add("is-active");
+    document.body.style.overflow = "hidden";
     FocusTrap.activate(this.viewer.querySelector(".browser"));
   }
 
@@ -284,6 +287,7 @@ class WebViewer {
     const iframe = this.body.querySelector("iframe");
     if (iframe) iframe.remove();
     this.viewer.classList.remove("is-active");
+    document.body.style.overflow = "";
     FocusTrap.deactivate();
     if (window.particleSystem) window.particleSystem.resume();
   }
