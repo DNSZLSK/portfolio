@@ -1,0 +1,447 @@
+/* =============================================================================
+   Responsive Styles - Optimized for all devices
+   ============================================================================= */
+
+/* =============================================================================
+   Tablet & Small Desktop (max-width: 1024px)
+   ============================================================================= */
+@media (max-width: 1024px) {
+    .projects__grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+/* =============================================================================
+   Tablet (max-width: 768px)
+   ============================================================================= */
+@media (max-width: 768px) {
+    :root {
+        --nav-height: 44px;
+    }
+    
+    /* Nav */
+    .nav__content {
+        padding: 0 var(--space-3);
+    }
+    
+    .nav__actions {
+        gap: var(--space-2);
+    }
+    
+    .nav__link svg {
+        display: none;
+    }
+    
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: 80px 16px 40px;
+    }
+    
+    .hero__title {
+        font-size: 26px;
+    }
+    
+    .hero__subtitle {
+        font-size: 14px;
+    }
+    
+    .hero__banner {
+        max-width: none;
+        margin: 0 auto 20px;
+    }
+    
+    .hero__image {
+        border-radius: 12px;
+    }
+    
+    .hero__scroll {
+        bottom: 24px;
+    }
+    
+    /* Carousel */
+    .carousel {
+        bottom: 0;
+        padding: 3px 0;
+    }
+    
+    .carousel__track {
+        gap: 8px;
+    }
+    
+    .carousel__item {
+        min-width: 38px;
+    }
+    
+    .carousel__logo {
+        height: 16px;
+    }
+    
+    .carousel__label {
+        font-size: 4.5px;
+        letter-spacing: 0.3px;
+    }
+    
+    /* About */
+    .about {
+        padding: 80px 20px;
+        min-height: auto;
+    }
+    
+    .about__title {
+        font-size: 28px;
+    }
+    
+    .about__text {
+        font-size: 15px;
+    }
+    
+    /* Projects */
+    .projects {
+        padding: 60px 16px 80px;
+    }
+    
+    .projects__header {
+        margin-bottom: 32px;
+    }
+    
+    .projects__title {
+        font-size: 28px;
+    }
+    
+    .projects__subtitle {
+        font-size: 14px;
+    }
+    
+    .projects__filters {
+        gap: 8px;
+        margin-bottom: 32px;
+    }
+    
+    .filter-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+    
+    .projects__grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .project-card__content {
+        padding: 20px;
+    }
+    
+    .project-card__icon {
+        width: 36px;
+        height: 36px;
+        margin-bottom: 12px;
+    }
+    
+    .project-card__title {
+        font-size: 16px;
+    }
+    
+    .project-card__description {
+        font-size: 13px;
+    }
+    
+    /* Modal */
+    .modal__content {
+        padding: 28px 20px;
+        margin: 16px;
+    }
+    
+    /* Viewers */
+    .viewer {
+        padding: 8px;
+    }
+    
+    .ide,
+    .browser {
+        height: 95vh;
+        max-height: none;
+        border-radius: 8px;
+    }
+    
+    .ide__header,
+    .browser__header {
+        height: 44px;
+        padding: 0 12px;
+    }
+    
+    .ide__title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .ide__file {
+        font-size: 11px;
+    }
+    
+    .ide__code {
+        padding: 12px;
+        font-size: 12px;
+    }
+}
+
+/* =============================================================================
+   Mobile (max-width: 480px)
+   ============================================================================= */
+@media (max-width: 480px) {
+    /* Hero */
+    .hero__title {
+        font-size: 22px;
+    }
+    
+    .hero__subtitle {
+        font-size: 13px;
+    }
+    
+    /* Carousel */
+    .carousel {
+        bottom: 0;
+        padding: 2px 0;
+    }
+    
+    .carousel__track {
+        gap: 7px;
+    }
+    
+    .carousel__item {
+        min-width: 38px;
+    }
+    
+    .carousel__logo {
+        height: 18px;
+    }
+    
+    .carousel__label {
+        font-size: 4.5px;
+    }
+    
+    /* Nav */
+    .nav__logo span {
+        display: none;
+    }
+    
+    /* About */
+    .about__title {
+        font-size: 24px;
+    }
+    
+    .about__text {
+        font-size: 14px;
+    }
+    
+    /* Projects */
+    .projects {
+        padding: 50px 12px 60px;
+    }
+    
+    .projects__title {
+        font-size: 24px;
+    }
+    
+    .project-card__content {
+        padding: 16px;
+    }
+    
+    .project-card__icon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .project-card__title {
+        font-size: 15px;
+    }
+    
+    .project-card__description {
+        font-size: 12px;
+    }
+    
+    .filter-btn {
+        padding: 6px 14px;
+        font-size: 11px;
+    }
+    
+    /* Viewers */
+    .ide,
+    .browser {
+        border-radius: 0;
+    }
+    
+    .ide__header,
+    .browser__header {
+        height: 48px;
+    }
+}
+
+/* =============================================================================
+   Landscape Mobile (max-height: 550px) - CRITICAL FOR iPHONE LANDSCAPE
+   ============================================================================= */
+@media (max-height: 550px) and (orientation: landscape) {
+    :root {
+        --nav-height: 36px;
+    }
+    
+    /* Hero - FORCE fixed values, override clamp */
+    .hero {
+        padding: 50px 32px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .hero__content {
+        text-align: center;
+        width: 100%;
+    }
+    
+    .hero__banner {
+        max-width: 55%;
+        margin: 0 auto 12px;
+    }
+    
+    .hero__title {
+        font-size: 22px !important;
+    }
+    
+    .hero__subtitle {
+        font-size: 12px !important;
+    }
+    
+    .hero__scroll {
+        display: none;
+    }
+    
+    /* Carousel - match old values exactly */
+    .carousel {
+        bottom: 0;
+        padding: 2px 0;
+    }
+    
+    .carousel__track {
+        gap: 6px !important;
+    }
+    
+    .carousel__logo {
+        height: 19px !important;
+    }
+    
+    .carousel__item {
+        min-width: 38px;
+        gap: 4px;
+    }
+    
+    .carousel__label {
+        font-size: 4.5px !important;
+        letter-spacing: 0.3px;
+    }
+    
+    /* About */
+    .about {
+        padding: 30px 48px;
+        min-height: auto;
+    }
+    
+    .about__title {
+        font-size: 18px;
+    }
+    
+    .about__text {
+        font-size: 11px;
+    }
+    
+    /* Projects */
+    .projects {
+        padding: 24px 24px 32px;
+    }
+    
+    .projects__header {
+        margin-bottom: 16px;
+    }
+    
+    .projects__title {
+        font-size: 20px;
+    }
+    
+    .projects__grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    /* Nav */
+    .theme-toggle {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .theme-toggle svg {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* =============================================================================
+   Accessibility - Skip Link
+   ============================================================================= */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: 10001;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* =============================================================================
+   Large Screens (min-width: 1400px)
+   ============================================================================= */
+@media (min-width: 1400px) {
+    .hero__content {
+        max-width: 1200px;
+    }
+    
+    .projects__grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* =============================================================================
+   Reduced Motion
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .section--fade {
+        opacity: 1;
+        transform: none;
+        filter: none;
+    }
+}
