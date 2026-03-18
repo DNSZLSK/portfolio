@@ -299,3 +299,4 @@ class WebViewer {
 // Global instances (initialized in main.js)
 let ideViewer, webViewer;
 
+ 
