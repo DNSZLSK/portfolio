@@ -180,6 +180,7 @@ class IDEViewer {
                 <span>Chargement...</span>
             </div>
         `;
+        this.code = null;
 
         // Fetch code with timeout
         try {
@@ -194,24 +195,27 @@ class IDEViewer {
             this.displayCode(code, lang.hljs);
 
         } catch (e) {
-            this.code.parentElement.innerHTML = `
-                <div class="ide__error" aria-live="assertive">
-                    <svg viewBox="0 0 24 24" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="8" x2="12" y2="12"/>
-                        <line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
-                    <span>Erreur de chargement</span>
-                </div>
-            `;
+            const container = this.viewer.querySelector('.ide__body') // ou le bon sélecteur parent
+                || document.getElementById('ideCode')?.parentElement;
+            if (container) {
+                container.innerHTML = `
+                    <div class="ide__error" aria-live="assertive">
+                        <svg viewBox="0 0 24 24" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <span>Erreur de chargement</span>
+                    </div>
+                `;
+            }
         }
-    }
     
     displayCode(code, lang) {
         this.code.parentElement.innerHTML = `<pre><code class="ide__code language-${lang}" id="ideCode"></code></pre>`;
-        const el = document.getElementById('ideCode');
-        el.textContent = code;
-        hljs.highlightElement(el);
+        this.code = document.getElementById('ideCode'); // ← re-sync après remplacement
+        this.code.textContent = code;
+        hljs.highlightElement(this.code);
     }
     
     close() {
