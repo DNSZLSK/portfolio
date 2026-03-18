@@ -1,3 +1,21 @@
+const CORS_PROXIES = [
+  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+  (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+];
+
+async function fetchWithProxy(url) {
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const res = await fetchWithTimeout(proxy(url), {}, TIMING.FETCH_TIMEOUT);
+      if (res.ok) return res;
+    } catch (e) {
+      // essai suivant
+    }
+  }
+  throw new Error("All proxies failed");
+}
+
 /* =============================================================================
    Projects Management
    ============================================================================= */
@@ -24,28 +42,22 @@ class ProjectsManager {
       btn.className = `filter-btn ${cat.id === "all" ? "filter-btn--active" : ""}`;
       btn.dataset.filter = cat.id;
       btn.innerHTML = `<span>${cat.label}</span>`;
-
       btn.addEventListener("click", () => this.handleFilterClick(btn, cat.id));
-
       this.filtersContainer.appendChild(btn);
     });
   }
 
   handleFilterClick(btn, filterId) {
     this.currentFilter = filterId;
-
-    // Update active state
     this.filtersContainer.querySelectorAll(".filter-btn").forEach((b) => {
       b.classList.remove("filter-btn--active");
     });
     btn.classList.add("filter-btn--active");
-
     this.renderProjects();
   }
 
   renderProjects() {
     this.grid.innerHTML = "";
-
     const filtered =
       this.currentFilter === "all"
         ? PROJECTS_DATA
@@ -77,9 +89,7 @@ class ProjectsManager {
                 <p class="project-card__description">${project.description}</p>
             </div>
         `;
-
     card.addEventListener("click", () => this.handleCardClick(project));
-
     return card;
   }
 
@@ -95,16 +105,10 @@ class ProjectsManager {
 
   async preloadCode() {
     const projects = PROJECTS_DATA.filter((p) => p.codeUrl);
-
     await Promise.all(
       projects.map(async (p) => {
         try {
-          const res = await fetchWithTimeout(
-            "https://api.allorigins.win/raw?url=" +
-              encodeURIComponent(p.codeUrl),
-            {},
-            TIMING.FETCH_TIMEOUT,
-          );
+          const res = await fetchWithProxy(p.codeUrl);
           if (res.ok) {
             this.codeCache.set(p.codeUrl, {
               success: true,
@@ -137,10 +141,10 @@ class IDEViewer {
     this.backdrop = this.viewer.querySelector(".viewer__backdrop");
     this.name = document.getElementById("ideName");
     this.file = document.getElementById("ideFile");
-    this.code = document.getElementById("ideCode");
     this.language = document.getElementById("ideLanguage");
     this.repoLink = document.getElementById("ideRepoLink");
     this.closeBtn = this.viewer.querySelector(".ide__btn--close");
+    this.body = this.viewer.querySelector(".ide__body");
 
     this.bindEvents();
   }
@@ -151,10 +155,8 @@ class IDEViewer {
   }
 
   async open(project) {
-    // Pause particles
     if (window.particleSystem) window.particleSystem.pause();
 
-    // Setup header
     const lang = LANGUAGE_MAP[project.language] || {
       text: "Code",
       hljs: "plaintext",
@@ -163,7 +165,6 @@ class IDEViewer {
     this.file.textContent = "— " + (project.fileName || "code");
     this.language.textContent = lang.text;
 
-    // Repo link
     if (project.repoUrl) {
       this.repoLink.href = project.repoUrl;
       this.repoLink.style.display = "flex";
@@ -171,65 +172,48 @@ class IDEViewer {
       this.repoLink.style.display = "none";
     }
 
-    // Show viewer and activate focus trap
     this.viewer.classList.add("is-active");
     FocusTrap.activate(this.viewer.querySelector(".ide"));
 
-    // Check cache
     const cached = window.projectsManager?.getCachedCode(project.codeUrl);
     if (cached?.success) {
       this.displayCode(cached.code, lang.hljs);
       return;
     }
 
-    // Show loading
-    this.code.parentElement.innerHTML = `
+    this.body.innerHTML = `
             <div class="ide__loading" aria-live="polite">
                 <div class="spinner"></div>
                 <span>Chargement...</span>
             </div>
         `;
-    this.code = null;
 
-    // Fetch code with timeout
     try {
-      const res = await fetchWithTimeout(
-        "https://api.allorigins.win/raw?url=" +
-          encodeURIComponent(project.codeUrl),
-      );
-
+      const res = await fetchWithProxy(project.codeUrl);
       if (!res.ok) throw new Error("Fetch failed");
-
       const code = await res.text();
       window.projectsManager?.setCachedCode(project.codeUrl, code);
       this.displayCode(code, lang.hljs);
     } catch (e) {
-      const container =
-        this.viewer.querySelector(".ide__body") || // ou le bon sélecteur parent
-        document.getElementById("ideCode")?.parentElement;
-      if (container) {
-        container.innerHTML = `
-                    <div class="ide__error" aria-live="assertive">
-                        <svg viewBox="0 0 24 24" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="12" y1="8" x2="12" y2="12"/>
-                            <line x1="12" y1="16" x2="12.01" y2="16"/>
-                        </svg>
-                        <span>Erreur de chargement</span>
-                    </div>
-                `;
-      }
+      this.body.innerHTML = `
+                <div class="ide__error" aria-live="assertive">
+                    <svg viewBox="0 0 24 24" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <span>Erreur de chargement</span>
+                </div>
+            `;
     }
   }
 
   displayCode(code, lang) {
-    const container = this.viewer.querySelector('.ide__body')
-        || document.getElementById('ideCode')?.parentElement;
-    container.innerHTML = `<pre><code class="ide__code language-${lang}" id="ideCode"></code></pre>`;
-    this.code = document.getElementById('ideCode');
-    this.code.textContent = code;
-    hljs.highlightElement(this.code);
-}
+    this.body.innerHTML = `<pre><code class="ide__code language-${lang}" id="ideCode"></code></pre>`;
+    const el = document.getElementById("ideCode");
+    el.textContent = code;
+    hljs.highlightElement(el);
+  }
 
   close() {
     this.viewer.classList.remove("is-active");
@@ -242,90 +226,67 @@ class IDEViewer {
    Web Viewer
    ============================================================================= */
 
-class IDEViewer {
-    constructor() {
-        this.viewer = document.getElementById('ideViewer');
-        this.backdrop = this.viewer.querySelector('.viewer__backdrop');
-        this.name = document.getElementById('ideName');
-        this.file = document.getElementById('ideFile');
-        this.language = document.getElementById('ideLanguage');
-        this.repoLink = document.getElementById('ideRepoLink');
-        this.closeBtn = this.viewer.querySelector('.ide__btn--close');
-        this.body = this.viewer.querySelector('.ide__body');
-        
-        this.bindEvents();
+class WebViewer {
+  constructor() {
+    this.viewer = document.getElementById("webViewer");
+    this.backdrop = this.viewer.querySelector(".viewer__backdrop");
+    this.title = document.getElementById("browserTitle");
+    this.body = document.getElementById("browserBody");
+    this.loading = document.getElementById("browserLoading");
+    this.repoLink = document.getElementById("browserRepoLink");
+    this.externalLink = document.getElementById("browserExternalLink");
+    this.closeBtn = this.viewer.querySelector(".browser__btn--close");
+
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    this.closeBtn.addEventListener("click", () => this.close());
+    this.backdrop.addEventListener("click", () => this.close());
+  }
+
+  open(project) {
+    if (window.particleSystem) window.particleSystem.pause();
+
+    this.title.textContent = project.title;
+    this.externalLink.href = project.projectUrl;
+
+    if (project.repoUrl) {
+      this.repoLink.href = project.repoUrl;
+      this.repoLink.style.display = "flex";
+    } else {
+      this.repoLink.style.display = "none";
     }
 
-    bindEvents() {
-        this.closeBtn.addEventListener('click', () => this.close());
-        this.backdrop.addEventListener('click', () => this.close());
-    }
+    this.loading.style.display = "flex";
 
-    async open(project) {
-        if (window.particleSystem) window.particleSystem.pause();
+    const existingIframe = this.body.querySelector("iframe");
+    if (existingIframe) existingIframe.remove();
 
-        const lang = LANGUAGE_MAP[project.language] || { text: 'Code', hljs: 'plaintext' };
-        this.name.textContent = project.title;
-        this.file.textContent = '— ' + (project.fileName || 'code');
-        this.language.textContent = lang.text;
+    const iframe = document.createElement("iframe");
+    iframe.style.opacity = "0";
+    iframe.style.transition = "opacity 0.5s ease";
+    iframe.src = project.projectUrl;
 
-        if (project.repoUrl) {
-            this.repoLink.href = project.repoUrl;
-            this.repoLink.style.display = 'flex';
-        } else {
-            this.repoLink.style.display = 'none';
-        }
+    iframe.onload = () => {
+      setTimeout(() => {
+        this.loading.style.display = "none";
+        iframe.style.opacity = "1";
+      }, TIMING.IFRAME_FADE_DELAY);
+    };
 
-        this.viewer.classList.add('is-active');
-        FocusTrap.activate(this.viewer.querySelector('.ide'));
+    this.body.appendChild(iframe);
+    this.viewer.classList.add("is-active");
+    FocusTrap.activate(this.viewer.querySelector(".browser"));
+  }
 
-        const cached = window.projectsManager?.getCachedCode(project.codeUrl);
-        if (cached?.success) {
-            this.displayCode(cached.code, lang.hljs);
-            return;
-        }
-
-        this.body.innerHTML = `
-            <div class="ide__loading" aria-live="polite">
-                <div class="spinner"></div>
-                <span>Chargement...</span>
-            </div>
-        `;
-
-        try {
-            const res = await fetchWithTimeout(
-                'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl)
-            );
-            if (!res.ok) throw new Error('Fetch failed');
-            const code = await res.text();
-            window.projectsManager?.setCachedCode(project.codeUrl, code);
-            this.displayCode(code, lang.hljs);
-        } catch (e) {
-            this.body.innerHTML = `
-                <div class="ide__error" aria-live="assertive">
-                    <svg viewBox="0 0 24 24" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="8" x2="12" y2="12"/>
-                        <line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
-                    <span>Erreur de chargement</span>
-                </div>
-            `;
-        }
-    }
-
-    displayCode(code, lang) {
-        this.body.innerHTML = `<pre><code class="ide__code language-${lang}" id="ideCode"></code></pre>`;
-        const el = document.getElementById('ideCode');
-        el.textContent = code;
-        hljs.highlightElement(el);
-    }
-
-    close() {
-        this.viewer.classList.remove('is-active');
-        FocusTrap.deactivate();
-        if (window.particleSystem) window.particleSystem.resume();
-    }
+  close() {
+    const iframe = this.body.querySelector("iframe");
+    if (iframe) iframe.remove();
+    this.viewer.classList.remove("is-active");
+    FocusTrap.deactivate();
+    if (window.particleSystem) window.particleSystem.resume();
+  }
 }
 
 // Global instances (initialized in main.js)
