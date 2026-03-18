@@ -184,7 +184,7 @@ class IDEViewer {
         // Fetch code with timeout
         try {
             const res = await fetchWithTimeout(
-                'https://corsproxy.io/?' + encodeURIComponent(project.codeUrl)
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl)
             );
 
             if (!res.ok) throw new Error('Fetch failed');

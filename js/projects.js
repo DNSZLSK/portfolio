@@ -98,7 +98,7 @@ class ProjectsManager {
         await Promise.all(projects.map(async p => {
             try {
                 const res = await fetchWithTimeout(
-                    'https://corsproxy.io/?' + encodeURIComponent(p.codeUrl),
+                    'https://api.allorigins.win/raw?url=' + encodeURIComponent(p.codeUrl),
                     {},
                     TIMING.FETCH_TIMEOUT
                 );
@@ -184,7 +184,7 @@ class IDEViewer {
         // Fetch code with timeout
         try {
             const res = await fetchWithTimeout(
-                'https://corsproxy.io/?' + encodeURIComponent(project.codeUrl)
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent(project.codeUrl)
             );
 
             if (!res.ok) throw new Error('Fetch failed');
