@@ -131,7 +131,7 @@ class IDEViewer {
         this.backdrop = this.viewer.querySelector('.viewer__backdrop');
         this.name = document.getElementById('ideName');
         this.file = document.getElementById('ideFile');
-        this.code = document.getElementById('ideCode');
+        this.editor = document.getElementById('ideEditor');
         this.language = document.getElementById('ideLanguage');
         this.repoLink = document.getElementById('ideRepoLink');
         this.closeBtn = this.viewer.querySelector('.ide__btn--close');
@@ -145,8 +145,9 @@ class IDEViewer {
     }
     
     async open(project) {
-        // Pause particles
+        // Pause particles and lock scroll
         if (window.particleSystem) window.particleSystem.pause();
+        document.body.style.overflow = 'hidden';
 
         // Setup header
         const lang = LANGUAGE_MAP[project.language] || { text: 'Code', hljs: 'plaintext' };
@@ -174,7 +175,7 @@ class IDEViewer {
         }
 
         // Show loading
-        this.code.parentElement.innerHTML = `
+        this.editor.innerHTML = `
             <div class="ide__loading" aria-live="polite">
                 <div class="spinner"></div>
                 <span>Chargement...</span>
@@ -194,7 +195,7 @@ class IDEViewer {
             this.displayCode(code, lang.hljs);
 
         } catch (e) {
-            this.code.parentElement.innerHTML = `
+            this.editor.innerHTML = `
                 <div class="ide__error" aria-live="assertive">
                     <svg viewBox="0 0 24 24" stroke-width="2">
                         <circle cx="12" cy="12" r="10"/>
@@ -208,7 +209,7 @@ class IDEViewer {
     }
     
     displayCode(code, lang) {
-        this.code.parentElement.innerHTML = `<pre><code class="ide__code language-${lang}" id="ideCode"></code></pre>`;
+        this.editor.innerHTML = `<pre><code class="ide__code language-${lang}" id="ideCode"></code></pre>`;
         const el = document.getElementById('ideCode');
         el.textContent = code;
         hljs.highlightElement(el);
@@ -216,6 +217,7 @@ class IDEViewer {
     
     close() {
         this.viewer.classList.remove('is-active');
+        document.body.style.overflow = '';
         FocusTrap.deactivate();
         if (window.particleSystem) window.particleSystem.resume();
     }
@@ -246,8 +248,9 @@ class WebViewer {
     }
     
     open(project) {
-        // Pause particles
+        // Pause particles and lock scroll
         if (window.particleSystem) window.particleSystem.pause();
+        document.body.style.overflow = 'hidden';
 
         // Setup header
         this.title.textContent = project.title;
@@ -273,6 +276,7 @@ class WebViewer {
         iframe.style.opacity = '0';
         iframe.style.transition = 'opacity 0.5s ease';
         iframe.src = project.projectUrl;
+        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
 
         iframe.onload = () => {
             setTimeout(() => {
@@ -291,6 +295,7 @@ class WebViewer {
         if (iframe) iframe.remove();
 
         this.viewer.classList.remove('is-active');
+        document.body.style.overflow = '';
         FocusTrap.deactivate();
         if (window.particleSystem) window.particleSystem.resume();
     }

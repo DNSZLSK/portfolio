@@ -118,10 +118,17 @@ const Toast = {
     show(message, type = 'info', duration = 4000) {
         const toast = document.createElement('div');
         toast.className = `toast toast--${type}`;
-        toast.innerHTML = `
-            <span class="toast__icon">${this.getIcon(type)}</span>
-            <span class="toast__message">${message}</span>
-        `;
+        toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'toast__icon';
+        iconSpan.innerHTML = this.getIcon(type);
+
+        const msgSpan = document.createElement('span');
+        msgSpan.className = 'toast__message';
+        msgSpan.textContent = message;
+
+        toast.append(iconSpan, msgSpan);
 
         this.container.appendChild(toast);
 
@@ -269,6 +276,7 @@ const ContactModal = {
     successMessage: null,
     submitBtn: null,
     honeypot: null,
+    lastSubmitTime: 0,
 
     init() {
         this.modal = document.getElementById('contactModal');
@@ -295,12 +303,14 @@ const ContactModal = {
 
     open() {
         this.modal.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
         if (particleSystem) particleSystem.pause();
         FocusTrap.activate(this.modal.querySelector('.modal__content'));
     },
 
     close() {
         this.modal.classList.remove('is-active');
+        document.body.style.overflow = '';
         this.successMessage.classList.remove('is-visible');
         this.form.reset();
         FocusTrap.deactivate();
@@ -309,6 +319,14 @@ const ContactModal = {
 
     async handleSubmit(e) {
         e.preventDefault();
+
+        // Cooldown check (5s between submissions)
+        const now = Date.now();
+        if (now - this.lastSubmitTime < 5000) {
+            Toast.info('Veuillez patienter avant de renvoyer.');
+            return;
+        }
+        this.lastSubmitTime = now;
 
         // Honeypot check - if filled, it's a bot
         if (this.honeypot && this.honeypot.value) {
