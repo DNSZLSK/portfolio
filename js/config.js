@@ -105,7 +105,7 @@ const PROJECTS_DATA = [
         description: 'Jeu du "Juste Prix" en Python. Un des premiers exercices de la formation CDA.',
         language: 'python',
         category: 'python',
-        codeUrl: 'https://gitlab.com/dnszlsk/python-projects/le-juste-prix/-/raw/main/ECF%201%20k%C3%A9win_Le%20juste%20prix.py',
+        codeUrl: 'https://gitlab.com/api/v4/projects/dnszlsk%2Fpython-projects%2Fle-juste-prix/repository/files/ECF%201%20k%C3%A9win_Le%20juste%20prix.py/raw?ref=main',
         repoUrl: 'https://gitlab.com/dnszlsk/python-projects/le-juste-prix',
         fileName: 'juste_prix.py'
     },
@@ -114,7 +114,7 @@ const PROJECTS_DATA = [
         description: 'Script Python pour débusquer un espion dans un fichier CSV en analysant les langues et voyages.',
         language: 'python',
         category: 'python',
-        codeUrl: 'https://gitlab.com/dnszlsk/python-projects/python-spy-hunter/-/raw/main/k%C3%A9win_D%C3%A9busquez%20l%27espion.py',
+        codeUrl: 'https://gitlab.com/api/v4/projects/dnszlsk%2Fpython-projects%2Fpython-spy-hunter/repository/files/k%C3%A9win_D%C3%A9busquez%20l%27espion.py/raw?ref=main',
         repoUrl: 'https://gitlab.com/dnszlsk/python-projects/python-spy-hunter',
         fileName: 'spy_hunter.py'
     },
@@ -123,7 +123,7 @@ const PROJECTS_DATA = [
         description: 'Vérificateur de mot de passe en Java avec validation de règles complexes.',
         language: 'java',
         category: 'java',
-        codeUrl: 'https://gitlab.com/dnszlsk/java-projects/java-password-validator/-/raw/main/src/main/java/org/example/Main.java',
+        codeUrl: 'https://gitlab.com/api/v4/projects/dnszlsk%2Fjava-projects%2Fjava-password-validator/repository/files/src%2Fmain%2Fjava%2Forg%2Fexample%2FMain.java/raw?ref=main',
         repoUrl: 'https://gitlab.com/dnszlsk/java-projects/java-password-validator',
         fileName: 'Main.java'
     },
@@ -132,7 +132,7 @@ const PROJECTS_DATA = [
         description: 'Analyse de données de marées à partir de fichiers CSV.',
         language: 'java',
         category: 'java',
-        codeUrl: 'https://gitlab.com/dnszlsk/java-projects/simulation-oceanographique/-/raw/main/src/main/java/org/example/Main.java',
+        codeUrl: 'https://gitlab.com/api/v4/projects/dnszlsk%2Fjava-projects%2Fsimulation-oceanographique/repository/files/src%2Fmain%2Fjava%2Forg%2Fexample%2FMain.java/raw?ref=main',
         repoUrl: 'https://gitlab.com/dnszlsk/java-projects/simulation-oceanographique',
         fileName: 'Main.java'
     },
@@ -141,7 +141,7 @@ const PROJECTS_DATA = [
         description: 'Tests unitaires Java avec Mockito. Implémentation de mocks, stubs et vérifications.',
         language: 'mockito',
         category: 'tests',
-        codeUrl: 'https://gitlab.com/dnszlsk/mockito-projects/mock-of-duty/-/raw/main/src/test/java/SoldatTest.java',
+        codeUrl: 'https://gitlab.com/api/v4/projects/dnszlsk%2Fmockito-projects%2Fmock-of-duty/repository/files/src%2Ftest%2Fjava%2FSoldatTest.java/raw?ref=main',
         repoUrl: 'https://gitlab.com/dnszlsk/mockito-projects/mock-of-duty',
         fileName: 'SoldatTest.java'
     },
