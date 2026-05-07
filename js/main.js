@@ -615,18 +615,14 @@ function init() {
     updateMuteVisibility();
     document.addEventListener('era:changed', updateMuteVisibility);
 
-    // In retro mode the canvas particles are invisible (opacity:0) and the
-    // carousel becomes a static-feeling tree-view, so we pause both to free
-    // a continuous requestAnimationFrame loop on each.
+    // In retro mode the canvas particles are invisible (opacity:0), so we
+    // pause the canvas rAF loop. The carousel keeps animating in both modes
+    // (the horizontal scroll keeps the tree-view feeling alive).
     const applyEraPerformance = () => {
         const isRetro = document.body.dataset.era === 'past';
         if (particleSystem) {
             if (isRetro) particleSystem.pause();
             else particleSystem.resume();
-        }
-        if (carousel) {
-            if (isRetro) carousel.stop();
-            else carousel.start();
         }
     };
     document.addEventListener('era:changed', applyEraPerformance);
