@@ -173,6 +173,7 @@
     .ide,
     .browser {
         height: 95vh;
+        height: 95dvh;
         max-height: none;
         border-radius: 8px;
     }

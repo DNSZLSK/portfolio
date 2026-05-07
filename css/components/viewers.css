@@ -6,14 +6,21 @@
 .viewer {
     position: fixed;
     inset: 0;
+    /* Use dynamic viewport height so iOS Safari's collapsing URL bar doesn't
+       push the IDE header (and its close button) above the visible area. */
+    height: 100vh;
+    height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: var(--space-10);
+    /* Honour safe-area on iPhones with a notch / home indicator */
+    padding-top: max(var(--space-10), env(safe-area-inset-top));
+    padding-bottom: max(var(--space-10), env(safe-area-inset-bottom));
     z-index: var(--z-modal);
     visibility: hidden;
     opacity: 0;
-    transition: 
+    transition:
         visibility var(--transition-normal),
         opacity var(--transition-normal);
 }
@@ -40,6 +47,7 @@
     width: 100%;
     max-width: 1200px;
     height: 90vh;
+    height: 90dvh;
     max-height: 850px;
     background: #1e1e1e;
     border: 1px solid #333;
@@ -210,6 +218,7 @@
     width: 100%;
     max-width: 1200px;
     height: 90vh;
+    height: 90dvh;
     max-height: 850px;
     background: #1e1e1e;
     border: 1px solid #333;
