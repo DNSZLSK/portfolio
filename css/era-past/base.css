@@ -1,0 +1,299 @@
+/* =============================================================================
+   Era Past - Base, scrollbars, scanline transition, era-toggle button
+   ============================================================================= */
+
+/* ---------- Body & global ------------------------------------------------ */
+[data-era="past"] body {
+    font-family: var(--font-retro);
+    font-size: 13px;
+    line-height: 1.4;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent 0,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 4px
+        ),
+        var(--color-bg-primary);
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: auto;
+    image-rendering: pixelated;
+    transition:
+        background 0.4s ease,
+        color 0.4s ease,
+        font-family 0.2s ease;
+}
+
+/* Disable bg gradient text-clip in retro (titles use solid color) */
+[data-era="past"] .hero__title,
+[data-era="past"] .about__title {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    background-clip: initial !important;
+    color: var(--color-text-primary);
+    font-family: var(--font-retro);
+    text-shadow: 1px 1px 0 var(--bevel-light);
+}
+
+[data-era="past"][data-theme="dark"] .hero__title,
+[data-era="past"][data-theme="dark"] .about__title {
+    text-shadow: 1px 1px 0 var(--bevel-dark);
+}
+
+/* ---------- Selection ---------------------------------------------------- */
+[data-era="past"] ::selection {
+    background: var(--retro-selection-bg);
+    color: var(--retro-selection-text);
+}
+
+/* ---------- Scrollbar (Win98 style) -------------------------------------- */
+[data-era="past"] ::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+[data-era="past"] ::-webkit-scrollbar-track {
+    background:
+        repeating-linear-gradient(
+            45deg,
+            var(--bevel-mid) 0,
+            var(--bevel-mid) 1px,
+            var(--bevel-light) 1px,
+            var(--bevel-light) 2px
+        );
+    border: 1px solid var(--bevel-dark);
+}
+
+[data-era="past"] ::-webkit-scrollbar-thumb {
+    background: var(--bevel-mid);
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    border-radius: 0;
+    box-shadow: inset -1px -1px 0 var(--bevel-dark), inset 1px 1px 0 var(--bevel-mid);
+}
+
+[data-era="past"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--bevel-mid);
+    filter: brightness(1.05);
+}
+
+[data-era="past"] ::-webkit-scrollbar-button:single-button {
+    background: var(--bevel-mid);
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    height: 16px;
+    width: 16px;
+    display: block;
+}
+
+/* ---------- Disable backdrop blur (period-incorrect) ------------------- */
+[data-era="past"] .nav,
+[data-era="past"] .modal__backdrop,
+[data-era="past"] .viewer__backdrop,
+[data-era="past"] .toast,
+[data-era="past"] .filter-btn,
+[data-era="past"] .project-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* ---------- Disable canvas particles in retro -------------------------- */
+[data-era="past"] #bgCanvas {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ---------- Era toggle button (always visible, in both modes) ---------- */
+.era-toggle {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background var(--transition-normal),
+        border-color var(--transition-normal),
+        transform var(--transition-normal);
+}
+
+/* Honour the [hidden] attribute even when display:flex is set above. Used
+   to put the toggle on stand-by while the 2026/present version isn't ready. */
+.era-toggle[hidden] {
+    display: none;
+}
+
+.era-toggle:hover {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-hover);
+    transform: scale(1.05);
+}
+
+.era-toggle:active {
+    transform: scale(0.95);
+}
+
+.era-toggle svg {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    stroke: var(--color-text-primary);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    transition:
+        opacity var(--transition-normal),
+        transform var(--transition-normal);
+}
+
+.era-toggle__present {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+.era-toggle__past {
+    opacity: 0;
+    transform: rotate(180deg) scale(0);
+}
+
+[data-era="past"] .era-toggle__present {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0);
+}
+
+[data-era="past"] .era-toggle__past {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+/* In retro mode, give the era-toggle a beveled square look */
+[data-era="past"] .era-toggle,
+[data-era="past"] .theme-toggle {
+    border-radius: 0;
+    background: var(--bevel-mid);
+    border: none;
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    width: 36px;
+    height: 36px;
+    transform: none !important;
+}
+
+[data-era="past"] .era-toggle:hover,
+[data-era="past"] .theme-toggle:hover {
+    background: var(--bevel-mid);
+    filter: brightness(1.05);
+}
+
+[data-era="past"] .era-toggle:active,
+[data-era="past"] .theme-toggle:active {
+    border-top: 2px solid var(--bevel-deep);
+    border-left: 2px solid var(--bevel-deep);
+    border-right: 2px solid var(--bevel-light);
+    border-bottom: 2px solid var(--bevel-light);
+}
+
+[data-era="past"] .era-toggle svg,
+[data-era="past"] .theme-toggle svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--color-text-primary);
+}
+
+/* ---------- Era mute button -------------------------------------------- */
+.era-mute {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background: var(--bevel-mid);
+    border: none;
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-primary);
+}
+
+.era-mute:active {
+    border-top: 2px solid var(--bevel-deep);
+    border-left: 2px solid var(--bevel-deep);
+    border-right: 2px solid var(--bevel-light);
+    border-bottom: 2px solid var(--bevel-light);
+}
+
+.era-mute svg {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    transition: opacity var(--transition-fast);
+}
+
+.era-mute__off { opacity: 0; }
+.era-mute.is-muted .era-mute__on { opacity: 0; }
+.era-mute.is-muted .era-mute__off { opacity: 1; }
+
+/* Hide mute when not in past (also gated server-side via [hidden]) */
+body:not([data-era="past"]) .era-mute { display: none; }
+
+/* ---------- Scanline transition overlay -------------------------------- */
+.era-transition {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99999;
+    opacity: 0;
+    background:
+        linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(180, 220, 255, 0.4) 48%,
+            rgba(180, 220, 255, 0.7) 50%,
+            rgba(180, 220, 255, 0.4) 52%,
+            transparent 100%
+        );
+    background-size: 100% 200%;
+    background-position: 0 -100%;
+    transition: opacity 0.15s ease;
+}
+
+.era-transition.is-active {
+    opacity: 1;
+    animation: era-scanline 0.5s linear forwards;
+}
+
+.era-transition.is-leaving {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+@keyframes era-scanline {
+    from { background-position: 0 -100%; }
+    to   { background-position: 0 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .era-transition { display: none; }
+    [data-era="past"] body { transition: none; }
+}

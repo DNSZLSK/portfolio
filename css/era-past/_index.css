@@ -1,0 +1,15 @@
+/* =============================================================================
+   Era: Past - Ghidra / Java Swing Aesthetic
+   Loaded LAST. All rules are scoped under [data-era="past"] so the modern
+   present mode is left strictly untouched.
+   ============================================================================= */
+
+@import url('variables.css');
+@import url('base.css');
+@import url('chrome.css');
+@import url('nav.css');
+@import url('hero.css');
+@import url('sections.css');
+@import url('modals.css');
+@import url('viewers.css');
+@import url('carousel.css');

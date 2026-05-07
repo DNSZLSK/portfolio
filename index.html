@@ -45,8 +45,9 @@
     <link rel="stylesheet" href="css/components/modals.css">
     <link rel="stylesheet" href="css/components/viewers.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/era-past/_index.css">
 </head>
-<body data-theme="dark">
+<body data-theme="dark" data-era="past">
     <!-- Skip Link for Accessibility -->
     <a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
@@ -90,6 +91,34 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
                     </svg>
                 </button>
+
+                <!-- Past/Present toggle: stand-by until the 2026 (present) version is ready.
+                     The button is hidden here; remove the `hidden` attribute and revert
+                     <body data-era="past"> back to "present" in this file to reactivate. -->
+                <button class="era-toggle" id="eraToggle" aria-label="Basculer entre present et past" aria-pressed="true" hidden>
+                    <svg class="era-toggle__present" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9"/>
+                        <polyline points="12 7 12 12 15 14"/>
+                    </svg>
+                    <svg class="era-toggle__past" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="1"/>
+                        <rect x="7" y="7" width="10" height="10" rx="0"/>
+                        <line x1="9" y1="3" x2="9" y2="7"/>
+                        <line x1="15" y1="3" x2="15" y2="7"/>
+                    </svg>
+                </button>
+
+                <button class="era-mute" id="eraMute" aria-label="Couper le son rétro" aria-pressed="false" hidden>
+                    <svg class="era-mute__on" viewBox="0 0 24 24" aria-hidden="true">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                    </svg>
+                    <svg class="era-mute__off" viewBox="0 0 24 24" aria-hidden="true">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                        <line x1="23" y1="9" x2="17" y2="15"/>
+                        <line x1="17" y1="9" x2="23" y2="15"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </nav>
@@ -118,21 +147,26 @@
         
         <!-- About Section -->
         <section class="about section--fade" id="about">
-            <span class="about__label">Qui suis-je</span>
-            <h2 class="about__title">Un parcours atypique</h2>
-            <p class="about__text">
-                <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion&Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong> 
-                J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
-            </p>
-            <p class="about__text">
-                Beatmaker en studio, créateur de visuels, curieux de tout. J'ai toujours eu 
-                <strong>une âme d'artiste doublée d'un esprit technique</strong>. 
-                De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
-            </p>
-            <p class="about__text">
-                Aujourd'hui, je code. Et c'est la suite logique : <strong>Créer, résoudre, construire.</strong>
-            </p>
+            <div class="about__window">
+                <span class="about__label">Qui suis-je</span>
+                <h2 class="about__title">Un parcours atypique</h2>
+                <p class="about__text">
+                    <strong>Sous-chef de cuisine, chef d'équipe plombier chez Bobion&Joanin, régisseur du Marché de Noël de Bordeaux, DJ à Astropolis et à l'iBoat aux côtés de Soulection...</strong>
+                    J'ai 34 ans et un parcours qui ne ressemble à aucun autre.
+                </p>
+                <p class="about__text">
+                    Beatmaker en studio, créateur de visuels, curieux de tout. J'ai toujours eu
+                    <strong>une âme d'artiste doublée d'un esprit technique</strong>.
+                    De la cuisine aux chantiers, des festivals aux clubs bordelais, j'ai appris à gérer la pression, les équipes et les deadlines.
+                </p>
+                <p class="about__text">
+                    Aujourd'hui, je code. Et c'est la suite logique : <strong>Créer, résoudre, construire.</strong>
+                </p>
+            </div>
         </section>
+
+        <!-- About scroll spacer (only active in retro mode, mirrors hero-spacer) -->
+        <div class="about-spacer" aria-hidden="true"></div>
         
         <!-- Projects Section -->
         <section class="projects section--fade" id="projects">
@@ -199,7 +233,7 @@
             <header class="ide__header">
                 <div class="ide__title">
                     <span class="ide__name" id="ideName">Projet</span>
-                    <span class="ide__file" id="ideFile">— script.py</span>
+                    <span class="ide__file" id="ideFile">- script.py</span>
                 </div>
                 <div class="ide__actions">
                     <a href="#" id="ideRepoLink" class="ide__btn ide__btn--repo" target="_blank" rel="noopener" title="Voir sur GitLab">
@@ -250,6 +284,7 @@
     <script defer src="js/particles.js"></script>
     <script defer src="js/carousel.js"></script>
     <script defer src="js/projects.js"></script>
+    <script defer src="js/era.js"></script>
     <script defer src="js/main.js"></script>
 </body>
 </html>

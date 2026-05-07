@@ -1,0 +1,82 @@
+/* =============================================================================
+   Era Past - Navigation as Java Swing menu bar
+   ============================================================================= */
+
+[data-era="past"] .nav {
+    background: var(--bevel-mid);
+    border-bottom: 1px solid var(--bevel-deep);
+    box-shadow:
+        inset 0 1px 0 var(--bevel-light),
+        0 1px 0 var(--bevel-dark);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    height: 56px;
+    padding: 0;
+}
+
+[data-era="past"] .nav__content {
+    padding: 0 12px;
+    height: 100%;
+}
+
+[data-era="past"] .nav__logo {
+    font-family: var(--font-retro);
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-text-primary);
+    gap: 6px;
+    padding: 0 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid var(--bevel-dark);
+    box-shadow: 1px 0 0 var(--bevel-light);
+}
+
+[data-era="past"] .nav__logo:hover {
+    color: var(--color-text-primary);
+    background: var(--retro-selection-bg);
+    color: var(--retro-selection-text);
+}
+
+[data-era="past"] .nav__logo svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+[data-era="past"] .nav__actions {
+    gap: 8px;
+}
+
+[data-era="past"] .nav__link {
+    font-family: var(--font-retro);
+    font-size: 11px;
+    color: var(--color-text-primary);
+    opacity: 1;
+    padding: 4px 10px;
+    background: var(--bevel-mid);
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    text-decoration: none;
+    height: 28px;
+}
+
+[data-era="past"] .nav__link:hover {
+    color: var(--color-text-primary);
+    filter: brightness(1.05);
+}
+
+[data-era="past"] .nav__link:active {
+    border-top: 2px solid var(--bevel-deep);
+    border-left: 2px solid var(--bevel-deep);
+    border-right: 2px solid var(--bevel-light);
+    border-bottom: 2px solid var(--bevel-light);
+}
+
+[data-era="past"] .nav__link svg {
+    width: 14px;
+    height: 14px;
+}

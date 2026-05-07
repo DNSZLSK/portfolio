@@ -2,6 +2,12 @@
    About Section
    ============================================================================= */
 
+/* The about-spacer only creates scroll room in retro mode; in present mode
+   the about section flows normally and the spacer is hidden. */
+.about-spacer {
+    display: none;
+}
+
 .about {
     display: flex;
     flex-direction: column;

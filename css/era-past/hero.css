@@ -1,0 +1,157 @@
+/* =============================================================================
+   Era Past - Hero as Ghidra Listing View
+   The hero card becomes a "Function Listing" pane: title bar at top,
+   banner image inside a sunken frame, then assembly-style title/subtitle.
+   ============================================================================= */
+
+[data-era="past"] .hero {
+    padding-top: 80px;
+    padding-bottom: 32px;
+}
+
+[data-era="past"] .hero__content {
+    max-width: 900px;
+    background: var(--color-bg-secondary);
+    border: none;
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Synthetic title bar at top of hero card */
+[data-era="past"] .hero__content::before {
+    content: "Listing - main_portfolio.exe  [analyzed]";
+    display: block;
+    height: 22px;
+    padding: 3px 6px;
+    background: var(--titlebar-bg);
+    color: var(--titlebar-text);
+    font-family: var(--font-retro);
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 16px;
+    letter-spacing: 0;
+    border-bottom: 1px solid var(--bevel-deep);
+}
+
+[data-era="past"] .hero__banner {
+    margin: 0;
+    padding: 12px 12px 0;
+    background: var(--color-bg-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* Defeat responsive.css landscape rule (`max-width: 55%`) so the banner
+       fills the listing window the same way as the title/subtitle below. */
+    max-width: 100%;
+    width: auto;
+}
+
+[data-era="past"] .hero__image {
+    width: 100%;
+    border-radius: 0;
+    border: none;
+    border-top: 2px solid var(--bevel-deep);
+    border-left: 2px solid var(--bevel-deep);
+    border-right: 2px solid var(--bevel-light);
+    border-bottom: 2px solid var(--bevel-light);
+    box-shadow: none;
+    image-rendering: auto;
+}
+
+[data-era="past"] .hero__image:hover {
+    transform: none;
+}
+
+/* Listing-style title block: address column + mnemonic */
+[data-era="past"] .hero__title,
+[data-era="past"] .hero__subtitle {
+    font-family: var(--font-mono-retro);
+    text-align: left;
+    margin: 0;
+    padding: 0 18px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    text-shadow: none !important;
+    font-weight: normal;
+}
+
+/* Hide the original h1 text by collapsing its font-size; ::before renders
+   inline as the assembly line, taking its own font-size from below.
+   `!important` is required to defeat responsive.css's landscape rule
+   (`.hero__title { font-size: 22px !important }` at max-height:550px), which
+   would otherwise re-introduce the original heading text and double-render. */
+[data-era="past"] .hero__title {
+    font-size: 0 !important;
+    line-height: 0 !important;
+    padding: 14px 18px 2px;
+    color: var(--mnemonic-color);
+}
+
+[data-era="past"] .hero__title::before {
+    content: "0x00401000  call    Display_Title  ; Développeur Fullstack";
+    display: inline-block;
+    font-family: var(--font-mono-retro);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--mnemonic-color);
+}
+
+[data-era="past"][data-theme="dark"] .hero__title::before {
+    color: var(--keyword-color);
+}
+
+[data-era="past"] .hero__subtitle {
+    font-size: 12px;
+    padding-top: 0;
+    padding-bottom: 14px;
+    color: var(--comment-color);
+}
+
+[data-era="past"] .hero__subtitle::before {
+    content: "0x00401005  ;  ";
+    color: var(--hex-color);
+    user-select: none;
+}
+
+/* Scroll indicator: tiny status text instead of bouncy mouse */
+[data-era="past"] .hero__scroll {
+    bottom: 16px;
+    animation: none;
+    transform: translateX(-50%);
+    background: var(--bevel-mid);
+    padding: 2px 10px;
+    border-top: 1px solid var(--bevel-light);
+    border-left: 1px solid var(--bevel-light);
+    border-right: 1px solid var(--bevel-deep);
+    border-bottom: 1px solid var(--bevel-deep);
+    opacity: 0.85;
+    gap: 0;
+}
+
+[data-era="past"] .hero__scroll span {
+    font-family: var(--font-retro);
+    font-size: 11px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-text-primary);
+    display: none;
+}
+
+[data-era="past"] .hero__scroll-icon {
+    display: none;
+}
+
+[data-era="past"] .hero__scroll::after {
+    content: "▼ scroll for more";
+    font-family: var(--font-retro);
+    font-size: 11px;
+    color: var(--color-text-primary);
+}

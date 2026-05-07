@@ -1,0 +1,81 @@
+/* =============================================================================
+   Era Past - Tech carousel as Ghidra "Symbol Tree" expanded list
+   The carousel keeps animating but inside a Win98 listbox, with each item
+   prefixed by a tree glyph.
+   ============================================================================= */
+
+[data-era="past"] .carousel {
+    /* Pull out of absolute positioning: in retro the carousel is a tree-view
+       listbox sitting BELOW the banner image, not overlaying it. */
+    position: static;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    padding: 4px 8px;
+    background: #ffffff;
+    border-top: 2px solid var(--bevel-deep);
+    border-left: 2px solid var(--bevel-deep);
+    border-right: 2px solid var(--bevel-light);
+    border-bottom: 2px solid var(--bevel-light);
+    /* Disable mask fade (period-incorrect smoothness) */
+    mask-image: none;
+    -webkit-mask-image: none;
+    overflow: hidden;
+}
+
+[data-era="past"][data-theme="dark"] .carousel {
+    background: #2b2b2b;
+}
+
+[data-era="past"] .carousel__track {
+    gap: 18px;
+    align-items: center;
+}
+
+[data-era="past"] .carousel__item {
+    flex-direction: row;
+    gap: 6px;
+    min-width: 0;
+    padding: 2px 4px;
+}
+
+[data-era="past"] .carousel__item::before {
+    content: "├─";
+    font-family: var(--font-mono-retro);
+    font-size: 11px;
+    color: var(--color-text-primary);
+    line-height: 1;
+}
+
+[data-era="past"][data-theme="dark"] .carousel__item::before {
+    color: var(--color-text-secondary);
+}
+
+[data-era="past"] .carousel__logo {
+    height: 18px;
+    filter: none !important;
+    image-rendering: pixelated;
+}
+
+[data-era="past"] .carousel__logo--mastered {
+    filter: contrast(1.1) !important;
+}
+
+[data-era="past"] .carousel__logo--learning {
+    filter: grayscale(100%) opacity(0.55) !important;
+}
+
+[data-era="past"] .carousel__label {
+    font-family: var(--font-retro);
+    font-size: 11px;
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-text-primary);
+    text-shadow: none;
+}
+
+[data-era="past"][data-theme="dark"] .carousel__label {
+    color: var(--color-text-primary);
+    text-shadow: none;
+}

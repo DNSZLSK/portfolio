@@ -198,42 +198,215 @@ const ScrollEffects = {
     hero: null,
     heroContent: null,
     scrollIndicator: null,
+    aboutSection: null,
+    aboutWindow: null,
+    projectsSection: null,
     lastScrollY: 0,
     ticking: false,
-    
+    cachedVh: 0,
+    // Last applied values (avoid redundant DOM writes)
+    lastHeroOpacity: -1,
+    lastAboutOpacity: -1,
+    lastAboutTranslate: -1,
+    lastProjectsTranslate: -1,
+    lastHeroVisible: null,
+    lastAboutVisible: null,
+
     init() {
         this.hero = document.getElementById('hero');
         this.heroContent = this.hero.querySelector('.hero__content');
         this.scrollIndicator = document.getElementById('scrollIndicator');
-        
+        this.aboutSection = document.getElementById('about');
+        this.aboutWindow = this.aboutSection ? this.aboutSection.querySelector('.about__window') : null;
+        this.projectsSection = document.getElementById('projects');
+
+        this.cachedVh = window.innerHeight;
+
         window.addEventListener('scroll', () => this.onScroll(), { passive: true });
+        window.addEventListener('resize', () => {
+            this.cachedVh = window.innerHeight;
+            this.scheduleUpdate();
+        }, { passive: true });
+        document.addEventListener('era:changed', () => this.scheduleUpdate(true));
+
         this.initSectionObserver();
+        this.scheduleUpdate(true);
     },
-    
+
     onScroll() {
         this.lastScrollY = window.scrollY || window.pageYOffset;
-        
-        // Update parallax offset for particles
+
         if (particleSystem && window.innerWidth > 768) {
             particleSystem.parallaxOffset = this.lastScrollY * PARTICLES_CONFIG.parallaxFactor;
         }
-        
-        if (!this.ticking) {
-            requestAnimationFrame(() => this.updateHero());
-            this.ticking = true;
+
+        this.scheduleUpdate();
+    },
+
+    scheduleUpdate(force) {
+        if (this.ticking) return;
+        this.ticking = true;
+        requestAnimationFrame(() => {
+            if (force) this.invalidateCache();
+            this.updateHero();
+            this.updateAbout();
+            this.updateProjects();
+            this.ticking = false;
+        });
+    },
+
+    invalidateCache() {
+        this.lastHeroOpacity = -1;
+        this.lastAboutOpacity = -1;
+        this.lastAboutTranslate = -1;
+        this.lastProjectsTranslate = -1;
+        this.lastHeroVisible = null;
+        this.lastAboutVisible = null;
+    },
+
+    /** Smoothstep easing: 3t^2 - 2t^3, smooth ease-in-ease-out on [0,1]. */
+    ease(t) {
+        if (t <= 0) return 0;
+        if (t >= 1) return 1;
+        return t * t * (3 - 2 * t);
+    },
+
+    /**
+     * In retro mode the hero fades over a longer range so its disappearance
+     * synchronizes with the about's rise.
+     */
+    updateHero() {
+        const vh = this.cachedVh;
+        const isRetro = document.body.dataset.era === 'past';
+        const fadeRange = isRetro ? vh : (vh * 0.8);
+        const progress = Math.min(this.lastScrollY / fadeRange, 1);
+        const eased = this.ease(progress);
+
+        const opacity = 1 - eased;
+        const indicatorOpacity = Math.max(0, 1 - (progress * 1.5));
+        const visible = eased < 0.99;
+
+        if (opacity !== this.lastHeroOpacity) {
+            this.heroContent.style.opacity = opacity;
+            this.scrollIndicator.style.opacity = indicatorOpacity;
+            this.lastHeroOpacity = opacity;
+        }
+        if (visible !== this.lastHeroVisible) {
+            this.hero.style.visibility = visible ? 'visible' : 'hidden';
+            this.lastHeroVisible = visible;
         }
     },
-    
-    updateHero() {
-        const heroHeight = window.innerHeight;
-        const scrollProgress = Math.min(this.lastScrollY / (heroHeight * 0.8), 1);
-        const easedProgress = 1 - Math.pow(1 - scrollProgress, 2);
-        
-        this.heroContent.style.opacity = 1 - easedProgress;
-        this.scrollIndicator.style.opacity = Math.max(0, 1 - (scrollProgress * 1.5));
-        this.hero.style.visibility = easedProgress >= 0.99 ? 'hidden' : 'visible';
-        
-        this.ticking = false;
+
+    /**
+     * Retro mode: 3-section choreography where each section's transition
+     * synchronizes with the next. Timeline (scrollY in vh from document top):
+     *
+     *     0   -> 100vh : hero fades out  +  about slides up & fades in   (handoff #1)
+     *   100vh -> 150vh: about locked at center, opaque backdrop          (50vh read pause)
+     *   150vh -> 250vh: about fades out  +  projects slides up           (handoff #2)
+     *   250vh+        : projects settled at its natural document position
+     *
+     * about-spacer is 150vh, putting projects' natural top at scrollY = 250vh.
+     * The lock is kept short (50vh) so the perceived scroll rate stays
+     * uniform with the surrounding transitions.
+     */
+    updateAbout() {
+        if (!this.aboutWindow || !this.aboutSection) return;
+
+        if (document.body.dataset.era !== 'past') {
+            if (this.lastAboutOpacity !== -1 || this.aboutSection.style.opacity) {
+                this.aboutSection.style.opacity = '';
+                this.aboutSection.style.visibility = '';
+                this.aboutWindow.style.transform = '';
+                this.lastAboutOpacity = -1;
+                this.lastAboutTranslate = -1;
+                this.lastAboutVisible = null;
+            }
+            return;
+        }
+
+        const vh = this.cachedVh;
+        const lockY = vh;
+        const releaseY = 1.5 * vh;
+        const endY = 2.5 * vh;
+
+        const y = this.lastScrollY;
+        let translatePx;
+        let opacity;
+
+        if (y < 0) {
+            translatePx = vh;
+            opacity = 0;
+        } else if (y < lockY) {
+            const eased = this.ease(y / lockY);
+            translatePx = vh * (1 - eased);
+            opacity = eased;
+        } else if (y < releaseY) {
+            translatePx = 0;
+            opacity = 1;
+        } else if (y < endY) {
+            const eased = this.ease((y - releaseY) / (endY - releaseY));
+            translatePx = 0;
+            opacity = 1 - eased;
+        } else {
+            translatePx = 0;
+            opacity = 0;
+        }
+
+        const translateRounded = Math.round(translatePx);
+        if (translateRounded !== this.lastAboutTranslate) {
+            this.aboutWindow.style.transform = `translate3d(0, ${translateRounded}px, 0)`;
+            this.lastAboutTranslate = translateRounded;
+        }
+        const opacityRounded = Math.round(opacity * 1000) / 1000;
+        if (opacityRounded !== this.lastAboutOpacity) {
+            this.aboutSection.style.opacity = opacityRounded;
+            this.lastAboutOpacity = opacityRounded;
+        }
+        const visible = opacityRounded > 0.005;
+        if (visible !== this.lastAboutVisible) {
+            this.aboutSection.style.visibility = visible ? 'visible' : 'hidden';
+            this.lastAboutVisible = visible;
+        }
+    },
+
+    /**
+     * Retro mode: projects slides UP from below the viewport during the
+     * about's fade-out, reaching its natural document position by
+     * scrollY = 250vh. After that, projects scrolls naturally.
+     */
+    updateProjects() {
+        if (!this.projectsSection) return;
+
+        if (document.body.dataset.era !== 'past') {
+            if (this.lastProjectsTranslate !== -1 || this.projectsSection.style.transform) {
+                this.projectsSection.style.transform = '';
+                this.lastProjectsTranslate = -1;
+            }
+            return;
+        }
+
+        const vh = this.cachedVh;
+        const startY = 1.5 * vh;
+        const endY = 2.5 * vh;
+
+        const y = this.lastScrollY;
+        let translatePx;
+
+        if (y < startY) {
+            translatePx = vh;
+        } else if (y < endY) {
+            const eased = this.ease((y - startY) / (endY - startY));
+            translatePx = vh * (1 - eased);
+        } else {
+            translatePx = 0;
+        }
+
+        const translateRounded = Math.round(translatePx);
+        if (translateRounded !== this.lastProjectsTranslate) {
+            this.projectsSection.style.transform = `translate3d(0, ${translateRounded}px, 0)`;
+            this.lastProjectsTranslate = translateRounded;
+        }
     },
     
     initSectionObserver() {
@@ -430,6 +603,33 @@ function init() {
     // Initialize modules
     Toast.init();
     ThemeManager.init();
+    EraManager.init();
+    EraManager.bindAmbientClicks();
+
+    // Reveal mute button only when in past era; keep in sync via event
+    const updateMuteVisibility = () => {
+        const muteBtn = document.getElementById('eraMute');
+        if (!muteBtn) return;
+        muteBtn.hidden = document.body.dataset.era !== 'past';
+    };
+    updateMuteVisibility();
+    document.addEventListener('era:changed', updateMuteVisibility);
+
+    // In retro mode the canvas particles are invisible (opacity:0) and the
+    // carousel becomes a static-feeling tree-view, so we pause both to free
+    // a continuous requestAnimationFrame loop on each.
+    const applyEraPerformance = () => {
+        const isRetro = document.body.dataset.era === 'past';
+        if (particleSystem) {
+            if (isRetro) particleSystem.pause();
+            else particleSystem.resume();
+        }
+        if (carousel) {
+            if (isRetro) carousel.stop();
+            else carousel.start();
+        }
+    };
+    document.addEventListener('era:changed', applyEraPerformance);
     
     // Particle system
     const canvas = document.getElementById('bgCanvas');
@@ -457,6 +657,10 @@ function init() {
     setTimeout(() => {
         projectsManager.preloadCode();
     }, TIMING.CODE_PRELOAD_DELAY);
+
+    // Apply initial era performance gate (after carousel has finished its
+    // 100ms init delay so a stop() actually catches the running animation).
+    setTimeout(applyEraPerformance, TIMING.CAROUSEL_INIT_DELAY + 50);
 }
 
 // Start when DOM is ready

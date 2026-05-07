@@ -1,0 +1,170 @@
+/* =============================================================================
+   Era Past - IDE & Browser viewers as Ghidra Listing window
+   ============================================================================= */
+
+[data-era="past"] .viewer__backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* ---------- IDE viewer -> Ghidra Listing window ----------------------- */
+[data-era="past"] .ide,
+[data-era="past"] .browser {
+    background: var(--color-bg-secondary);
+    border: none;
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    border-radius: 0;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+[data-era="past"] .ide__header,
+[data-era="past"] .browser__header {
+    background: var(--titlebar-bg);
+    border-bottom: 1px solid var(--bevel-deep);
+    height: 24px;
+    padding: 0 6px;
+    color: var(--titlebar-text);
+}
+
+[data-era="past"] .ide__title,
+[data-era="past"] .browser__title {
+    color: var(--titlebar-text);
+}
+
+[data-era="past"] .ide__name,
+[data-era="past"] .browser__title {
+    font-family: var(--font-retro);
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--titlebar-text);
+}
+
+[data-era="past"] .ide__file {
+    font-family: var(--font-mono-retro);
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+[data-era="past"] .ide__btn,
+[data-era="past"] .browser__btn {
+    width: 20px;
+    height: 18px;
+    background: var(--bevel-mid);
+    border: none;
+    border-top: 1px solid var(--bevel-light);
+    border-left: 1px solid var(--bevel-light);
+    border-right: 1px solid var(--bevel-deep);
+    border-bottom: 1px solid var(--bevel-deep);
+    border-radius: 0;
+    color: #000;
+}
+
+[data-era="past"] .ide__btn:hover,
+[data-era="past"] .browser__btn:hover {
+    background: var(--bevel-mid);
+    filter: brightness(1.05);
+    transform: none;
+    color: #000;
+}
+
+[data-era="past"] .ide__btn:active,
+[data-era="past"] .browser__btn:active {
+    border-top: 1px solid var(--bevel-deep);
+    border-left: 1px solid var(--bevel-deep);
+    border-right: 1px solid var(--bevel-light);
+    border-bottom: 1px solid var(--bevel-light);
+}
+
+[data-era="past"] .ide__btn svg,
+[data-era="past"] .browser__btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+[data-era="past"] .ide__btn--close,
+[data-era="past"] .browser__btn--close {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 12px;
+}
+
+[data-era="past"] .ide__btn--close:hover,
+[data-era="past"] .browser__btn--close:hover {
+    transform: none;
+    color: #000;
+}
+
+/* IDE body: keep dark code (highlight.js theme expects dark bg) */
+[data-era="past"] .ide__body,
+[data-era="past"] .browser__body,
+[data-era="past"] .browser__body iframe {
+    background: #1e1e1e;
+}
+
+[data-era="past"][data-theme="light"] .ide__body {
+    background: #ffffff;
+}
+
+/* Editor: flank with a synthetic hex address gutter via background */
+[data-era="past"] .ide__editor {
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 20.8px
+        ),
+        var(--color-bg-secondary);
+}
+
+[data-era="past"] .ide__code {
+    font-family: var(--font-mono-retro);
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 8px 12px 8px 12px;
+    color: #d4d4d4;
+}
+
+[data-era="past"][data-theme="light"] .ide__code {
+    color: #1a1a1a;
+}
+
+/* Status bar: Win98 sunken */
+[data-era="past"] .ide__statusbar {
+    background: var(--bevel-mid);
+    color: var(--color-text-primary);
+    font-family: var(--font-retro);
+    font-size: 11px;
+    height: 22px;
+    border-top: 1px solid var(--bevel-light);
+    padding: 0 6px;
+    gap: 8px;
+}
+
+[data-era="past"] .ide__statusbar > span {
+    border-top: 1px solid var(--bevel-deep);
+    border-left: 1px solid var(--bevel-deep);
+    border-right: 1px solid var(--bevel-light);
+    border-bottom: 1px solid var(--bevel-light);
+    padding: 0 6px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+}
+
+[data-era="past"] .ide__loading,
+[data-era="past"] .ide__error {
+    font-family: var(--font-retro);
+    color: var(--color-text-primary);
+}
+
+/* ---------- Browser frame -------------------------------------------- */
+[data-era="past"] .browser__loading {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-family: var(--font-retro);
+    font-size: 12px;
+}

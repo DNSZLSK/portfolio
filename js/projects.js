@@ -152,7 +152,7 @@ class IDEViewer {
         // Setup header
         const lang = LANGUAGE_MAP[project.language] || { text: 'Code', hljs: 'plaintext' };
         this.name.textContent = project.title;
-        this.file.textContent = '— ' + (project.fileName || 'code');
+        this.file.textContent = '- ' + (project.fileName || 'code');
         this.language.textContent = lang.text;
 
         // Repo link

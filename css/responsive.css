@@ -32,12 +32,16 @@
         display: none;
     }
     
-    .theme-toggle {
+    .theme-toggle,
+    .era-toggle,
+    .era-mute {
         width: 40px;
         height: 40px;
     }
-    
-    .theme-toggle svg {
+
+    .theme-toggle svg,
+    .era-toggle svg,
+    .era-mute svg {
         width: 18px;
         height: 18px;
     }
@@ -288,6 +292,103 @@
 }
 
 /* =============================================================================
+   Tiny Mobile (max-width: 360px) - older Androids, iPhone SE 1st gen
+   ============================================================================= */
+@media (max-width: 360px) {
+    .nav__content {
+        padding: 0 8px;
+    }
+
+    .nav__actions {
+        gap: 6px;
+    }
+
+    .theme-toggle,
+    .era-toggle,
+    .era-mute {
+        width: 36px;
+        height: 36px;
+    }
+
+    .theme-toggle svg,
+    .era-toggle svg,
+    .era-mute svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .hero {
+        padding: 70px 12px 32px;
+    }
+
+    .hero__title {
+        font-size: 20px;
+    }
+
+    .hero__subtitle {
+        font-size: 12px;
+    }
+
+    .carousel__track {
+        gap: 6px;
+    }
+
+    .carousel__item {
+        min-width: 32px;
+    }
+
+    .carousel__logo {
+        height: 16px;
+    }
+
+    .carousel__label {
+        font-size: 4px;
+    }
+
+    .about {
+        padding: 60px 14px;
+    }
+
+    .about__title {
+        font-size: 22px;
+    }
+
+    .about__text {
+        font-size: 13px;
+    }
+
+    .projects {
+        padding: 40px 10px 50px;
+    }
+
+    .projects__title {
+        font-size: 22px;
+    }
+
+    .project-card__content {
+        padding: 14px;
+    }
+
+    .project-card__title {
+        font-size: 14px;
+    }
+
+    .project-card__description {
+        font-size: 12px;
+    }
+
+    .modal__content {
+        padding: 24px 16px;
+        margin: 12px;
+    }
+
+    .form__input,
+    .form__textarea {
+        padding: 12px 14px;
+    }
+}
+
+/* =============================================================================
    Landscape Mobile (max-height: 550px) - CRITICAL FOR iPHONE LANDSCAPE
    ============================================================================= */
 @media (max-height: 550px) and (orientation: landscape) {
@@ -383,12 +484,16 @@
     }
     
     /* Nav */
-    .theme-toggle {
-        width: 30px;
-        height: 30px;
+    .theme-toggle,
+    .era-toggle,
+    .era-mute {
+        width: 32px;
+        height: 32px;
     }
-    
-    .theme-toggle svg {
+
+    .theme-toggle svg,
+    .era-toggle svg,
+    .era-mute svg {
         width: 14px;
         height: 14px;
     }

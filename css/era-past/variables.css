@@ -1,0 +1,128 @@
+/* =============================================================================
+   Ghidra Tokens - 4 combinations
+   - past + dark  -> Ghidra dark IDE (Darcula-ish)
+   - past + light -> Java Swing classique (Win98/Metal LaF)
+   ============================================================================= */
+
+[data-era="past"] {
+    /* Fonts */
+    --font-retro: "Tahoma", "MS Sans Serif", "Segoe UI", system-ui, sans-serif;
+    --font-mono-retro: "Courier New", "Consolas", "Lucida Console", "Monaco", monospace;
+
+    /* Bevel colors (Win98 3D borders) - overridden per theme below */
+    --bevel-light: #ffffff;
+    --bevel-mid: #c0c0c0;
+    --bevel-dark: #808080;
+    --bevel-deep: #404040;
+
+    /* Title bar gradient (Java Swing active window) */
+    --titlebar-bg: linear-gradient(to right, #0a246a 0%, #a6caf0 100%);
+    --titlebar-text: #ffffff;
+
+    /* Layout */
+    --hex-color: #6a737b;
+    --mnemonic-color: #000080;
+    --comment-color: #008000;
+    --string-color: #a31515;
+    --keyword-color: #0000ff;
+
+    /* Selection */
+    --retro-selection-bg: #316ac5;
+    --retro-selection-text: #ffffff;
+}
+
+/* =========================================================================
+   PAST + DARK -> Ghidra dark Listing
+   ========================================================================= */
+[data-era="past"][data-theme="dark"] {
+    --color-bg-primary: #2b2b2b;
+    --color-bg-secondary: #3c3f41;
+    --color-bg-card: #313335;
+    --color-bg-nav: #3c3f41;
+
+    --color-text-primary: #bbbbbb;
+    --color-text-secondary: #808080;
+
+    --color-accent: #ffc66d;
+    --color-accent-hover: #ffd083;
+    --color-success: #6a8759;
+
+    --color-border: #555555;
+    --color-border-hover: #6a6a6a;
+
+    --color-shadow: rgba(0, 0, 0, 0.6);
+    --color-glow: rgba(255, 198, 109, 0.15);
+
+    --particle-color: rgba(255, 198, 109, 0.4);
+    --particle-glow: rgba(255, 198, 109, 0.2);
+    --line-color-1: 204, 120, 50;
+    --line-color-2: 106, 135, 89;
+    --line-color-3: 255, 198, 109;
+
+    --bevel-light: #5a5a5a;
+    --bevel-mid: #3c3f41;
+    --bevel-dark: #1e1e1e;
+    --bevel-deep: #000000;
+
+    --titlebar-bg: linear-gradient(to bottom, #4b6eaf 0%, #214283 100%);
+    --titlebar-text: #ffffff;
+
+    --hex-color: #7a7e85;
+    --mnemonic-color: #cc7832;
+    --comment-color: #808080;
+    --string-color: #6a8759;
+    --keyword-color: #cc7832;
+
+    --retro-selection-bg: #214283;
+    --retro-selection-text: #ffffff;
+
+    --desktop-pattern: #2b2b2b;
+}
+
+/* =========================================================================
+   PAST + LIGHT -> Java Swing classique (Win98 Metal LaF)
+   ========================================================================= */
+[data-era="past"][data-theme="light"] {
+    --color-bg-primary: #008080;          /* iconic teal desktop */
+    --color-bg-secondary: #ece9d8;
+    --color-bg-card: #c0c0c0;
+    --color-bg-nav: #c0c0c0;
+
+    --color-text-primary: #000000;
+    --color-text-secondary: #404040;
+
+    --color-accent: #0a246a;
+    --color-accent-hover: #1a3478;
+    --color-success: #008000;
+
+    --color-border: #808080;
+    --color-border-hover: #404040;
+
+    --color-shadow: rgba(0, 0, 0, 0.4);
+    --color-glow: rgba(10, 36, 106, 0.2);
+
+    --particle-color: rgba(0, 0, 0, 0.4);
+    --particle-glow: rgba(10, 36, 106, 0.3);
+    --line-color-1: 10, 36, 106;
+    --line-color-2: 0, 128, 0;
+    --line-color-3: 128, 0, 128;
+
+    --bevel-light: #ffffff;
+    --bevel-mid: #c0c0c0;
+    --bevel-dark: #808080;
+    --bevel-deep: #404040;
+
+    --titlebar-bg: linear-gradient(to right, #0a246a 0%, #a6caf0 100%);
+    --titlebar-text: #ffffff;
+
+    --hex-color: #6a737b;
+    --mnemonic-color: #000080;
+    --comment-color: #008000;
+    --string-color: #a31515;
+    --keyword-color: #0000ff;
+
+    --retro-selection-bg: #316ac5;
+    --retro-selection-text: #ffffff;
+
+    --desktop-pattern: #008080;
+}

@@ -1,0 +1,555 @@
+/* =============================================================================
+   Era Past - About + Projects sections
+   ============================================================================= */
+
+/* ---------- About: framed JDialog ---------------------------------------
+   `.about` becomes a tall transparent scroll container (200vh).
+   `.about__window` is the visible Win98 dialog: position: sticky at 50%,
+   centered vertically, so it never rises higher than the viewport middle.
+   It fades like the hero via the IntersectionObserver classes added to
+   the parent .about element by ScrollEffects.
+   --------------------------------------------------------------------- */
+/* Mirror of the hero pattern: .about is position: fixed with an opaque
+   backdrop matching the page background, so anything behind (the projects
+   section in flow) is hidden while the about is on stage. The .about-spacer
+   creates the scroll runway. JS in ScrollEffects.updateAbout drives:
+   - .about         opacity (the whole section + backdrop fade in/out)
+   - .about__window transform translateY (slide-in from below) */
+[data-era="past"] .about {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: var(--nav-height) 16px 16px;
+    background: var(--color-bg-primary);
+    border: none;
+    box-shadow: none;
+    min-height: 0;
+    max-width: none;
+    text-align: left;
+    pointer-events: none;
+    z-index: 50;
+    will-change: opacity;
+    /* Defeat .section--fade base rules — JS owns opacity, no transitions */
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+}
+
+[data-era="past"] .about-spacer {
+    display: block;
+    height: 150vh;
+    height: 150dvh;
+    pointer-events: none;
+}
+
+[data-era="past"] .about__window {
+    display: block;
+    pointer-events: auto;
+    width: 100%;
+    max-width: 720px;
+    background: var(--color-bg-secondary);
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.3);
+    will-change: transform;
+    transition: none !important;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+[data-era="past"] .about__window::before {
+    content: "About - kewin_poszalski.profile";
+    display: block;
+    padding: 3px 6px;
+    background: var(--titlebar-bg);
+    color: var(--titlebar-text);
+    font-family: var(--font-retro);
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--bevel-deep);
+    height: 22px;
+    line-height: 16px;
+}
+
+[data-era="past"] .about__label {
+    display: inline-block;
+    background: var(--bevel-mid);
+    color: var(--mnemonic-color);
+    font-family: var(--font-mono-retro);
+    font-size: 11px;
+    letter-spacing: 0;
+    text-transform: none;
+    padding: 0 6px;
+    margin: 14px 18px 4px;
+    border-top: 1px solid var(--bevel-deep);
+    border-left: 1px solid var(--bevel-deep);
+    border-right: 1px solid var(--bevel-light);
+    border-bottom: 1px solid var(--bevel-light);
+}
+
+[data-era="past"][data-theme="dark"] .about__label {
+    color: var(--keyword-color);
+}
+
+[data-era="past"] .about__label::before {
+    content: "// ";
+    color: var(--comment-color);
+}
+
+[data-era="past"] .about__title {
+    font-family: var(--font-retro);
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--color-text-primary);
+    margin: 0 18px 12px;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    text-shadow: none !important;
+}
+
+[data-era="past"] .about__text {
+    font-family: var(--font-retro);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    margin: 0 18px 14px;
+    text-align: left;
+}
+
+[data-era="past"] .about__text:last-child {
+    padding-bottom: 16px;
+}
+
+[data-era="past"] .about__text strong {
+    color: var(--mnemonic-color);
+    font-weight: bold;
+}
+
+[data-era="past"][data-theme="dark"] .about__text strong {
+    color: var(--keyword-color);
+}
+
+/* ---------- Projects: function listing --------------------------------- */
+[data-era="past"] .projects {
+    max-width: 1080px;
+    padding: 32px 16px 25vh;
+    background: transparent;
+    will-change: transform;
+    transition: none !important;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+[data-era="past"] .projects__header {
+    background: var(--color-bg-secondary);
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    margin-bottom: 12px;
+    padding: 0;
+    text-align: left;
+}
+
+[data-era="past"] .projects__header::before {
+    content: "Symbol Tree - Projects (7 entries)";
+    display: block;
+    padding: 3px 6px;
+    background: var(--titlebar-bg);
+    color: var(--titlebar-text);
+    font-family: var(--font-retro);
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--bevel-deep);
+    height: 22px;
+    line-height: 16px;
+}
+
+[data-era="past"] .projects__title {
+    font-family: var(--font-retro);
+    font-size: 16px;
+    color: var(--color-text-primary);
+    padding: 10px 14px 2px;
+    margin: 0;
+    text-align: left;
+}
+
+[data-era="past"] .projects__title::before {
+    content: "▾ ";
+    color: var(--mnemonic-color);
+}
+
+[data-era="past"] .projects__subtitle {
+    font-family: var(--font-mono-retro);
+    font-size: 11px;
+    color: var(--comment-color);
+    padding: 0 14px 12px;
+    text-align: left;
+}
+
+[data-era="past"] .projects__subtitle::before {
+    content: "// ";
+}
+
+/* Filters as Java Swing toolbar */
+[data-era="past"] .projects__filters {
+    background: var(--bevel-mid);
+    border: none;
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    padding: 6px;
+    gap: 4px;
+    margin-bottom: 12px;
+    justify-content: flex-start;
+}
+
+[data-era="past"] .filter-btn {
+    font-family: var(--font-retro);
+    font-size: 11px;
+    background: var(--bevel-mid);
+    border: none;
+    border-top: 2px solid var(--bevel-light);
+    border-left: 2px solid var(--bevel-light);
+    border-right: 2px solid var(--bevel-deep);
+    border-bottom: 2px solid var(--bevel-deep);
+    border-radius: 0;
+    color: var(--color-text-primary);
+    padding: 3px 10px;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+[data-era="past"] .filter-btn::before { display: none; }
+
+[data-era="past"] .filter-btn:hover:not(.filter-btn--active) {
+    color: var(--color-text-primary);
+    filter: brightness(1.05);
+    border-color: initial;
+}
+
+[data-era="past"] .filter-btn--active {
+    background: var(--retro-selection-bg);
+    color: var(--retro-selection-text);
+    border-top: 2px solid var(--bevel-deep);
+    border-left: 2px solid var(--bevel-deep);
+    border-right: 2px solid var(--bevel-light);
+    border-bottom: 2px solid var(--bevel-light);
+}
+
+[data-era="past"] .filter-btn:active {
+    border-top: 2px solid var(--bevel-deep);
+    border-left: 2px solid var(--bevel-deep);
+    border-right: 2px solid var(--bevel-light);
+    border-bottom: 2px solid var(--bevel-light);
+}
+
+/* Grid -> single-column listing */
+[data-era="past"] .projects__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--color-bg-secondary);
+    border: none;
+    border-top: 2px solid var(--bevel-deep);
+    border-left: 2px solid var(--bevel-deep);
+    border-right: 2px solid var(--bevel-light);
+    border-bottom: 2px solid var(--bevel-light);
+    padding: 0;
+}
+
+[data-era="past"] .project-card {
+    background: var(--color-bg-secondary);
+    border: none;
+    border-bottom: 1px dotted var(--color-border);
+    border-radius: 0;
+    transform: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    cursor: pointer;
+}
+
+[data-era="past"] .project-card:last-child {
+    border-bottom: none;
+}
+
+[data-era="past"] .project-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background: var(--retro-selection-bg);
+    color: var(--retro-selection-text);
+}
+
+[data-era="past"] .project-card:hover .project-card__title,
+[data-era="past"] .project-card:hover .project-card__description {
+    color: var(--retro-selection-text);
+}
+
+[data-era="past"] .project-card__content {
+    display: grid;
+    grid-template-columns: 100px 36px 1fr;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 10px;
+    font-family: var(--font-mono-retro);
+}
+
+/* Generated hex address column via ::before counter-like trick */
+[data-era="past"] .projects__grid {
+    counter-reset: fnaddr;
+}
+
+[data-era="past"] .project-card {
+    counter-increment: fnaddr;
+}
+
+[data-era="past"] .project-card__content::before {
+    content: "0x0040" counter(fnaddr, decimal-leading-zero) "0";
+    color: var(--hex-color);
+    font-family: var(--font-mono-retro);
+    font-size: 11px;
+}
+
+[data-era="past"] .project-card:hover .project-card__content::before {
+    color: var(--retro-selection-text);
+}
+
+[data-era="past"] .project-card__icon {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    image-rendering: pixelated;
+}
+
+[data-era="past"] .project-card__title {
+    font-family: var(--font-mono-retro);
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--mnemonic-color);
+    margin: 0;
+}
+
+[data-era="past"] .project-card__title::before {
+    content: "call ";
+    color: var(--keyword-color);
+    font-weight: normal;
+}
+
+[data-era="past"][data-theme="dark"] .project-card__title {
+    color: var(--keyword-color);
+}
+
+[data-era="past"][data-theme="dark"] .project-card__title::before {
+    color: var(--mnemonic-color);
+}
+
+[data-era="past"] .project-card__title::after {
+    content: " ";
+}
+
+[data-era="past"] .project-card__description {
+    font-family: var(--font-mono-retro);
+    font-size: 11px;
+    color: var(--comment-color);
+    margin: 0;
+    grid-column: 3;
+    line-height: 1.4;
+}
+
+[data-era="past"] .project-card__description::before {
+    content: "; ";
+}
+
+/* Empty state */
+[data-era="past"] .projects__empty {
+    padding: 40px 16px;
+    background: var(--color-bg-secondary);
+}
+
+[data-era="past"] .projects__empty-title {
+    font-family: var(--font-retro);
+    font-size: 14px;
+    color: var(--color-text-primary);
+}
+
+[data-era="past"] .projects__empty-text {
+    font-family: var(--font-retro);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+/* ---------- Section fade: in retro mode the about/projects choreography
+   is JS-driven (ScrollEffects.updateAbout / updateProjects), so we kill the
+   IntersectionObserver-driven transitions and the blur filter entirely.
+   Without this, the 0.8s transition on opacity/transform fights the scroll
+   and makes the slide feel laggy. --------------------------------------- */
+[data-era="past"] .section--fade,
+[data-era="past"] .section--fade.is-visible,
+[data-era="past"] .section--fade.is-fading-out {
+    transition: none !important;
+    filter: none !important;
+}
+
+
+/* =============================================================================
+   Retro responsive overrides
+   ============================================================================= */
+
+/* Mobile portrait — about window hugs viewport, projects grid compresses */
+@media (max-width: 480px) {
+    [data-era="past"] .about__window {
+        max-width: 100%;
+    }
+
+    [data-era="past"] .about__window::before,
+    [data-era="past"] .projects__header::before {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+
+    [data-era="past"] .about__label {
+        margin: 12px 12px 4px;
+        font-size: 10px;
+    }
+
+    [data-era="past"] .about__title {
+        font-size: 16px;
+        margin: 0 12px 10px;
+    }
+
+    [data-era="past"] .about__text {
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 0 12px 10px;
+    }
+
+    [data-era="past"] .about__text:last-child {
+        padding-bottom: 12px;
+    }
+
+    [data-era="past"] .projects__title {
+        font-size: 14px;
+        padding: 8px 12px 2px;
+    }
+
+    [data-era="past"] .projects__subtitle {
+        padding: 0 12px 8px;
+        font-size: 10px;
+    }
+
+    [data-era="past"] .projects__filters {
+        gap: 3px;
+        padding: 4px;
+    }
+
+    [data-era="past"] .filter-btn {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    [data-era="past"] .project-card__content {
+        grid-template-columns: 80px 24px 1fr;
+        gap: 6px;
+        padding: 5px 8px;
+    }
+
+    [data-era="past"] .project-card__content::before {
+        font-size: 10px;
+    }
+
+    [data-era="past"] .project-card__icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    [data-era="past"] .project-card__title {
+        font-size: 11px;
+    }
+
+    [data-era="past"] .project-card__description {
+        font-size: 10px;
+    }
+}
+
+/* Tiny phones (iPhone SE 1st gen, older Androids) */
+@media (max-width: 360px) {
+    [data-era="past"] .about__title {
+        font-size: 14px;
+    }
+
+    [data-era="past"] .about__text {
+        font-size: 11px;
+        margin: 0 10px 8px;
+    }
+
+    [data-era="past"] .about__label {
+        margin: 10px 10px 3px;
+    }
+
+    [data-era="past"] .project-card__content {
+        grid-template-columns: 64px 20px 1fr;
+        gap: 4px;
+        padding: 4px 6px;
+    }
+
+    [data-era="past"] .project-card__content::before {
+        font-size: 9px;
+    }
+
+    [data-era="past"] .project-card__icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    [data-era="past"] .project-card__title {
+        font-size: 10px;
+    }
+
+    [data-era="past"] .project-card__description {
+        font-size: 9px;
+        line-height: 1.35;
+    }
+
+    [data-era="past"] .filter-btn {
+        font-size: 9px;
+        padding: 2px 6px;
+    }
+}
+
+/* Mobile landscape — short viewport, compact retro layout */
+@media (max-height: 550px) and (orientation: landscape) {
+    [data-era="past"] .about__title {
+        font-size: 14px;
+        margin: 0 14px 6px;
+    }
+
+    [data-era="past"] .about__text {
+        font-size: 11px;
+        line-height: 1.4;
+        margin: 0 14px 8px;
+    }
+
+    [data-era="past"] .about__label {
+        margin: 8px 14px 3px;
+    }
+
+    [data-era="past"] .projects {
+        padding: 24px 16px 25vh;
+    }
+
+    [data-era="past"] .projects__title {
+        font-size: 13px;
+    }
+
+    [data-era="past"] .project-card__content {
+        padding: 4px 8px;
+    }
+}
