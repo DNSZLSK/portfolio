@@ -274,7 +274,10 @@ class WebViewer {
         iframe.style.opacity = '0';
         iframe.style.transition = 'opacity 0.5s ease';
         iframe.src = project.projectUrl;
-        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+        // allow-popups: let the embedded site's target="_blank" links (npm / GitHub
+        // buttons) actually open a tab. allow-popups-to-escape-sandbox: that tab opens
+        // as a normal context instead of inheriting this restrictive sandbox.
+        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox');
 
         iframe.onload = () => {
             setTimeout(() => {

@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/era-past/index.css">
 </head>
-<body data-theme="dark" data-era="past">
+<body data-theme="dark" data-era="present">
     <!-- Skip Link for Accessibility -->
     <a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
@@ -92,10 +92,10 @@
                     </svg>
                 </button>
 
-                <!-- Past/Present toggle: stand-by until the 2026 (present) version is ready.
-                     The button is hidden here; remove the `hidden` attribute and revert
-                     <body data-era="past"> back to "present" in this file to reactivate. -->
-                <button class="era-toggle" id="eraToggle" aria-label="Basculer entre present et past" aria-pressed="true" hidden>
+                <!-- Past/Present toggle: switches between the modern "present" design
+                     (default) and the retro Ghidra / Java-Swing "past" easter egg.
+                     Past mode also reveals the mute button (managed in main.js). -->
+                <button class="era-toggle" id="eraToggle" aria-label="Basculer entre present et past" aria-pressed="false">
                     <svg class="era-toggle__present" viewBox="0 0 24 24" aria-hidden="true">
                         <circle cx="12" cy="12" r="9"/>
                         <polyline points="12 7 12 12 15 14"/>
@@ -127,7 +127,7 @@
     <header class="hero" id="hero">
         <div class="hero__content">
             <div class="hero__banner">
-                <img src="assets/icons/banner.jpg" alt="Kéwin Poszalski - En recherche de stage" class="hero__image">
+                <img src="assets/icons/banner.jpg?v=3" alt="Kéwin Poszalski — CDA Student, Software Supply Chain Security" class="hero__image">
                 <div class="carousel" id="techCarousel" aria-label="Technologies maîtrisées"></div>
             </div>
             <h1 class="hero__title">Développeur Fullstack</h1>

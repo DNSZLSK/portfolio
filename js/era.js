@@ -5,7 +5,7 @@
    ============================================================================= */
 
 const EraManager = {
-    current: 'past',
+    current: 'present',
     soundEnabled: true,
     audioCtx: null,
 

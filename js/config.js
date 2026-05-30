@@ -66,6 +66,7 @@ const TECH_STACK = [
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', label: 'VS Code', mastered: true },
     { src: 'https://upload.wikimedia.org/wikipedia/commons/7/79/Construct_3_Logo.svg', label: 'Construct 3', mastered: true },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', label: 'Docker', mastered: true },
+    { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg', label: 'PHP', mastered: true },
     { src: 'https://cdn.worldvectorlogo.com/logos/mamp-2.svg', label: 'MAMP', mastered: true },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg', label: 'Angular', mastered: true },
     { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg', label: 'PostgreSQL', mastered: true },
