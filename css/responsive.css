@@ -139,6 +139,7 @@
     .projects__grid {
         grid-template-columns: 1fr;
         gap: 16px;
+        grid-auto-rows: auto; /* 1 colonne : hauteur naturelle, pas de vide */
     }
     
     .project-card__content {

@@ -76,34 +76,56 @@ const TECH_STACK = [
 // Projects data
 const PROJECTS_DATA = [
     {
-        title: 'GitCoach',
-        description: 'CLI éducatif pour apprendre Git. Niveaux adaptatifs, multilingue (FR/EN/ES), 383 tests.',
-        language: 'cli',
-        category: 'cli',
+        title: 'DigDigDig',
+        description: 'App desktop pour DJs et diggers : scan de bibliothèque, identification Discogs et classification de genre par ML (ONNX). Un vrai produit, avec sa communauté d\'utilisateurs.',
+        language: 'ddd',
+        category: 'python',
+        stack: ['Python', 'Flet', 'ONNX', 'Docker'],
         viewerType: 'web',
-        projectUrl: 'https://dnszlsk.github.io/gitcoach-cli',
-        repoUrl: 'https://github.com/DNSZLSK/gitcoach-cli'
+        projectUrl: 'https://dnszlsk.github.io/digdigdig/',
+        repoUrl: 'https://github.com/DNSZLSK/digdigdig'
+    },
+    {
+        title: 'OPAC Plérin',
+        description: 'Projet de stage : site d\'une association culturelle. Thème WordPress FSE sur-mesure, workflow d\'inscription avec liste d\'attente et emailing en masse côté admin. Livré en production (OVH).',
+        language: 'opac',
+        category: 'php',
+        stack: ['PHP', 'WordPress FSE', 'MySQL'],
+        projectUrl: 'https://demo.opacplerin.fr/'
     },
     {
         title: 'MUAD\'DIB',
-        description: 'Scanner de sécurité npm. Détecte typosquatting, malware, exfiltration. 900+ IOCs.',
+        description: 'Détection de menaces supply-chain npm et PyPI : analyse comportementale et de flux inter-fichiers, sandbox Docker. 225k+ IOCs, 266 règles, 4 400+ tests.',
         language: 'security',
         category: 'security',
+        stack: ['Node.js', 'JavaScript', 'Docker', 'tree-sitter'],
         viewerType: 'web',
         projectUrl: 'https://dnszlsk.github.io/muad-dib',
         repoUrl: 'https://github.com/DNSZLSK/muad-dib'
     },
     {
+        title: 'GitCoach',
+        description: 'Assistant Git en CLI qui prévient les erreurs avant qu\'elles arrivent. Niveaux adaptatifs, multilingue (FR/EN/ES), IA intégrée (Copilot CLI / Ollama). 557 tests.',
+        language: 'cli',
+        category: 'cli',
+        stack: ['Node.js', 'TypeScript', 'Jest', 'i18next'],
+        viewerType: 'web',
+        projectUrl: 'https://dnszlsk.github.io/gitcoach-cli',
+        repoUrl: 'https://github.com/DNSZLSK/gitcoach-cli'
+    },
+    {
         title: 'Musubi',
-        description: 'Jeu de logique rétro. Remplissez les cercles pour correspondre aux chiffres indiqués.',
+        description: 'Jeu de logique rétro façon CRT, en JavaScript vanilla et installable en PWA. Remplissez les cercles pour correspondre aux indices chiffrés.',
         language: 'games',
         category: 'games',
+        stack: ['JavaScript', 'Vite', 'PWA', 'Vitest'],
         viewerType: 'web',
         projectUrl: 'https://dnszlsk.github.io/musubi/',
         repoUrl: 'https://github.com/DNSZLSK/musubi'
     },
     {
         title: 'Le Juste Prix',
+        stack: ['Python'],
         description: 'Jeu du "Juste Prix" en Python. Un des premiers exercices de la formation CDA.',
         language: 'python',
         category: 'python',
@@ -113,6 +135,7 @@ const PROJECTS_DATA = [
     },
     {
         title: 'Spy Hunter',
+        stack: ['Python'],
         description: 'Script Python pour débusquer un espion dans un fichier CSV en analysant les langues et voyages.',
         language: 'python',
         category: 'python',
@@ -122,6 +145,7 @@ const PROJECTS_DATA = [
     },
     {
         title: 'Mot de Passe',
+        stack: ['Java'],
         description: 'Vérificateur de mot de passe en Java avec validation de règles complexes.',
         language: 'java',
         category: 'java',
@@ -131,6 +155,7 @@ const PROJECTS_DATA = [
     },
     {
         title: 'Simulation Océanographique',
+        stack: ['Java'],
         description: 'Analyse de données de marées à partir de fichiers CSV.',
         language: 'java',
         category: 'java',
@@ -140,6 +165,7 @@ const PROJECTS_DATA = [
     },
     {
         title: 'Mock of Duty',
+        stack: ['Java', 'JUnit', 'Mockito'],
         description: 'Tests unitaires Java avec Mockito. Implémentation de mocks, stubs et vérifications.',
         language: 'mockito',
         category: 'tests',
@@ -149,6 +175,7 @@ const PROJECTS_DATA = [
     },
     {
         title: 'Py2Java',
+        stack: ['HTML', 'CSS', 'JavaScript'],
         description: 'Guide de transition complet entre Python et Java - Commandes et syntaxes équivalentes.',
         language: 'html',
         category: 'html',
@@ -157,6 +184,7 @@ const PROJECTS_DATA = [
     },
     {
         title: 'JetBrains Shortcuts',
+        stack: ['HTML', 'CSS', 'JavaScript'],
         description: 'Guide des raccourcis clavier pour PyCharm et IntelliJ IDEA.',
         language: 'html',
         category: 'html',
@@ -165,6 +193,7 @@ const PROJECTS_DATA = [
     },
     {
         title: 'CDA Quiz',
+        stack: ['HTML', 'CSS', 'JavaScript'],
         description: 'Protocole d\'évaluation des compétences CDA - Quiz interactif de formation.',
         language: 'html',
         category: 'html',
@@ -181,6 +210,7 @@ const FILTER_CATEGORIES = [
     { id: 'games', label: 'Games' },
     { id: 'python', label: 'Python' },
     { id: 'java', label: 'Java' },
+    { id: 'php', label: 'PHP' },
     { id: 'tests', label: 'Tests' },
     { id: 'html', label: 'Web' }
 ];

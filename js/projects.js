@@ -74,6 +74,7 @@ class ProjectsManager {
                 <div class="project-card__icon project-card__icon--${project.language}"></div>
                 <h3 class="project-card__title">${project.title}</h3>
                 <p class="project-card__description">${project.description}</p>
+                ${project.stack?.length ? `<ul class="project-card__stack">${project.stack.map(t => `<li class="project-card__tag">${t}</li>`).join('')}</ul>` : ''}
             </div>
         `;
         
