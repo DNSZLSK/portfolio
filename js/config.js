@@ -91,7 +91,7 @@ const PROJECTS_DATA = [
         language: 'opac',
         category: 'php',
         stack: ['PHP', 'WordPress FSE', 'MySQL'],
-        projectUrl: 'https://demo.opacplerin.fr/'
+        projectUrl: 'https://opacplerin.fr/'
     },
     {
         title: 'MUAD\'DIB',
