@@ -83,16 +83,16 @@
     }
     
     .carousel__item {
-        min-width: 38px;
+        min-width: 52px;
     }
     
     .carousel__logo {
-        height: 16px;
+        height: 22px;
     }
     
     .carousel__label {
-        font-size: 4.5px;
-        letter-spacing: 0.3px;
+        font-size: 9px;
+        letter-spacing: 0.5px;
     }
     
     /* About */
@@ -225,15 +225,15 @@
     }
     
     .carousel__item {
-        min-width: 38px;
+        min-width: 52px;
     }
     
     .carousel__logo {
-        height: 18px;
+        height: 22px;
     }
     
     .carousel__label {
-        font-size: 4.5px;
+        font-size: 9px;
     }
     
     /* Nav */
@@ -336,7 +336,7 @@
     }
 
     .carousel__item {
-        min-width: 32px;
+        min-width: 48px;
     }
 
     .carousel__logo {
@@ -344,7 +344,7 @@
     }
 
     .carousel__label {
-        font-size: 4px;
+        font-size: 9px;
     }
 
     .about {
@@ -444,13 +444,13 @@
     }
     
     .carousel__item {
-        min-width: 38px;
+        min-width: 48px;
         gap: 4px;
     }
     
     .carousel__label {
-        font-size: 4.5px !important;
-        letter-spacing: 0.3px;
+        font-size: 8px !important;
+        letter-spacing: 0.5px;
     }
     
     /* About */
