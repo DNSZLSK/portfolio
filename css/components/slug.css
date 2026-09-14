@@ -1,0 +1,73 @@
+/* =============================================================================
+   Slug : le bandeau de catalogue en haut, et le pied de page
+   ============================================================================= */
+
+.slug {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--gap);
+    flex-wrap: wrap;
+    padding: var(--gap-tight) 0 var(--gap-hair);
+    border-bottom: 2px solid var(--rule-strong);
+}
+
+.slug__id { font-weight: 700; }
+.slug__id span { font-weight: 400; color: var(--faint); }
+
+.slug__ref { color: var(--faint); }
+.slug__ref b { color: var(--spot-text); font-weight: 700; }
+
+.slug__right {
+    display: flex;
+    align-items: baseline;
+    gap: var(--gap);
+    margin-left: auto;
+}
+
+.slug__right a { border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+.slug__right a:hover { color: var(--spot-text); border-color: var(--spot-text); }
+
+/* Pastille de disponibilité : la première info que cherche un recruteur. */
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--rule-strong);
+    padding: 3px 8px;
+}
+.status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: var(--spot);
+}
+
+/* ---------- pied de page ---------- */
+
+.bottom {
+    margin-top: var(--band-lg);
+    border-top: 2px solid var(--rule-strong);
+    padding: var(--gap-tight) 0 var(--gap-hair);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--gap);
+    flex-wrap: wrap;
+    color: var(--faint);
+}
+
+.bottom nav { display: flex; gap: var(--gap); flex-wrap: wrap; }
+.bottom a { border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+.bottom a:hover { color: var(--spot-text); border-color: var(--spot-text); }
+
+/* La gravure du dead wax : le petit mot dans le vinyle, après la dernière
+   plage. Personne ne le cherche, tout le monde sourit en le trouvant. */
+.runout {
+    margin: 0;
+    padding: var(--gap-hair) 0 var(--band);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(22, 19, 14, 0.32);
+}

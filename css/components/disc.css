@@ -1,0 +1,140 @@
+/* =============================================================================
+   Disc : les projets, présentés comme un catalogue.
+   Un tableau, pas des cartes. La colonne État dit ce qui tourne encore,
+   ce qu'un recruteur veut savoir et que personne n'affiche.
+   ============================================================================= */
+
+.disc__head,
+.cut {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1.3fr) minmax(0, 1.2fr) 62px 120px;
+    gap: var(--gap);
+    align-items: baseline;
+}
+
+.disc__head {
+    padding: var(--gap-hair) 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+
+.cut {
+    padding: var(--gap) 0;
+    border-bottom: 1px solid var(--rule);
+}
+
+.cut__cat {
+    font-size: var(--fs-label);
+    letter-spacing: 0.06em;
+    color: var(--faint);
+}
+
+.cut__title {
+    font-family: var(--display);
+    font-weight: var(--display-weight, 800);
+    font-size: clamp(1.2rem, 2.8vw, 2.05rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    /* "Simulation Océanographique" ne rentre pas sur un écran de 320px :
+       sans coupure possible, le mot pousse la page en scroll horizontal. */
+    overflow-wrap: anywhere;
+}
+
+/* Au survol, le disque décroche dans le bac : les deux encres s'écartent
+   le temps d'un saut, puis se recalent. Même langage que le titre de la
+   page d'accueil, en une fraction de seconde et sans boucle. */
+.cut__title::before,
+.cut__title::after {
+    content: attr(data-t);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    /* Pas de nowrap : les calques d'encre doivent se replier exactement
+       comme le texte qu'ils doublent. Sinon un titre long reste sur une
+       ligne en calque, déborde, et tire toute la page en scroll horizontal. */
+    mix-blend-mode: multiply;
+    transform: translate(0, 0);
+    transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.cut__title::before { color: #00c8d7; }
+.cut__title::after { color: #e8007a; }
+
+.cut:hover .cut__title::before,
+.cut:focus-visible .cut__title::before { animation: cut-cyan 0.42s steps(1, end) 1; transform: translate(-3px, 0); }
+.cut:hover .cut__title::after,
+.cut:focus-visible .cut__title::after { animation: cut-magenta 0.42s steps(1, end) 1; transform: translate(3px, 0); }
+
+@keyframes cut-cyan {
+    0% { transform: translate(0, 0); }
+    18% { transform: translate(-9px, 2px); }
+    38% { transform: translate(-2px, -2px); }
+    58% { transform: translate(-11px, 0); }
+    100% { transform: translate(-3px, 0); }
+}
+
+@keyframes cut-magenta {
+    0% { transform: translate(0, 0); }
+    18% { transform: translate(10px, -2px); }
+    38% { transform: translate(2px, 2px); }
+    58% { transform: translate(12px, 0); }
+    100% { transform: translate(3px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cut:hover .cut__title::before,
+    .cut:hover .cut__title::after,
+    .cut:focus-visible .cut__title::before,
+    .cut:focus-visible .cut__title::after { animation: none; }
+}
+
+.cut__desc {
+    font-size: var(--fs-note);
+    line-height: 1.7;
+    color: var(--faint);
+}
+.cut__desc b { color: var(--ink); font-weight: 700; }
+
+.cut__format {
+    display: block;
+    margin-top: var(--gap-hair);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+
+.cut__year { font-size: var(--fs-label); color: var(--faint); }
+
+.cut__state {
+    font-size: var(--fs-micro);
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+.cut__state i {
+    font-style: normal;
+    border-bottom: 2px solid var(--spot);
+    padding-bottom: 1px;
+}
+
+/* Renvoi vers le reste du catalogue. */
+.disc__more {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--gap);
+    flex-wrap: wrap;
+    padding: var(--gap) 0;
+    font-size: var(--fs-label);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+}
+.disc__more a { border-bottom: 2px solid var(--spot); padding-bottom: 2px; }
+.disc__more a:hover { background: var(--spot-text); color: var(--paper); }

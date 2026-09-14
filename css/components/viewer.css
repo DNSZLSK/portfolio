@@ -1,0 +1,115 @@
+/* =============================================================================
+   Viewer
+   Deux formes, une seule fenêtre : un encart imprimé pour le code (le feuillet
+   glissé dans la pochette, avec sa numérotation de lignes), et un cadre pour
+   les sites. Pas de faux macOS, pas de barre de titre à trois pastilles.
+   ============================================================================= */
+
+.viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: none;
+    padding: clamp(12px, 3vw, 40px);
+}
+.viewer.is-open { display: flex; }
+
+.viewer__backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    opacity: 0.72;
+}
+
+.viewer__sheet {
+    position: relative;
+    margin: auto;
+    width: min(1060px, 100%);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    border: 2px solid var(--rule-strong);
+}
+
+/* Bandeau : la même fiche de catalogue que le reste du site. */
+.viewer__slug {
+    display: flex;
+    align-items: baseline;
+    gap: var(--gap-tight);
+    flex-wrap: wrap;
+    padding: var(--gap-hair) var(--gap-tight);
+    border-bottom: 2px solid var(--rule-strong);
+    font-size: var(--fs-label);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+}
+.viewer__cat { color: var(--spot-text); font-weight: 700; }
+.viewer__file { color: var(--faint); }
+.viewer__actions { display: flex; align-items: baseline; gap: var(--gap-tight); margin-left: auto; }
+.viewer__actions a { border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+.viewer__actions a:hover { color: var(--spot-text); border-color: var(--spot-text); }
+
+.viewer__close {
+    font-family: var(--type);
+    font-size: var(--fs-label);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    border: 0;
+    border-radius: 0;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+.viewer__close:hover { background: var(--spot-text); }
+
+.viewer__body { flex: 1; min-height: 0; overflow: auto; }
+
+/* ---------- le feuillet de code ---------- */
+
+.listing {
+    margin: 0;
+    padding: var(--gap-tight) var(--gap-tight) var(--gap);
+    font-family: var(--type);
+    font-size: 12.5px;
+    line-height: 1.62;
+    white-space: pre;
+    tab-size: 4;
+}
+
+/* Numérotation de lignes en marge, comme un listing d'imprimante. */
+.listing__row { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: var(--gap-tight); }
+.listing__n {
+    text-align: right;
+    color: rgba(18, 18, 18, 0.34);
+    -webkit-user-select: none;
+    user-select: none;
+}
+[data-skin="acid"] .listing__n { color: rgba(236, 238, 230, 0.34); }
+.listing__row:hover .listing__n { color: var(--spot); }
+
+.viewer__loading {
+    padding: var(--gap-wide);
+    font-size: var(--fs-label);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--faint);
+}
+
+/* ---------- le cadre pour les sites ---------- */
+
+.viewer__frame {
+    display: block;
+    width: 100%;
+    height: min(74vh, 760px);
+    border: 0;
+    background: var(--paper);
+}
+
+@media (max-width: 700px) {
+    .viewer { padding: 0; }
+    .viewer__sheet { border: 0; height: 100%; }
+    .viewer__frame { height: 100%; }
+    .listing__row { grid-template-columns: 30px minmax(0, 1fr); gap: 8px; }
+}

@@ -1,0 +1,100 @@
+/* =============================================================================
+   Design tokens
+
+   Règle de construction : on fuit le réflexe crème chaud + terre cuite
+   (c'est la palette de marque d'Anthropic, donc la signature d'une page
+   générée). Tout ici est froid, saturé ou franchement contrasté.
+
+   Quatre peaux, commutables via data-skin sur <body>.
+   ============================================================================= */
+
+:root {
+    /* POCHETTE : carton vieilli à faible chroma, noir neutre, rouge franc.
+       Le crème chaud + terre cuite est écarté volontairement : c'est la
+       palette de marque d'Anthropic, donc la signature d'une page générée.
+       Ici le papier reste du papier, mais l'encre est saturée et froide de ton. */
+    --paper: #e3e2dc;
+    --paper-deep: #d2d1c9;   /* creux du carton, pour les marbrures */
+    --ink: #121212;
+
+    /* Deux rouges. Le vif sert aux filets, aux aplats et au grand titrage,
+       où le minimum WCAG est de 3:1. Le second, plus dense, sert dès qu'il
+       s'agit de petit texte ou de texte posé sur l'aplat : à 4,66:1 il passe
+       le niveau AA que le vif échoue à 3,48:1. */
+    --spot: #e8200d;
+    --spot-text: #c41706;
+
+    /* 0,62 et pas 0,58 : en dessous, le gris secondaire tombe à 4,22:1
+       et rate le niveau AA. */
+    --faint: rgba(18, 18, 18, 0.62);
+    --rule: rgba(18, 18, 18, 0.24);
+    --rule-strong: rgba(18, 18, 18, 0.88);
+
+    --grain-blend: multiply;
+    --grain-opacity: 0.3;
+
+    --display: 'Archivo Black', 'Arial Black', Impact, sans-serif;
+    --display-weight: 400;
+    --type: 'Courier Prime', 'Courier New', Courier, monospace;
+
+    --fs-micro: 10px;
+    --fs-label: 11px;
+    --fs-body: 13.5px;
+    --fs-note: 12.5px;
+    --track-label: 0.12em;
+
+    /* Rythme volontairement irrégulier : l'espacement au multiple de 8
+       partout est la signature d'une page sans main. */
+    --gap-hair: 6px;
+    --gap-tight: 14px;
+    --gap: 22px;
+    --gap-wide: 38px;
+    --band: clamp(44px, 7vw, 86px);
+    --band-lg: clamp(62px, 11vw, 140px);
+
+    --sheet-pad: clamp(18px, 4vw, 54px);
+    --sheet-max: 1240px;
+}
+
+/* Les trois peaux ci-dessous sont des rechanges. Pour en activer une,
+   ajouter l'attribut sur la balise body : <body data-skin="klein">
+   ----------------------------------------------------------------------- */
+
+/* KLEIN : blanc pur, noir vrai, bleu outremer. Froid, musée, sans un gramme
+   de chaleur. C'est l'exact opposé du réflexe. */
+[data-skin="klein"] {
+    --paper: #ffffff;
+    --paper-deep: #e4e4e8;
+    --ink: #08080a;
+    --spot: #0026ff;
+    --faint: rgba(8, 8, 10, 0.55);
+    --rule: rgba(8, 8, 10, 0.2);
+    --rule-strong: rgba(8, 8, 10, 0.9);
+}
+
+/* ACIDE : noir, vert acide. Flyer de rave, sérigraphie fluo sur noir. */
+[data-skin="acid"] {
+    --paper: #0e0f0c;
+    --paper-deep: #000000;
+    --ink: #eceee6;
+    --spot: #d7fc03;
+    --faint: rgba(236, 238, 230, 0.55);
+    --rule: rgba(236, 238, 230, 0.22);
+    --rule-strong: rgba(236, 238, 230, 0.85);
+    --grain-blend: screen;
+    --grain-opacity: 0.14;
+}
+
+/* CYAN : bleu de photocopie sur papier froid. Fanzine, duplicopie. */
+[data-skin="copy"] {
+    --paper: #e6e9ea;
+    --paper-deep: #cfd6d8;
+    --ink: #10181c;
+    --spot: #00a3c4;
+    --faint: rgba(16, 24, 28, 0.56);
+    --rule: rgba(16, 24, 28, 0.22);
+    --rule-strong: rgba(16, 24, 28, 0.88);
+}
+
+/* Titrage de rechange : <body data-face="syne"> */
+[data-face="syne"] { --display: 'Syne', 'Archivo Black', sans-serif; --display-weight: 800; }
