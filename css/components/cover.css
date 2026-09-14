@@ -159,16 +159,31 @@
    s'affiche normalement : rien ne dépend du glitch pour être lisible.
    ----------------------------------------------------------------------- */
 
-.cover__line--glitch.is-sliced { color: transparent; }
+/* Au repos absolu, la ligne affiche son propre texte et les tranches sont
+   masquees. Dix-huit tranches reconstituent le mot a la perfection en theorie,
+   mais les bords de decoupe laissent des coutures d'anticrenelage : de fines
+   rayures horizontales, invisibles isolement, fatigantes a la longue.
+   Les tranches n'apparaissent donc que quand il se passe quelque chose. */
+.cover__line--glitch.is-sliced { color: var(--ink); }
+.cover__line--glitch.is-bursting,
+.cover__line--glitch.is-pulling { color: transparent; }
 
-/* La séparation des encres. Cyan et magenta en multiply : sur du papier
-   elles se comportent comme deux passages mal calés, et donnent à l'écran
-   le dédoublement coloré attendu d'un glitch. Au repos l'écart est infime. */
+.cover__band { opacity: 0; }
+.is-bursting .cover__band,
+.is-pulling .cover__band { opacity: 1; }
+
+/* Au repos, la ligne tranchee se comporte comme les deux autres : un simple
+   decalage d'impression a l'encre rouge. Aucune separation cyan/magenta.
+
+   Laisser en permanence une couche cyan a gauche et une magenta a droite
+   revenait a imprimer une image anaglyphe : l'oeil tente de faire converger
+   deux bords colores opposes et se fatigue en quelques secondes. La pause
+   doit etre nette, la couleur n'apparait que pendant la rafale. */
 .cover__line--glitch.is-sliced::before {
-    color: #00c8d7;
-    mix-blend-mode: multiply;
-    transform: translate(-0.022em, 0);
-    opacity: 0.85;
+    color: var(--spot);
+    mix-blend-mode: normal;
+    transform: translate(3px, 3px);
+    opacity: 1;
 }
 .cover__line--glitch.is-sliced::after {
     content: attr(data-t);
@@ -178,15 +193,21 @@
     z-index: -1;
     color: #e8007a;
     mix-blend-mode: multiply;
-    transform: translate(0.022em, 0);
-    opacity: 0.85;
     white-space: nowrap;
+    opacity: 0;
 }
 
-/* Pendant la rafale les encres s'écartent franchement : la séparation est
-   le symptôme du décrochage, pas un état permanent. */
-.cover__line--glitch.is-bursting::before { transform: translate(-0.17em, 0.012em); opacity: 1; }
-.cover__line--glitch.is-bursting::after { transform: translate(0.19em, -0.01em); opacity: 1; }
+/* Pendant la rafale seulement, les encres se separent franchement. Aucune
+   transition : un decrochage de signal est net, il ne s'interpole pas. */
+.cover__line--glitch.is-bursting::before {
+    color: #00c8d7;
+    mix-blend-mode: multiply;
+    transform: translate(-0.17em, 0.012em);
+}
+.cover__line--glitch.is-bursting::after {
+    opacity: 1;
+    transform: translate(0.19em, -0.01em);
+}
 
 .cover__band {
     position: absolute;
