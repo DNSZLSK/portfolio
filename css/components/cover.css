@@ -172,18 +172,14 @@
 .is-bursting .cover__band,
 .is-pulling .cover__band { opacity: 1; }
 
-/* Au repos, la ligne tranchee se comporte comme les deux autres : un simple
-   decalage d'impression a l'encre rouge. Aucune separation cyan/magenta.
-
-   Laisser en permanence une couche cyan a gauche et une magenta a droite
-   revenait a imprimer une image anaglyphe : l'oeil tente de faire converger
-   deux bords colores opposes et se fatigue en quelques secondes. La pause
-   doit etre nette, la couleur n'apparait que pendant la rafale. */
+/* La separation des encres est permanente : c'est la signature de la ligne.
+   Ce qui gene l'oeil au repos n'est pas la couleur, ce sont les coutures des
+   tranches, traitees plus bas. */
 .cover__line--glitch.is-sliced::before {
-    color: var(--spot);
-    mix-blend-mode: normal;
-    transform: translate(3px, 3px);
-    opacity: 1;
+    color: #00c8d7;
+    mix-blend-mode: multiply;
+    transform: translate(-0.022em, 0);
+    opacity: 0.85;
 }
 .cover__line--glitch.is-sliced::after {
     content: attr(data-t);
@@ -194,7 +190,8 @@
     color: #e8007a;
     mix-blend-mode: multiply;
     white-space: nowrap;
-    opacity: 0;
+    transform: translate(0.022em, 0);
+    opacity: 0.85;
 }
 
 /* Pendant la rafale seulement, les encres se separent franchement. Aucune
