@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Carte de partage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<style>
+/* =============================================================================
+   Carte de partage, 1200x630.
+   Rendue en headless vers assets/og-cover.jpg par tools/og-card.md.
+   Elle reprend les jetons du site pour rester le meme objet, mais sa mise en
+   page lui est propre : le premier ecran du site est concu pour une fenetre
+   haute et ne survivrait pas au recadrage 1,91:1 d'une vignette.
+   ============================================================================= */
+
+* { box-sizing: border-box; margin: 0; }
+
+body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--paper);
+    background-image: var(--paper-texture);
+    background-size: var(--paper-texture-size);
+    font-family: var(--type);
+    color: var(--ink);
+}
+
+/* Les fibres, comme sur le site. */
+body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: multiply;
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+/* Composition volontairement desequilibree. Le sandwich bandeau haut /
+   titre centre / bandeau bas est le gabarit reflexe de toutes les images de
+   partage depuis trois ans : equilibre, symetrique, sans risque, et par la
+   meme anonyme. Ici le poids est en bas a gauche, le haut reste vide, et
+   un seul filet separe au lieu d'en encadrer deux. */
+.card {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    padding: 46px 64px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* Le numero de catalogue, seul dans le vide du haut. C'est le seul objet de
+   toute la moitie superieure, et il est au coin oppose au titre. */
+.card__ref {
+    position: absolute;
+    top: 46px;
+    right: 64px;
+    font-size: 20px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+.card__ref em { font-style: normal; color: var(--spot-text); font-weight: 700; }
+
+.card__name {
+    font-size: 21px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.card__title { display: block; }
+
+.line {
+    display: block;
+    position: relative;
+    font-family: var(--display);
+    font-size: 148px; /* valeur de depart, ajustee a la largeur par le script */
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Le repere rate, comme sur le site. */
+.line::before {
+    content: attr(data-t);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    color: var(--spot);
+    transform: translate(5px, 4px);
+}
+
+/* La ligne du bas decroche : bandes contigues, chacune decalee de son cran,
+   et les deux encres ecartees. Fige, pas anime : c'est une image. */
+.line--glitch { color: transparent; }
+.line--glitch::before { color: #00c8d7; transform: translate(-4px, 0); mix-blend-mode: multiply; }
+.line--glitch::after {
+    content: attr(data-t);
+    position: absolute;
+    left: 0; top: 0; z-index: -1;
+    color: #e8007a;
+    transform: translate(5px, 0);
+    mix-blend-mode: multiply;
+}
+.band {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-style: normal;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+/* Un seul filet dans toute la carte, sous le titre. */
+.card__foot {
+    display: flex;
+    gap: 26px;
+    align-items: baseline;
+    border-top: 3px solid var(--rule-strong);
+    margin-top: 22px;
+    padding-top: 14px;
+    font-size: 21px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.card__foot span { color: var(--faint); }
+.card__foot b { font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="card__ref">Cat. <em>KP-000</em> / 5<sup>e</sup> pressage</div>
+
+    <div class="card__name">Kéwin Poszalski</div>
+
+    <div class="card__title">
+        <span class="line" data-t="Développeur">Développeur</span>
+        <span class="line line--glitch" id="glitch" data-t="full stack">full stack</span>
+    </div>
+
+    <div class="card__foot">
+        <b>kewin.io</b>
+        <span>Bretagne · Python · Node.js · PHP · Java</span>
+    </div>
+</div>
+
+<script>
+/* Les bandes sont posees apres la mise a la largeur, sinon elles heritent
+   d'un corps provisoire. */
+function buildBands() {
+    // Decalages courts et bandes peu nombreuses : a la taille d'une vignette
+    // LinkedIn le mot doit rester dechiffrable d'un coup d'oeil. Un
+    // decrochage trop franc, spectaculaire sur la page, devient une bouillie.
+    const BANDS = [[0, 78, 0], [22, 56, -7], [44, 34, 11], [66, 0, -3]];
+    const host = document.getElementById('glitch');
+    const text = host.dataset.t;
+    BANDS.forEach(([top, bottom, dx], i) => {
+        const b = document.createElement('i');
+        b.className = 'band';
+        b.textContent = text;
+        b.style.clipPath = `inset(${top}% 0 ${bottom}% 0)`;
+        b.style.transform = `translateX(${dx}px)`;
+        if (i === 2) b.style.color = '#00c8d7';
+        host.appendChild(b);
+    });
+}
+
+/* Mise a la largeur : chaque ligne occupe exactement la mesure du cadre.
+   Les deux mots n'ayant pas la meme longueur, leurs corps different et le
+   titre forme un pave plein, cale a gauche et a droite.
+
+   Les lignes sont des elements flex : le navigateur les blockifie, donc un
+   display inline-block de mesure est ignore et renvoie la largeur du
+   conteneur. width: max-content passe outre l'etirement et donne la vraie
+   largeur du texte. */
+document.fonts.ready.then(() => {
+    const host = document.querySelector('.card__title');
+    const width = host.clientWidth;
+
+    document.querySelectorAll('.line').forEach((line) => {
+        line.style.fontSize = '100px';
+        line.style.width = 'max-content';
+        const natural = line.getBoundingClientRect().width;
+        line.style.width = '';
+        if (natural) line.style.fontSize = (100 * width * 0.995 / natural).toFixed(2) + 'px';
+    });
+
+    buildBands();
+    document.body.dataset.ready = '1';
+});
+</script>
+</body>
+</html>
