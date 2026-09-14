@@ -1,0 +1,112 @@
+/* =============================================================================
+   Parcours + coupon de contact
+   ============================================================================= */
+
+.parcours {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: var(--gap-wide);
+    padding-top: var(--gap);
+}
+
+.parcours__text p { margin: 0 0 var(--gap-tight); max-width: 50ch; }
+.parcours__text p:last-child { margin-bottom: 0; }
+.parcours__text b { font-weight: 700; }
+
+/* Les métiers d'avant, listés comme des plages sur une face B. */
+.tracks { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+
+.tracks li {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    gap: var(--gap-tight);
+    align-items: baseline;
+    border-bottom: 1px solid var(--rule);
+    padding: var(--gap-hair) 0;
+}
+.tracks span:first-child { font-size: var(--fs-micro); color: var(--faint); }
+.tracks span:nth-child(2) { white-space: nowrap; }
+.tracks em {
+    font-style: normal;
+    font-size: var(--fs-micro);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    text-align: right;
+}
+
+/* ---------- coupon : le bon de commande au dos de la pochette ---------- */
+
+.coupon {
+    margin-top: var(--band);
+    border: 2px dashed var(--rule-strong);
+    padding: var(--gap-wide);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: var(--gap-wide);
+}
+
+.coupon__side h2 {
+    font-family: var(--display);
+    font-weight: var(--display-weight, 800);
+    font-size: clamp(1.3rem, 3.2vw, 2rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin: 0 0 var(--gap-tight);
+}
+.coupon__side p { margin: 0 0 var(--gap-tight); color: var(--faint); max-width: 38ch; }
+.coupon__side a.mailto { border-bottom: 2px solid var(--spot); padding-bottom: 2px; }
+.coupon__side a.mailto:hover { background: var(--spot-text); color: var(--paper); }
+
+.field { display: block; margin-bottom: var(--gap-tight); }
+.field span {
+    display: block;
+    font-size: var(--fs-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 3px;
+}
+.field input,
+.field textarea {
+    width: 100%;
+    font-family: var(--type);
+    font-size: var(--fs-body);
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 5px 2px;
+    border-radius: 0;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.field textarea { resize: vertical; min-height: 84px; }
+.field input:focus,
+.field textarea:focus { outline: 0; border-bottom-color: var(--spot); }
+
+.honeypot { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+
+.send {
+    font-family: var(--type);
+    font-size: var(--fs-label);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--paper);
+    background: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    padding: 9px 20px;
+    cursor: pointer;
+}
+.send:hover:not(:disabled) { background: var(--spot-text); border-color: var(--spot-text); }
+.send:disabled { opacity: 0.45; cursor: default; }
+
+.form__msg {
+    margin: var(--gap-tight) 0 0;
+    font-size: var(--fs-note);
+    min-height: 1.2em;
+}
+.form__msg[data-kind="ok"] { color: var(--ink); }
+.form__msg[data-kind="ko"] { color: var(--spot-text); }

@@ -1,0 +1,229 @@
+/* =============================================================================
+   Cover : le premier écran.
+   Il annonce le métier et la preuve. La phrase du bac vit plus bas,
+   en signature, pour ne pas faire barrage entre le visiteur et le dev.
+   ============================================================================= */
+
+/* La face avant vaut exactement une fenêtre : bandeau + titre, et rien de
+   la section suivante ne dépasse. Le bandeau garde sa hauteur naturelle,
+   la cover prend tout le reste. Aucune valeur en dur à deviner. */
+.front {
+    /* Hauteur définie, pas min-height : avec une hauteur automatique, le
+       conteneur grandit avec son contenu et flex n'a aucune place à
+       répartir. Le titre débordait alors vers le bas en paysage. */
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Un élément flex a min-width et min-height à auto, soit la taille minimale
+   de son contenu. Il refuse donc de rétrécir sous son contenu : la mesure de
+   la place disponible renvoyait la hauteur du titre lui-même, et le plafond
+   de hauteur ne se déclenchait jamais en paysage. Les remettre à 0 rend la
+   place réellement disponible mesurable. */
+.front > *,
+.cover__main,
+.cover__title {
+    min-width: 0;
+    min-height: 0;
+}
+
+@supports not (height: 100svh) {
+    .front { height: 100vh; }
+}
+
+.cover {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Le titre prend la hauteur restante et se centre dedans ; l'invite reste
+   collée en bas. Séparer les deux rôles, sinon le centrage et l'ancrage
+   se battent et laissent un trou au milieu. */
+.cover__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cover__kicker {
+    display: flex;
+    align-items: baseline;
+    gap: var(--gap-tight);
+    color: var(--faint);
+    /* L'accroche doit respirer au-dessus du titre, pas s'y coller. */
+    margin-bottom: var(--gap-wide);
+}
+.cover__kicker b { color: var(--spot-text); font-weight: 700; }
+
+.cover__title {
+    font-family: var(--display);
+    font-weight: var(--display-weight, 800);
+    font-size: clamp(2.6rem, 11.2vw, 9.2rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin: 0;
+    /* Le pavé occupe exactement la largeur du bloc, calé des deux côtés. */
+    width: 100%;
+}
+
+/* L'air au-dessus se prend sur la ligne elle-même : un em posé sur le h1
+   se calculerait sur son corps, pas sur celui de la ligne mise à la largeur. */
+.cover__line:first-child { padding-top: 0.1em; }
+
+.cover__line {
+    display: block;
+    position: relative;
+    white-space: nowrap;
+}
+
+/* Le repérage raté : l'encre de couleur imprimée à côté du noir.
+   C'est le glitch du site, et il vient de l'imprimerie, pas du cyberpunk. */
+.cover__line::before {
+    content: attr(data-t);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    color: var(--spot);
+    transform: translate(3px, 3px);
+}
+
+/* Les trois lignes s'alignent à gauche. Un décalage sur une seule ligne se
+   lit comme un accident quand les deux autres sont au cordeau. */
+
+/* ---------- la preuve, juste sous le titre ---------- */
+
+.claim {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: var(--gap-wide);
+    padding: var(--band) 0 var(--band);
+    border-bottom: 1px solid var(--rule);
+}
+
+.claim__facts { display: grid; gap: var(--gap-hair); align-content: start; }
+
+.claim__fact {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: var(--gap-tight);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--gap-hair);
+}
+.claim__fact:first-child { border-top: 0; padding-top: 0; }
+.claim__fact dt {
+    font-size: var(--fs-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    padding-top: 3px;
+}
+.claim__fact dd { margin: 0; }
+
+.claim__lead { max-width: 48ch; }
+.claim__lead p { margin: 0 0 var(--gap-tight); }
+
+/* La phrase du bac, traitée comme une note de bas de pochette :
+   un filet horizontal et rien d'autre. Pas de barre de couleur à gauche,
+   c'est un tic trop reconnaissable. */
+.claim__sign {
+    margin: var(--gap-wide) 0 0;
+    padding-top: var(--gap-tight);
+    border-top: 1px solid var(--rule);
+    font-size: var(--fs-note);
+    color: var(--faint);
+}
+.claim__sign b {
+    display: block;
+    margin-bottom: var(--gap-hair);
+    font-family: var(--display);
+    font-weight: var(--display-weight, 400);
+    font-size: clamp(0.95rem, 1.9vw, 1.22rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+}
+
+/* L'invite de descente, au bas de la face avant. */
+/* -----------------------------------------------------------------------
+   Le mot tranché.
+   Les tranches et leurs rafales sont pilotées par js/glitch.js : le hasard
+   doit être régénéré à chaque fois, une animation CSS se répéterait à
+   l'identique et se lirait comme une boucle. Sans le script, la ligne
+   s'affiche normalement : rien ne dépend du glitch pour être lisible.
+   ----------------------------------------------------------------------- */
+
+.cover__line--glitch.is-sliced { color: transparent; }
+
+/* La séparation des encres. Cyan et magenta en multiply : sur du papier
+   elles se comportent comme deux passages mal calés, et donnent à l'écran
+   le dédoublement coloré attendu d'un glitch. Au repos l'écart est infime. */
+.cover__line--glitch.is-sliced::before {
+    color: #00c8d7;
+    mix-blend-mode: multiply;
+    transform: translate(-0.022em, 0);
+    opacity: 0.85;
+}
+.cover__line--glitch.is-sliced::after {
+    content: attr(data-t);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    color: #e8007a;
+    mix-blend-mode: multiply;
+    transform: translate(0.022em, 0);
+    opacity: 0.85;
+    white-space: nowrap;
+}
+
+/* Pendant la rafale les encres s'écartent franchement : la séparation est
+   le symptôme du décrochage, pas un état permanent. */
+.cover__line--glitch.is-bursting::before { transform: translate(-0.17em, 0.012em); opacity: 1; }
+.cover__line--glitch.is-bursting::after { transform: translate(0.19em, -0.01em); opacity: 1; }
+
+.cover__band {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-style: normal;
+    color: var(--ink);
+    white-space: nowrap;
+    pointer-events: none;
+    translate: var(--pull, 0) 0;
+    transition: translate 0.14s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+/* Pendant la rafale, aucune transition : un décrochage de signal est net,
+   il ne s'interpole pas. */
+.is-bursting .cover__band { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .cover__band { transition: none; }
+}
+
+.cover__cue {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-tight);
+    padding-bottom: var(--gap);
+    font-size: var(--fs-micro);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--faint);
+}
+.cover__cue::before {
+    content: "";
+    width: clamp(26px, 4vw, 54px);
+    height: 1px;
+    background: var(--spot);
+}
+
+/* La suite commence franchement, sur un filet net. */
+.claim { border-top: 2px solid var(--rule-strong); padding-top: var(--band); }
