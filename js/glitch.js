@@ -153,19 +153,27 @@ const Glitch = {
         };
         const schedule = () => { if (raf === null) raf = requestAnimationFrame(draw); };
 
+        host.addEventListener('pointerenter', () => line.classList.add('is-pulling'), { passive: true });
+
         host.addEventListener('pointermove', (e) => {
             const r = line.getBoundingClientRect();
             target = ((e.clientX - r.left) / r.width - 0.5) * 0.34;
+            line.classList.add('is-pulling');
             schedule();
         }, { passive: true });
 
         // Tout ce qui interrompt le geste doit remettre les bandes a plat,
         // sinon un decalage survit a l'evenement qui l'a provoque.
+        const release = () => {
+            target = 0;
+            schedule();
+            line.classList.remove('is-pulling');
+        };
         ['pointerleave', 'pointercancel', 'pointerup', 'blur'].forEach((evt) => {
-            host.addEventListener(evt, () => { target = 0; schedule(); }, { passive: true });
+            host.addEventListener(evt, release, { passive: true });
         });
         ['resize', 'orientationchange'].forEach((evt) => {
-            window.addEventListener(evt, () => { target = 0; schedule(); }, { passive: true });
+            window.addEventListener(evt, release, { passive: true });
         });
     }
 };
