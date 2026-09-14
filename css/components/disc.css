@@ -123,7 +123,6 @@
     border-bottom: 2px solid var(--spot);
     padding-bottom: 1px;
 }
-.cut:hover .cut__state i { background: var(--spot-text); color: var(--paper); }
 
 /* Renvoi vers le reste du catalogue. */
 .disc__more {
