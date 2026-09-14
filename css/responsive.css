@@ -32,16 +32,12 @@
         display: none;
     }
     
-    .theme-toggle,
-    .era-toggle,
-    .era-mute {
+    .theme-toggle {
         width: 40px;
         height: 40px;
     }
 
-    .theme-toggle svg,
-    .era-toggle svg,
-    .era-mute svg {
+    .theme-toggle svg {
         width: 18px;
         height: 18px;
     }
@@ -305,16 +301,12 @@
         gap: 6px;
     }
 
-    .theme-toggle,
-    .era-toggle,
-    .era-mute {
+    .theme-toggle {
         width: 36px;
         height: 36px;
     }
 
-    .theme-toggle svg,
-    .era-toggle svg,
-    .era-mute svg {
+    .theme-toggle svg {
         width: 16px;
         height: 16px;
     }
@@ -486,16 +478,12 @@
     }
     
     /* Nav */
-    .theme-toggle,
-    .era-toggle,
-    .era-mute {
+    .theme-toggle {
         width: 32px;
         height: 32px;
     }
 
-    .theme-toggle svg,
-    .era-toggle svg,
-    .era-mute svg {
+    .theme-toggle svg {
         width: 14px;
         height: 14px;
     }
