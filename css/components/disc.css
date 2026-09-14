@@ -67,9 +67,17 @@
 .cut__title::before { color: #00c8d7; }
 .cut__title::after { color: #e8007a; }
 
-.cut:hover .cut__title::before,
+/* Uniquement pour un vrai pointeur. Sur ecran tactile, un appui laisse
+   l'etat de survol colle sur la ligne : au retour d'un lien externe, le
+   projet touche restait fige en plein decrochage. */
+@media (hover: hover) and (pointer: fine) {
+    .cut:hover .cut__title::before { animation: cut-cyan 0.42s steps(1, end) 1; transform: translate(-3px, 0); }
+    .cut:hover .cut__title::after { animation: cut-magenta 0.42s steps(1, end) 1; transform: translate(3px, 0); }
+}
+
+/* Le clavier garde l'effet sur tous les appareils : le focus, lui, se
+   relache proprement. */
 .cut:focus-visible .cut__title::before { animation: cut-cyan 0.42s steps(1, end) 1; transform: translate(-3px, 0); }
-.cut:hover .cut__title::after,
 .cut:focus-visible .cut__title::after { animation: cut-magenta 0.42s steps(1, end) 1; transform: translate(3px, 0); }
 
 @keyframes cut-cyan {

@@ -86,6 +86,36 @@
 .field input:focus,
 .field textarea:focus { outline: 0; border-bottom-color: var(--spot); }
 
+/* Deux artefacts de saisie a neutraliser.
+
+   1. Le remplissage automatique. Chrome et Safari peignent un fond blanc ou
+      bleu derriere le texte, et c'est la seule couleur du navigateur qu'une
+      declaration background ne peut pas remplacer. Une ombre interne de
+      grande taille est le seul moyen de la recouvrir.
+
+   2. Le repeint sous le voile de fibres. Le grain est un calque en
+      mix-blend-mode pose au-dessus du contenu ; quand le navigateur
+      repeint une zone editable dessous, il laisse des rectangles clairs.
+      Donner au champ son propre plan de composition supprime l'artefact. */
+.field input:-webkit-autofill,
+.field input:-webkit-autofill:hover,
+.field input:-webkit-autofill:focus,
+.field textarea:-webkit-autofill {
+    -webkit-text-fill-color: var(--ink);
+    -webkit-box-shadow: 0 0 0 1000px var(--paper) inset;
+    box-shadow: 0 0 0 1000px var(--paper) inset;
+    caret-color: var(--ink);
+    /* Le delai absurde empeche la transition de couleur du navigateur de
+       reveler le fond d'origine pendant une fraction de seconde. */
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+.field input,
+.field textarea {
+    transform: translateZ(0);
+    caret-color: var(--spot-text);
+}
+
 .honeypot { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
 
 .send {
