@@ -52,6 +52,21 @@
     --band: clamp(44px, 7vw, 86px);
     --band-lg: clamp(62px, 11vw, 140px);
 
+    /* Les deux encres du decrochage.
+       Volontairement peu saturees : le cyan et le magenta purs saturent a
+       100% et declenchent deux phenomenes physiologiques qui fatiguent
+       l'oeil sur un titre fixe de cette taille. L'aberration chromatique du
+       cristallin empeche un bord cyan et un bord magenta d'etre nets en meme
+       temps, et la chromostereopsie leur fabrique un faux relief que le
+       regard essaie de converger. A 62% de saturation la separation reste
+       franche, mais le signal d'aberration tombe assez pour que l'oeil ne
+       force plus. L'ecart, lui, est volontairement large : plus les deux
+       bords sont eloignes, moins le cerveau tente de les fusionner.
+       Accessoirement une vraie encre mal calee sur du carton absorbant n'est
+       jamais fluo : c'est aussi plus juste. */
+    --ink-cyan: #29a0ae;
+    --ink-magenta: #c22e73;
+
     /* La texture du carton, partagee : la page et le viewer doivent etre
        imprimes sur le meme papier. */
     --paper-texture:

@@ -176,9 +176,9 @@
    Ce qui gene l'oeil au repos n'est pas la couleur, ce sont les coutures des
    tranches, traitees plus bas. */
 .cover__line--glitch.is-sliced::before {
-    color: #00c8d7;
+    color: var(--ink-cyan);
     mix-blend-mode: multiply;
-    transform: translate(-0.022em, 0);
+    transform: translate(-0.05em, 0);
     opacity: 0.85;
 }
 .cover__line--glitch.is-sliced::after {
@@ -187,17 +187,17 @@
     left: 0;
     top: 0;
     z-index: -1;
-    color: #e8007a;
+    color: var(--ink-magenta);
     mix-blend-mode: multiply;
     white-space: nowrap;
-    transform: translate(0.022em, 0);
+    transform: translate(0.05em, 0);
     opacity: 0.85;
 }
 
 /* Pendant la rafale seulement, les encres se separent franchement. Aucune
    transition : un decrochage de signal est net, il ne s'interpole pas. */
 .cover__line--glitch.is-bursting::before {
-    color: #00c8d7;
+    color: var(--ink-cyan);
     mix-blend-mode: multiply;
     transform: translate(-0.17em, 0.012em);
 }

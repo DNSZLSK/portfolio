@@ -64,8 +64,8 @@
     transform: translate(0, 0);
     transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
-.cut__title::before { color: #00c8d7; }
-.cut__title::after { color: #e8007a; }
+.cut__title::before { color: var(--ink-cyan); }
+.cut__title::after { color: var(--ink-magenta); }
 
 /* Uniquement pour un vrai pointeur. Sur ecran tactile, un appui laisse
    l'etat de survol colle sur la ligne : au retour d'un lien externe, le
