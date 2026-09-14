@@ -22,11 +22,30 @@ const FitLines = {
             document.fonts.ready.then(() => this.apply());
         }
 
+        // Sur telephone, la rotation est le cas fragile : iOS declenche le
+        // redimensionnement AVANT d'avoir fini de recalculer la page, donc une
+        // seule mesure tombe sur des dimensions perimees et le titre reste
+        // calibre pour l'orientation precedente. On remesure donc plusieurs
+        // fois apres l'evenement, jusqu'a ce que la page soit stabilisee.
+        const settle = () => {
+            [0, 120, 320, 650].forEach((d) => setTimeout(() => this.apply(), d));
+        };
+
         let t;
-        window.addEventListener('resize', () => {
+        const onResize = () => {
             clearTimeout(t);
-            t = setTimeout(() => this.apply(), 120);
-        }, { passive: true });
+            t = setTimeout(settle, 60);
+        };
+
+        window.addEventListener('resize', onResize, { passive: true });
+        window.addEventListener('orientationchange', settle, { passive: true });
+        window.addEventListener('load', settle, { passive: true });
+
+        // La fenetre visuelle bouge sans declencher resize quand la barre
+        // d'adresse se retracte : c'est elle qui fait foi sur mobile.
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', onResize, { passive: true });
+        }
     },
 
     apply() {

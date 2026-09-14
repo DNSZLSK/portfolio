@@ -131,6 +131,12 @@ const Glitch = {
      */
     followPointer(line, bands) {
         if (this.reduced) return;
+
+        // Reserve au vrai pointeur. Sur ecran tactile, pointermove se declenche
+        // au toucher mais pointerleave ne vient jamais : les bandes restaient
+        // decalees jusqu'au rechargement de la page, y compris apres rotation.
+        if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
         const host = line.closest('.cover__title');
         if (!host) return;
 
@@ -153,7 +159,14 @@ const Glitch = {
             schedule();
         }, { passive: true });
 
-        host.addEventListener('pointerleave', () => { target = 0; schedule(); }, { passive: true });
+        // Tout ce qui interrompt le geste doit remettre les bandes a plat,
+        // sinon un decalage survit a l'evenement qui l'a provoque.
+        ['pointerleave', 'pointercancel', 'pointerup', 'blur'].forEach((evt) => {
+            host.addEventListener(evt, () => { target = 0; schedule(); }, { passive: true });
+        });
+        ['resize', 'orientationchange'].forEach((evt) => {
+            window.addEventListener(evt, () => { target = 0; schedule(); }, { passive: true });
+        });
     }
 };
 

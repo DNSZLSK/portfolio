@@ -28,7 +28,11 @@
     max-height: 100%;
     display: flex;
     flex-direction: column;
-    background: var(--paper);
+    /* Le meme carton que la page : un aplat uni trahit le viewer comme une
+       fenetre rapportee au lieu d'un feuillet glisse dans la pochette. */
+    background-color: var(--paper);
+    background-image: var(--paper-texture);
+    background-size: var(--paper-texture-size);
     border: 2px solid var(--rule-strong);
 }
 
